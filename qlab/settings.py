@@ -131,9 +131,9 @@ USE_TZ = True
 STATIC_URL = 'static/'
 import os
 
-STATIC_ROOT = os.path.join('/app/static/')
+STATIC_ROOT = os.path.join('/app/qlab/static/')
 
-MEDIA_ROOT = '/app/media/'
+MEDIA_ROOT = '/app/qlab/media/'
 MEDIA_URL = 'media/'
 MEDIA_DOMAIN = env.str('MEDIA_DOMAIN')
 
