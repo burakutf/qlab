@@ -17,7 +17,7 @@ class CompanySerializers(serializers.ModelSerializer):
 
 
 class UserSerializers(serializers.ModelSerializer):
-    vehicle_info = serializers.CharField(
+    vehicle = serializers.CharField(
         source='vehicle.plate', read_only=True
     )
 
@@ -38,6 +38,5 @@ class UserSerializers(serializers.ModelSerializer):
             'birth_date',
             'gender',
             'vehicle',
-            'vehicle_info',
             'company',
         )
