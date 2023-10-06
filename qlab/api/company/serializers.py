@@ -17,8 +17,6 @@ class CompanySerializers(serializers.ModelSerializer):
 
 
 class UserSerializers(serializers.ModelSerializer):
-    vehicle = serializers.SerializerMethodField()
-
     class Meta:
         model = User
         fields = (
@@ -40,6 +38,3 @@ class UserSerializers(serializers.ModelSerializer):
             'company',
         )
 
-    def get_vehicle(self, obj):
-        if obj.vehicle:
-            return obj.vehicle.plate
