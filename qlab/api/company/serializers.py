@@ -17,14 +17,13 @@ class CompanySerializers(serializers.ModelSerializer):
 
 
 class UserSerializers(serializers.ModelSerializer):
-    vehicle = serializers.CharField(
-        source='vehicle.plate', read_only=True
-    )
+    vehicle = serializers.SerializerMethodField()
 
     class Meta:
         model = User
         fields = (
             'id',
+            'password',
             'username',
             'first_name',
             'last_name',
@@ -40,3 +39,7 @@ class UserSerializers(serializers.ModelSerializer):
             'vehicle',
             'company',
         )
+
+    def get_vehicle(self, obj):
+        if obj.vehicle:
+            return obj.vehicle.plate
