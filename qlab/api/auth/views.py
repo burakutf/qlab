@@ -1,4 +1,4 @@
-from rest_framework import viewsets,views
+from rest_framework import views
 
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny
@@ -10,9 +10,7 @@ from django.contrib.auth.models import update_last_login
 from qlab.apps.accounts.models import User
 from ..utils.permissions import CanAttemptPerm
 from .serializers import (
-
     LoginSerializer,
-  
 )
 
 
@@ -33,5 +31,3 @@ class LoginView(views.APIView):
         update_last_login(None, user)
 
         return Response(data={'token': str(token)})
-
-

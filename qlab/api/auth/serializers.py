@@ -25,7 +25,6 @@ class PasswordField(serializers.CharField):
         )
 
 
-
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(label='Username')
     password = PasswordField()
@@ -46,4 +45,3 @@ class LoginSerializer(serializers.Serializer):
         if not user.check_password(password):
             raise serializers.ValidationError(msg, code='authorization')
         return attrs
-

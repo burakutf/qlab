@@ -15,11 +15,21 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='user',
             name='company',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='user', to='company.company'),
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                related_name='user',
+                to='company.company',
+            ),
         ),
         migrations.AlterField(
             model_name='user',
             name='vehicles',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='user', to='company.vehicle'),
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                related_name='user',
+                to='company.vehicle',
+            ),
         ),
     ]

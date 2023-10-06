@@ -7,6 +7,7 @@ from rest_framework.test import APITestCase
 from qlab.apps.accounts.models import User
 from qlab.api.auth.views import LoginView
 
+
 class LoginWithEmailTestCase(APITestCase):
     def setUp(self):
         self.username = 'burak'

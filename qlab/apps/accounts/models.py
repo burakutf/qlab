@@ -22,8 +22,12 @@ class User(AbstractUser):
     gender = models.CharField(
         max_length=3, choices=Genders.choices, null=True, blank=True
     )
-    vehicles = models.ForeignKey(Vehicle, models.DO_NOTHING, 'user',null=True)
-    company = models.ForeignKey(Company, models.DO_NOTHING, 'user',null=True)
+    vehicle = models.OneToOneField(
+        Vehicle, models.SET_NULL, null=True, blank=True
+    )
+    company = models.ForeignKey(
+        Company, models.SET_NULL, 'user', null=True, blank=True
+    )
 
     def save(self, *args, **kwargs):
         self.full_name = f'{self.first_name} {self.last_name}'

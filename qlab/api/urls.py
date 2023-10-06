@@ -20,13 +20,16 @@ schema_view = get_schema_view(
     permission_classes=(IsAuthenticated,),
 )
 router.register(
-    'users', company.UserViewSet, 
+    'users',
+    company.UserViewSet,
 )
 router.register(
-    'companys', company.CompanyViewSet, 
+    'companys',
+    company.CompanyViewSet,
 )
 router.register(
-    'vehicles', company.VehicleViewSet, 
+    'vehicles',
+    company.VehicleViewSet,
 )
 urlpatterns = [
     path('login/', auth.LoginView.as_view(), name='login'),

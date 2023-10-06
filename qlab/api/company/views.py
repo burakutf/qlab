@@ -10,6 +10,7 @@ from .serializers import (
     VehicleSerializers,
 )
 
+
 class VehicleViewSet(viewsets.ModelViewSet):
     queryset = Vehicle.objects.all()
     serializer_class = VehicleSerializers
