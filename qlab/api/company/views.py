@@ -24,9 +24,17 @@ class CompanyViewSet(viewsets.ModelViewSet):
     filter_backends = (SearchFilter,)
     search_fields = ('name',)
 
-
+#TODO Buralara sadece staff erişebilir olmalı permiison class yaz 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializers
     filter_backends = (SearchFilter,)
     search_fields = ('username',)
+
+class ProfileViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = User.objects.none()
+    serializer_class = UserSerializers
+
+    def get_queryset(self):
+        user = self.request.user
+        return User.objects.filter(id=user.id)

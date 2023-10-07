@@ -31,6 +31,10 @@ router.register(
     'vehicles',
     company.VehicleViewSet,
 )
+router.register(
+    'profile/me',
+    company.ProfileViewSet,
+)
 urlpatterns = [
     path('login/', auth.LoginView.as_view(), name='login'),
     path('swagger<format>/', schema_view.without_ui(), name='schema-json'),
