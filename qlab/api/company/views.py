@@ -15,14 +15,18 @@ class VehicleViewSet(viewsets.ModelViewSet):
     queryset = Vehicle.objects.all()
     serializer_class = VehicleSerializers
     filter_backends = (SearchFilter,)
-    search_fields = ('brand',)
+    search_fields = (
+        'brand',
+        'model',
+        'plate',
+    )
 
 
 class CompanyViewSet(viewsets.ModelViewSet):
     queryset = Company.objects.all()
     serializer_class = CompanySerializers
     filter_backends = (SearchFilter,)
-    search_fields = ('name',)
+    search_fields = ('name', 'contact_info')
 
 
 # TODO Buralara sadece staff erişebilir olmalı permiison class yaz
@@ -30,7 +34,7 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializers
     filter_backends = (SearchFilter,)
-    search_fields = ('username',)
+    search_fields = ('username', 'full_name', 'phone', 'email')
 
 
 # TODO Daha sonra burayı apiview yapmayı düşünebilirsin

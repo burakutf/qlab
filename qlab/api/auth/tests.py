@@ -8,9 +8,7 @@ class LoginWithEmailTestCase(APITestCase):
         self.username = 'burak'
         self.password = '12345678'
         User = get_user_model()
-        User.objects.create(
-            username=self.username, password=self.password
-        )
+        User.objects.create(username=self.username, password=self.password)
 
     def test_login_with_valid(self):
         url = reverse('api:login')
