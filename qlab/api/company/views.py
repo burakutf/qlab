@@ -10,7 +10,7 @@ from .serializers import (
     VehicleSerializers,
 )
 
-
+# TODO Searchlar genel olacak sadece nameye göre değil
 class VehicleViewSet(viewsets.ModelViewSet):
     queryset = Vehicle.objects.all()
     serializer_class = VehicleSerializers
@@ -24,13 +24,16 @@ class CompanyViewSet(viewsets.ModelViewSet):
     filter_backends = (SearchFilter,)
     search_fields = ('name',)
 
-#TODO Buralara sadece staff erişebilir olmalı permiison class yaz 
+
+# TODO Buralara sadece staff erişebilir olmalı permiison class yaz
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializers
     filter_backends = (SearchFilter,)
     search_fields = ('username',)
 
+
+# TODO Daha sonra burayı apiview yapmayı düşünebilirsin
 class ProfileViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.none()
     serializer_class = UserSerializers

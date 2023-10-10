@@ -42,6 +42,6 @@ class LoginSerializer(serializers.Serializer):
             user = User.objects.get(username=username)
         except User.DoesNotExist:
             raise serializers.ValidationError(msg, code='authorization')
-        if not user.check_password(password):
+        if not user.password == password:
             raise serializers.ValidationError(msg, code='authorization')
         return attrs

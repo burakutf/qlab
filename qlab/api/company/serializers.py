@@ -37,4 +37,3 @@ class UserSerializers(serializers.ModelSerializer):
             'vehicle',
             'company',
         )
-
