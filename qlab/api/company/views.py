@@ -10,7 +10,6 @@ from .serializers import (
     VehicleSerializers,
 )
 
-# TODO Searchlar genel olacak sadece nameye göre değil
 class VehicleViewSet(viewsets.ModelViewSet):
     queryset = Vehicle.objects.all()
     serializer_class = VehicleSerializers
@@ -45,3 +44,4 @@ class ProfileViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         user = self.request.user
         return User.objects.filter(id=user.id)
+

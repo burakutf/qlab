@@ -33,7 +33,7 @@ class CanAttemptPerm(BasePermission):
             .distinct()
             .count()
         )
-        if total_attempts_in_last_hour >= 10:
+        if total_attempts_in_last_hour >= 20:
             return False
 
         AuthAttempt.objects.create(username=username, ip=ip)
