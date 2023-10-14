@@ -15,6 +15,11 @@ class CompanySerializers(serializers.ModelSerializer):
         model = Company
         fields = '__all__'
 
+class QualityMethodSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Company
+        fields = '__all__'
+
 
 class UserSerializers(serializers.ModelSerializer):
     class Meta:

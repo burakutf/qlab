@@ -35,6 +35,10 @@ router.register(
     'profile/me',
     company.ProfileViewSet,
 )
+router.register(
+    'quality/method',
+    company.QualityMethodViewSet,
+)
 urlpatterns = [
     path('login/', auth.LoginView.as_view(), name='login'),
     path('swagger<format>/', schema_view.without_ui(), name='schema-json'),
