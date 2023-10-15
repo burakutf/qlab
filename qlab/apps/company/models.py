@@ -32,6 +32,7 @@ class QualityMethod(models.Model):
     measurement_name = models.CharField(max_length=64)
     measurement_number = models.CharField(max_length=64)
     general_information = models.CharField(max_length=64)
+    price=models.IntegerField(default=0,null=True)
     general_file = models.FileField(
         upload_to=SetPathAndRename('method/'), null=True, blank=True
     )
