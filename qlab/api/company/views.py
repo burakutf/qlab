@@ -3,8 +3,9 @@ from rest_framework import viewsets
 from django.utils.translation import gettext as _
 
 from qlab.apps.accounts.models import Company, User, Vehicle
-from qlab.apps.company.models import QualityMethod
+from qlab.apps.company.models import LabDevice, QualityMethod
 from .serializers import (
+    LabDeviceSerializers,
     QualityMethodSerializers,
     CompanySerializers,
     UserSerializers,
@@ -31,14 +32,14 @@ class VehicleViewSet(viewsets.ModelViewSet):
 class CompanyViewSet(viewsets.ModelViewSet):
     queryset = Company.objects.all()
     serializer_class = CompanySerializers
-    search_fields = ('name', 'contact_info')
+    search_fields = ('name', 'contact_info',)
 
 
 # TODO Buralara sadece staff erişebilir olmalı permiison class yaz
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializers
-    search_fields = ('username', 'full_name', 'phone', 'email')
+    search_fields = ('username', 'full_name', 'phone', 'email',)
 
 
 # TODO Daha sonra burayı apiview yapmayı düşünebilirsin
@@ -54,4 +55,10 @@ class ProfileViewSet(viewsets.ReadOnlyModelViewSet):
 class QualityMethodViewSet(viewsets.ModelViewSet):
     queryset = QualityMethod.objects.all()
     serializer_class = QualityMethodSerializers
-    search_fields = ('measurement_name', 'general_information')
+    search_fields = ('measurement_name', 'general_information',)
+
+
+class LabDeviceViewSet(viewsets.ModelViewSet):
+    queryset = LabDevice.objects.all()
+    serializer_class = LabDeviceSerializers
+    search_fields = ('device_name',)

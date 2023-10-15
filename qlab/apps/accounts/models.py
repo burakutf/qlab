@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 from phonenumber_field.modelfields import PhoneNumberField
 
-from qlab.apps.company.models import Company, Vehicle
+from qlab.apps.company.models import Company, LabDevice, Vehicle
 
 
 class User(AbstractUser):
@@ -24,6 +24,9 @@ class User(AbstractUser):
     )
     vehicle = models.OneToOneField(
         Vehicle, models.SET_NULL, null=True, blank=True
+    )
+    device = models.OneToOneField(
+        LabDevice, models.SET_NULL, null=True, blank=True
     )
     company = models.ForeignKey(
         Company, models.SET_NULL, 'user', null=True, blank=True

@@ -29,9 +29,15 @@ class Vehicle(models.Model):
 
 
 class QualityMethod(models.Model):
-    measurement_name = models.CharField(max_length=64)
-    measurement_number = models.CharField(max_length=64)
-    general_information = models.CharField(max_length=64)
+    measurement_name = models.CharField(max_length=64,null=True)
+    measurement_number = models.CharField(max_length=64,null=True)
+    general_information = models.CharField(max_length=64,null=True)
     general_file = models.FileField(
         upload_to=SetPathAndRename('method/'), null=True, blank=True
     )
+
+class LabDevice(models.Model):
+    device_name=models.CharField(max_length=64,null=True)
+    serial_number=models.CharField(max_length=128,null=True,blank=True)
+    calibration_date=models.DateTimeField(null=True,blank=True)
+    calibration_period=models.CharField(max_length=128,null=True,blank=True)
