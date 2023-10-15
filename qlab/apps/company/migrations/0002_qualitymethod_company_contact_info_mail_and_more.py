@@ -15,11 +15,28 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='QualityMethod',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('measurement_name', models.CharField(max_length=64)),
                 ('measurement_number', models.CharField(max_length=64)),
                 ('general_information', models.CharField(max_length=64)),
-                ('general_file', models.FileField(blank=True, null=True, upload_to=qlab.apps.core.utils.set_path.SetPathAndRename('method/'))),
+                (
+                    'general_file',
+                    models.FileField(
+                        blank=True,
+                        null=True,
+                        upload_to=qlab.apps.core.utils.set_path.SetPathAndRename(
+                            'method/'
+                        ),
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
@@ -30,7 +47,13 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='company',
             name='contact_info',
-            field=phonenumber_field.modelfields.PhoneNumberField(blank=True, db_index=True, max_length=128, null=True, region=None),
+            field=phonenumber_field.modelfields.PhoneNumberField(
+                blank=True,
+                db_index=True,
+                max_length=128,
+                null=True,
+                region=None,
+            ),
         ),
         migrations.AlterField(
             model_name='vehicle',

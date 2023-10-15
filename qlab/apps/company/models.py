@@ -10,7 +10,7 @@ class Company(models.Model):
     tax_number = models.CharField(max_length=10)
     authorized_person = models.CharField(max_length=50)
     contact_info = PhoneNumberField(null=True, blank=True, db_index=True)
-    contact_info_mail=models.EmailField(null=True,blank=True)
+    contact_info_mail = models.EmailField(null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -27,10 +27,11 @@ class Vehicle(models.Model):
     def __str__(self):
         return self.plate
 
+
 class QualityMethod(models.Model):
-    measurement_name=models.CharField(max_length=64)
-    measurement_number=models.CharField(max_length=64)
-    general_information=models.CharField(max_length=64)
-    general_file=models.FileField(
+    measurement_name = models.CharField(max_length=64)
+    measurement_number = models.CharField(max_length=64)
+    general_information = models.CharField(max_length=64)
+    general_file = models.FileField(
         upload_to=SetPathAndRename('method/'), null=True, blank=True
     )

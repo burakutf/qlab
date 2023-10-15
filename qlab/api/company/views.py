@@ -11,6 +11,7 @@ from .serializers import (
     VehicleSerializers,
 )
 
+
 class VehicleViewSet(viewsets.ModelViewSet):
     queryset = Vehicle.objects.all()
     serializer_class = VehicleSerializers
@@ -19,12 +20,14 @@ class VehicleViewSet(viewsets.ModelViewSet):
         'model',
         'plate',
     )
+
     def get_queryset(self):
         fullness = self.request.query_params.get('fullness', None)
         if fullness is not None:
             return Vehicle.objects.filter(user__isnull=fullness)
         return Vehicle.objects.all()
-    
+
+
 class CompanyViewSet(viewsets.ModelViewSet):
     queryset = Company.objects.all()
     serializer_class = CompanySerializers
@@ -47,8 +50,8 @@ class ProfileViewSet(viewsets.ReadOnlyModelViewSet):
         user = self.request.user
         return User.objects.filter(id=user.id)
 
+
 class QualityMethodViewSet(viewsets.ModelViewSet):
     queryset = QualityMethod.objects.all()
     serializer_class = QualityMethodSerializers
     search_fields = ('measurement_name', 'general_information')
-
