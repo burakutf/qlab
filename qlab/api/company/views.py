@@ -3,8 +3,9 @@ from rest_framework import viewsets
 from django.utils.translation import gettext as _
 
 from qlab.apps.accounts.models import Company, User, Vehicle
-from qlab.apps.company.models import QualityMethod
+from qlab.apps.company.models import LabDevice, QualityMethod
 from .serializers import (
+    LabDeviceSerializers,
     QualityMethodSerializers,
     CompanySerializers,
     UserSerializers,
@@ -55,3 +56,9 @@ class QualityMethodViewSet(viewsets.ModelViewSet):
     queryset = QualityMethod.objects.all()
     serializer_class = QualityMethodSerializers
     search_fields = ('measurement_name', 'general_information')
+
+
+class LabDeviceViewSet(viewsets.ModelViewSet):
+    queryset = LabDevice.objects.all()
+    serializer_class = LabDeviceSerializers
+    search_fields = ('name',)

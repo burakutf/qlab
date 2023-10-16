@@ -39,6 +39,10 @@ router.register(
     'quality/method',
     company.QualityMethodViewSet,
 )
+router.register(
+    'devices',
+    company.LabDeviceViewSet,
+)
 urlpatterns = [
     path('login/', auth.LoginView.as_view(), name='login'),
     path('swagger<format>/', schema_view.without_ui(), name='schema-json'),

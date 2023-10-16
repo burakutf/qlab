@@ -29,7 +29,6 @@ class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(label='Username')
     password = PasswordField()
     token = serializers.CharField(label='Token', read_only=True)
-    full_name = serializers.CharField(read_only=True)
 
     def validate(self, attrs):
         username = attrs.get('username')
@@ -45,5 +44,5 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError(msg, code='authorization')
         if not user.password == password:
             raise serializers.ValidationError(msg, code='authorization')
-        attrs['full_name'] = user.full_name
+
         return attrs

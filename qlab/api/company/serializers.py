@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from qlab.apps.accounts.models import User
 
-from qlab.apps.company.models import Company, QualityMethod, Vehicle
+from qlab.apps.company.models import Company, LabDevice, QualityMethod, Vehicle
 
 
 class VehicleSerializers(serializers.ModelSerializer):
@@ -20,6 +20,13 @@ class QualityMethodSerializers(serializers.ModelSerializer):
     class Meta:
         model = QualityMethod
         fields = '__all__'
+
+
+class LabDeviceSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = LabDevice
+        fields = '__all__'
+
 
 
 class UserSerializers(serializers.ModelSerializer):
