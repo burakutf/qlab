@@ -29,7 +29,7 @@ class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(label='Username')
     password = PasswordField()
     token = serializers.CharField(label='Token', read_only=True)
-    full_name = serializers.CharField()
+    full_name = serializers.CharField(read_only=True)
 
     def validate(self, attrs):
         username = attrs.get('username')
