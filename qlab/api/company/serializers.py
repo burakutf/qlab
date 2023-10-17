@@ -49,3 +49,15 @@ class UserSerializers(serializers.ModelSerializer):
             'vehicle',
             'company',
         )
+
+
+class MinimalUserSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            'id',
+            'full_name',
+            'is_staff',
+            'is_active',
+            'is_superuser',
+        )

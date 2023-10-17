@@ -36,6 +36,10 @@ router.register(
     company.ProfileViewSet,
 )
 router.register(
+    'minimal/user',
+    company.MinimalUserViewSet,
+)
+router.register(
     'quality/method',
     company.QualityMethodViewSet,
 )

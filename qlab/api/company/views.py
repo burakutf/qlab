@@ -2,10 +2,11 @@ from rest_framework import viewsets
 
 from django.utils.translation import gettext as _
 
-from qlab.apps.accounts.models import Company, User, Vehicle
-from qlab.apps.company.models import LabDevice, QualityMethod
+from qlab.apps.accounts.models import User
+from qlab.apps.company.models import Company, LabDevice, QualityMethod, Vehicle
 from .serializers import (
     LabDeviceSerializers,
+    MinimalUserSerializers,
     QualityMethodSerializers,
     CompanySerializers,
     UserSerializers,
@@ -40,6 +41,13 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializers
     search_fields = ('username', 'full_name', 'phone', 'email')
+
+
+# TODO bu kısımda daha iyi yapılabilinir
+class MinimalUserViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = MinimalUserSerializers
+    search_fields = ('full_name',)
 
 
 # TODO Daha sonra burayı apiview yapmayı düşünebilirsin

@@ -1,5 +1,6 @@
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
+from qlab.apps.accounts.models import User
 
 from qlab.apps.core.utils.set_path import SetPathAndRename
 
@@ -41,7 +42,10 @@ class QualityMethod(models.Model):
 
 
 class LabDevice(models.Model):
+    user = models.OneToOneField(User, models.SET_NULL, null=True)
     name = models.CharField(max_length=64)
     serial_number = models.CharField(max_length=128)
     calibration_date = models.DateField()
     calibration_period = models.CharField(max_length=64)
+
+    # TODO son calibration date ve period oluşturulcak period yaklaştıkça bildirim göndercem
