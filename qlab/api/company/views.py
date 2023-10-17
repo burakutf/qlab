@@ -55,7 +55,7 @@ class ProfileViewSet(viewsets.ReadOnlyModelViewSet):
 class QualityMethodViewSet(viewsets.ModelViewSet):
     queryset = QualityMethod.objects.all()
     serializer_class = QualityMethodSerializers
-    search_fields = ('measurement_name', 'general_information')
+    search_fields = ('measurement_name', 'measurement_number')
 
 
 class LabDeviceViewSet(viewsets.ModelViewSet):

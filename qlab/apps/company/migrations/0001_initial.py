@@ -9,26 +9,53 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
             name='Company',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('name', models.CharField(max_length=100)),
                 ('address', models.CharField(max_length=200)),
                 ('tax_number', models.CharField(max_length=10)),
                 ('authorized_person', models.CharField(max_length=50)),
-                ('contact_info', phonenumber_field.modelfields.PhoneNumberField(blank=True, db_index=True, max_length=128, null=True, region=None)),
-                ('contact_info_mail', models.EmailField(blank=True, max_length=254, null=True)),
+                (
+                    'contact_info',
+                    phonenumber_field.modelfields.PhoneNumberField(
+                        blank=True,
+                        db_index=True,
+                        max_length=128,
+                        null=True,
+                        region=None,
+                    ),
+                ),
+                (
+                    'contact_info_mail',
+                    models.EmailField(blank=True, max_length=254, null=True),
+                ),
             ],
         ),
         migrations.CreateModel(
             name='LabDevice',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('name', models.CharField(max_length=64)),
                 ('serial_number', models.CharField(max_length=128)),
                 ('calibration_date', models.DateTimeField()),
@@ -38,18 +65,46 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='QualityMethod',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('measurement_name', models.CharField(max_length=64)),
                 ('measurement_number', models.CharField(max_length=64)),
-                ('general_information', models.CharField(blank=True, max_length=64, null=True)),
+                (
+                    'general_information',
+                    models.CharField(blank=True, max_length=64, null=True),
+                ),
                 ('price', models.IntegerField(default=0)),
-                ('general_file', models.FileField(blank=True, null=True, upload_to=qlab.apps.core.utils.set_path.SetPathAndRename('method/'))),
+                (
+                    'general_file',
+                    models.FileField(
+                        blank=True,
+                        null=True,
+                        upload_to=qlab.apps.core.utils.set_path.SetPathAndRename(
+                            'method/'
+                        ),
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
             name='Vehicle',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('plate', models.CharField(max_length=16)),
                 ('brand', models.CharField(max_length=64)),
                 ('model', models.CharField(max_length=64)),

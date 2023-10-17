@@ -28,7 +28,6 @@ class LabDeviceSerializers(serializers.ModelSerializer):
         fields = '__all__'
 
 
-
 class UserSerializers(serializers.ModelSerializer):
     class Meta:
         model = User
