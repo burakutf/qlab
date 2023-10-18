@@ -32,8 +32,8 @@ class LabDeviceSerializers(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_remaining_days(self, obj):
-        if obj.finish_date and obj.start_date:
-            return (obj.finish_date - obj.start_date).days
+        if obj.finish_date:
+            return (obj.finish_date - timezone.now().date()).days
         return 0
 
     def update(self, instance, validated_data):
