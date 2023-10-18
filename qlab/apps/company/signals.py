@@ -9,7 +9,7 @@ from qlab.apps.company.models import LabDevice
 def lab_device_pre_save(sender, instance, **kwargs):
     start_date = instance.start_date + timezone.timedelta(days=1)
     existing_devices = LabDevice.objects.filter(
-        user=instance.user,
+        name=instance.name,
         start_date__lte=start_date,
         finish_date__gte=start_date,
     ).exclude(id=instance.id)
