@@ -53,5 +53,3 @@ class LabDevice(models.Model):
     start_date = models.DateField(help_text='calibration date', null=True)
     finish_date = models.DateField(null=True, blank=True)
     period = models.IntegerField(help_text='calibration period', null=True)
-
-  

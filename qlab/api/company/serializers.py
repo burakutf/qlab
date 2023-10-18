@@ -35,14 +35,18 @@ class LabDeviceSerializers(serializers.ModelSerializer):
         if obj.finish_date and obj.start_date:
             return (obj.finish_date - obj.start_date).days
         return 0
+
     def update(self, instance, validated_data):
         # Eğer start_date veya period güncellendi ise, finish_date'i tekrar hesapla
         if 'start_date' in validated_data or 'period' in validated_data:
             start_date = validated_data.get('start_date', instance.start_date)
             period = validated_data.get('period', instance.period)
-            validated_data['finish_date'] = start_date + timezone.timedelta(days=period)
+            validated_data['finish_date'] = start_date + timezone.timedelta(
+                days=period
+            )
 
         return super().update(instance, validated_data)
+
 
 class NotificationSerializers(serializers.ModelSerializer):
     class Meta:
