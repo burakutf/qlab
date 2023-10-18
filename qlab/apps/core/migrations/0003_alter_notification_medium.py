@@ -13,6 +13,15 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='notification',
             name='medium',
-            field=models.CharField(choices=[('sms', 'Sms'), ('email', 'Email'), ('notification', 'Notification')], default='email', max_length=16, verbose_name='Kanal'),
+            field=models.CharField(
+                choices=[
+                    ('sms', 'Sms'),
+                    ('email', 'Email'),
+                    ('notification', 'Notification'),
+                ],
+                default='email',
+                max_length=16,
+                verbose_name='Kanal',
+            ),
         ),
     ]

@@ -14,6 +14,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='user',
             name='vehicle',
-            field=models.ManyToManyField(blank=True, null=True, to='company.vehicle'),
+            field=models.ManyToManyField(
+                blank=True, null=True, to='company.vehicle'
+            ),
         ),
     ]

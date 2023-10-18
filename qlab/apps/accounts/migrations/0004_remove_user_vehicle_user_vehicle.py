@@ -19,6 +19,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='user',
             name='vehicle',
-            field=models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='company.vehicle'),
+            field=models.OneToOneField(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to='company.vehicle',
+            ),
         ),
     ]
