@@ -1,12 +1,14 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 
 from django.utils.translation import gettext as _
 
 from qlab.apps.accounts.models import User
 from qlab.apps.company.models import Company, LabDevice, QualityMethod, Vehicle
+from qlab.apps.core.models import Mediums, Notification
 from .serializers import (
     LabDeviceSerializers,
     MinimalUserSerializers,
+    NotificationSerializers,
     QualityMethodSerializers,
     CompanySerializers,
     UserSerializers,
@@ -36,11 +38,25 @@ class CompanyViewSet(viewsets.ModelViewSet):
     search_fields = ('name', 'contact_info')
 
 
-# TODO Buralara sadece staff erişebilir olmalı permiison class yaz
+# TODO Buralara sadece staff erişebilir olmalı permiison class yaz ve userla notification başka yere taşınabilinir
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializers
     search_fields = ('username', 'full_name', 'phone', 'email')
+
+
+class NotificationView(
+    mixins.DestroyModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
+):
+    serializer_class = NotificationSerializers
+    queryset = Notification.objects.none()
+
+    def get_queryset(self):
+        return (
+            Notification.objects.filter(user=self.request.user)
+            .filter(medium=Mediums.NOTIFICATION)
+            .order_by('-created_at')
+        )
 
 
 # TODO bu kısımda daha iyi yapılabilinir

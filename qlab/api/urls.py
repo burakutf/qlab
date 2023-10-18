@@ -47,6 +47,11 @@ router.register(
     'devices',
     company.LabDeviceViewSet,
 )
+# TODO tüm crud işlemini sağlamadıklarını view de sağladıklarına viewset bunlardan bir kaçtane hatalı yukarıdakilerden
+router.register(
+    'notification',
+    company.NotificationView,
+)
 urlpatterns = [
     path('login/', auth.LoginView.as_view(), name='login'),
     path('swagger<format>/', schema_view.without_ui(), name='schema-json'),

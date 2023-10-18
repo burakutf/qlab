@@ -1,14 +1,18 @@
 from django.db import models
-from phonenumber_field.modelfields import PhoneNumberField
-from qlab.apps.accounts.models import User
+from django.utils import timezone
 
+from rest_framework.exceptions import ValidationError
+
+from phonenumber_field.modelfields import PhoneNumberField
+
+from qlab.apps.accounts.models import User
 from qlab.apps.core.utils.set_path import SetPathAndRename
 
 
 class Company(models.Model):
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=200)
-    tax_number = models.CharField(max_length=10)
+    tax_number = models.CharField(max_length=10, null=True, blank=True)
     authorized_person = models.CharField(max_length=50)
     contact_info = PhoneNumberField(null=True, blank=True, db_index=True)
     contact_info_mail = models.EmailField(null=True, blank=True)
@@ -42,10 +46,12 @@ class QualityMethod(models.Model):
 
 
 class LabDevice(models.Model):
-    user = models.OneToOneField(User, models.SET_NULL, null=True)
+    user = models.ForeignKey(User, models.SET_NULL, null=True)
     name = models.CharField(max_length=64)
     serial_number = models.CharField(max_length=128)
-    calibration_date = models.DateField()
-    calibration_period = models.CharField(max_length=64)
+    # TODO devicehistory taşıncak date aralığı
+    start_date = models.DateField(help_text='calibration date', null=True)
+    finish_date = models.DateField(null=True, blank=True)
+    period = models.IntegerField(help_text='calibration period', null=True)
 
-    # TODO son calibration date ve period oluşturulcak period yaklaştıkça bildirim göndercem
+  

@@ -33,7 +33,9 @@ class CanAttemptPerm(BasePermission):
             .distinct()
             .count()
         )
-        if total_attempts_in_last_hour >= 20:
+        if (
+            total_attempts_in_last_hour >= 300
+        ):   # TODO ürün aşamasında 20 ile sınırla
             return False
 
         AuthAttempt.objects.create(username=username, ip=ip)

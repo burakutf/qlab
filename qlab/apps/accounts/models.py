@@ -20,9 +20,7 @@ class User(AbstractUser):
     gender = models.CharField(
         max_length=3, choices=Genders.choices, null=True, blank=True
     )
-    vehicle = models.OneToOneField(
-        'company.Vehicle', models.SET_NULL, null=True, blank=True
-    )
+    vehicle = models.ManyToManyField('company.Vehicle', blank=True)
 
     company = models.ForeignKey(
         'company.Company', models.SET_NULL, 'user', null=True, blank=True

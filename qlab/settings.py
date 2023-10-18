@@ -137,6 +137,13 @@ MEDIA_ROOT = '/app/qlab/media/'
 MEDIA_URL = 'media/'
 MEDIA_DOMAIN = env.str('MEDIA_DOMAIN')
 
+SEND_SMS = env.bool('SEND_SMS')
+SEND_EMAIL = env.bool('SEND_EMAIL')
+EMAIL_USE_TLS = True
+EMAIL_HOST = env.str('EMAIL_HOST')
+EMAIL_PORT = env.int('EMAIL_PORT')
+EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
