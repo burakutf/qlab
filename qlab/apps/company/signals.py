@@ -26,17 +26,3 @@ def lab_device_pre_save(sender, instance, **kwargs):
         )
 
 
-@receiver(post_save, sender=LabDevice)
-def lab_device_post_save(sender, instance, created, **kwargs):
-    if (
-        not created
-        and instance.finish_date
-        and instance.finish_date <= timezone.now().date()
-    ):
-        sender.objects.create(
-            user=instance.user,
-            name=instance.name,
-            serial_number=instance.serial_number,
-            start_date=instance.finish_date,
-            period=instance.period,
-        )
