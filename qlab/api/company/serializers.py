@@ -7,9 +7,14 @@ from qlab.apps.core.models import Notification
 
 
 class VehicleSerializers(serializers.ModelSerializer):
+    users_full_names = serializers.SerializerMethodField()
+
     class Meta:
         model = Vehicle
         fields = '__all__'
+
+    def get_user_info(self, obj):
+        return [user.full_name for user in obj.user.all() if user.full_name]
 
 
 class CompanySerializers(serializers.ModelSerializer):

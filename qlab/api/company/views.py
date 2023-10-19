@@ -87,20 +87,3 @@ class LabDeviceViewSet(viewsets.ModelViewSet):
     queryset = LabDevice.objects.all()
     serializer_class = LabDeviceSerializers
     search_fields = ('name',)
-
-    def get_queryset(self, *args, **kwargs):
-        status = self.request.query_params.get('status', None)
-        queryset = self.filter_queryset(self.queryset)
-        if status is not None:
-            current_time = now()
-
-            if status == 'past':
-                queryset = queryset.filter(finish_time__lte=current_time)
-            elif status == 'current':
-                queryset = queryset.filter(
-                    start_time__lte=current_time, finish_time__gte=current_time
-                )
-            elif status == 'future':
-                queryset = queryset.filter(start_time__gte=current_time)
-
-        return queryset
