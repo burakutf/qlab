@@ -1,4 +1,6 @@
 from rest_framework import viewsets, mixins
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from django.utils.translation import gettext as _
 
@@ -14,6 +16,7 @@ from qlab.apps.core.models import Mediums, Notification
 from .serializers import (
     LabDeviceSerializers,
     MethodParametersSerializers,
+    MinimalQualityMethodSerializers,
     MinimalUserSerializers,
     NotificationSerializers,
     QualityMethodSerializers,
@@ -88,7 +91,12 @@ class QualityMethodViewSet(viewsets.ModelViewSet):
     serializer_class = QualityMethodSerializers
     search_fields = ('measurement_name', 'measurement_number')
 
-
+    @action(detail=False, methods=['get'],url_path='minimal')
+    def minimal(self, request):
+        queryset = self.get_queryset()
+        serializer = MinimalQualityMethodSerializers(queryset, many=True)
+        return Response(serializer.data)
+    
 class MethodParametersViewSet(viewsets.ModelViewSet):
     queryset = MethodParameters.objects.all()
     serializer_class = MethodParametersSerializers

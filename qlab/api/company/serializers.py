@@ -24,12 +24,20 @@ class CompanySerializers(serializers.ModelSerializer):
 
 
 class QualityMethodSerializers(serializers.ModelSerializer):
+    
     class Meta:
         model = QualityMethod
         fields = '__all__'
 
+class MinimalQualityMethodSerializers(serializers.ModelSerializer):
+    
+    class Meta:
+        model = QualityMethod
+        fields = ('measurement_number',)
+
 
 class MethodParametersSerializers(serializers.ModelSerializer):
+    method_name=serializers.CharField(source='method.measurement_name')
     class Meta:
         model = MethodParameters
         fields = '__all__'
