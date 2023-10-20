@@ -13,7 +13,7 @@ class VehicleSerializers(serializers.ModelSerializer):
         model = Vehicle
         fields = '__all__'
 
-    def get_user_info(self, obj):
+    def get_users_full_names(self, obj):
         return [user.full_name for user in obj.user.all() if user.full_name]
 
 
