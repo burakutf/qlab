@@ -42,6 +42,12 @@ class QualityMethod(models.Model):
     )
 
 
+class MethodParameters(models.Model):
+    name = models.CharField(max_length=256)
+    method = models.ForeignKey(QualityMethod, models.CASCADE, null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+
 class LabDevice(models.Model):
     user = models.ForeignKey(User, models.SET_NULL, null=True)
     name = models.CharField(max_length=64)

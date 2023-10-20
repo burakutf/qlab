@@ -44,6 +44,10 @@ router.register(
     company.QualityMethodViewSet,
 )
 router.register(
+    'method/parameters',
+    company.MethodParametersViewSet,
+)
+router.register(
     'devices',
     company.LabDeviceViewSet,
 )
@@ -52,6 +56,7 @@ router.register(
     'notification',
     company.NotificationView,
 )
+
 urlpatterns = [
     path('login/', auth.LoginView.as_view(), name='login'),
     path('swagger<format>/', schema_view.without_ui(), name='schema-json'),

@@ -4,22 +4,38 @@ import jinja2
 import pdfkit
 from datetime import datetime
 
+
 class InvoiceGenerator:
-    def __init__(self, client_name, items,vat_rate, template_path=None, html_template='invoice.html', css_file='invoice.css'):
+    def __init__(
+        self,
+        client_name,
+        items,
+        vat_rate,
+        template_path=None,
+        html_template='invoice.html',
+        css_file='invoice.css',
+    ):
         self.client_name = client_name
         self.items = items
-        self.total = sum(item['quantity'] * item['unit_price'] for item in items)
-        kdv = (self.total*vat_rate) / 100
-        self.kdv_total= self.total + kdv
+        self.total = sum(
+            item['quantity'] * item['unit_price'] for item in items
+        )
+        kdv = (self.total * vat_rate) / 100
+        self.kdv_total = self.total + kdv
         locale.setlocale(locale.LC_TIME, 'tr_TR')
         self.today_date = datetime.today().strftime('%d %b, %Y')
         self.month = datetime.today().strftime('%B')
         if template_path is None:
-            template_path = os.path.dirname(os.path.abspath(__file__))  # Get the directory of the current script
+            template_path = os.path.dirname(
+                os.path.abspath(__file__)
+            )  # Get the directory of the current script
         self.template_loader = jinja2.FileSystemLoader(template_path)
         self.template_env = jinja2.Environment(loader=self.template_loader)
         self.html_template = html_template
-        self.css_file = os.path.join(template_path, css_file)  # Get the full path to the CSS file
+        self.css_file = os.path.join(
+            template_path, css_file
+        )  # Get the full path to the CSS file
+
     def render_template(self):
         template = self.template_env.get_template(self.html_template)
         context = {
@@ -79,5 +95,5 @@ items = [
         'description': 'Ölçüm Fiyatı üzerinden iskonto',
     },
 ]
-invoice_generator = InvoiceGenerator('Burak Uzun', items,20)
+invoice_generator = InvoiceGenerator('Burak Uzun', items, 20)
 invoice_generator.generate_pdf('invoice.pdf')

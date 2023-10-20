@@ -24,5 +24,3 @@ def lab_device_pre_save(sender, instance, **kwargs):
         instance.finish_date = instance.start_date + timezone.timedelta(
             days=instance.period
         )
-
-

@@ -2,7 +2,7 @@ from rest_framework import serializers
 from qlab.apps.accounts.models import User
 from django.utils import timezone
 
-from qlab.apps.company.models import Company, LabDevice, QualityMethod, Vehicle
+from qlab.apps.company.models import Company, LabDevice, MethodParameters, QualityMethod, Vehicle
 from qlab.apps.core.models import Notification
 
 
@@ -26,6 +26,12 @@ class CompanySerializers(serializers.ModelSerializer):
 class QualityMethodSerializers(serializers.ModelSerializer):
     class Meta:
         model = QualityMethod
+        fields = '__all__'
+
+
+class MethodParametersSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = MethodParameters
         fields = '__all__'
 
 

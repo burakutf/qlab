@@ -1,13 +1,19 @@
 from rest_framework import viewsets, mixins
 
 from django.utils.translation import gettext as _
-from django.utils.timezone import now
 
 from qlab.apps.accounts.models import User
-from qlab.apps.company.models import Company, LabDevice, QualityMethod, Vehicle
+from qlab.apps.company.models import (
+    Company,
+    LabDevice,
+    MethodParameters,
+    QualityMethod,
+    Vehicle,
+)
 from qlab.apps.core.models import Mediums, Notification
 from .serializers import (
     LabDeviceSerializers,
+    MethodParametersSerializers,
     MinimalUserSerializers,
     NotificationSerializers,
     QualityMethodSerializers,
@@ -81,6 +87,12 @@ class QualityMethodViewSet(viewsets.ModelViewSet):
     queryset = QualityMethod.objects.all()
     serializer_class = QualityMethodSerializers
     search_fields = ('measurement_name', 'measurement_number')
+
+
+class MethodParametersViewSet(viewsets.ModelViewSet):
+    queryset = MethodParameters.objects.all()
+    serializer_class = MethodParametersSerializers
+    search_fields = ('name', 'method__measurement_name')
 
 
 class LabDeviceViewSet(viewsets.ModelViewSet):
