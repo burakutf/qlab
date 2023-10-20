@@ -33,7 +33,7 @@ class MinimalQualityMethodSerializers(serializers.ModelSerializer):
     
     class Meta:
         model = QualityMethod
-        fields = ('measurement_number',)
+        fields = ('id','measurement_number',)
 
 
 class MethodParametersSerializers(serializers.ModelSerializer):

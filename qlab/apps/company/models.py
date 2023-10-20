@@ -44,7 +44,7 @@ class QualityMethod(models.Model):
 
 class MethodParameters(models.Model):
     name = models.CharField(max_length=256)
-    method = models.ForeignKey(QualityMethod, models.CASCADE, null=True)
+    method = models.ManyToManyField(QualityMethod,'parameters')
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
 
