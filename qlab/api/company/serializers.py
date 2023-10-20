@@ -36,11 +36,17 @@ class MinimalQualityMethodSerializers(serializers.ModelSerializer):
         fields = ('id','measurement_number',)
 
 
+
 class MethodParametersSerializers(serializers.ModelSerializer):
-    method_name=serializers.CharField(source='method.measurement_name')
+    method_names = serializers.SerializerMethodField()
+
     class Meta:
         model = MethodParameters
         fields = '__all__'
+
+    def get_method_names(self, obj):
+        method_names = [method.measurement_name for method in obj.method.all()]
+        return method_names
 
 
 class LabDeviceSerializers(serializers.ModelSerializer):
