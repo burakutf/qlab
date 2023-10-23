@@ -6,6 +6,8 @@ from django.utils.translation import gettext_lazy as _
 
 from phonenumber_field.modelfields import PhoneNumberField
 
+from qlab.apps.company.models import Company, Vehicle
+
 
 class User(AbstractUser):
     class Genders(models.TextChoices):
@@ -21,11 +23,11 @@ class User(AbstractUser):
         max_length=3, choices=Genders.choices, null=True, blank=True
     )
     vehicle = models.ForeignKey(
-        'company.Vehicle', models.SET_NULL, 'user', null=True, blank=True
+        Vehicle, models.SET_NULL, 'user', null=True, blank=True
     )
 
     company = models.ForeignKey(
-        'company.Company', models.SET_NULL, 'user', null=True, blank=True
+        Company, models.SET_NULL, 'user', null=True, blank=True
     )
 
     def save(self, *args, **kwargs):

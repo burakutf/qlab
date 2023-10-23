@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from qlab.apps.accounts.models import User
+from qlab.apps.accounts.models import  User
 from django.utils import timezone
 
 from qlab.apps.company.models import Company, LabDevice, MethodParameters, QualityMethod, Vehicle
@@ -45,7 +45,7 @@ class MethodParametersSerializers(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_method_names(self, obj):
-        method_names = [method.measurement_name for method in obj.method.all()]
+        method_names = [method.measurement_number for method in obj.method.all()]
         return method_names
 
 

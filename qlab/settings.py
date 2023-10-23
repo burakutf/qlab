@@ -40,26 +40,51 @@ ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 
 # Application definition
 
-INSTALLED_APPS = [
+SHARED_APPS = [
+    'django_tenants',
+    'qlab.apps.tenant',
+    'django.contrib.contenttypes',
+
+    'qlab.apps.accounts',
+    'django.contrib.sessions',
     'django.contrib.admin',
     'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'qlab.apps.core',
+    'qlab.apps.company',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
-    'rest_framework',
-    'rest_framework.authtoken',
     'django_filters',
     'drf_yasg',
+]
+
+TENANT_APPS =[
+    'django.contrib.contenttypes',
+
     'qlab.apps.accounts',
+    'django.contrib.sessions',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'rest_framework',
+    'rest_framework.authtoken',
     'qlab.apps.core',
     'qlab.apps.company',
 ]
 
+INSTALLED_APPS = SHARED_APPS + [app for app in TENANT_APPS if app not in SHARED_APPS]
+
 AUTH_USER_MODEL = 'accounts.User'
 
+TENANT_MODEL = 'tenant.Organization' 
+
+TENANT_DOMAIN_MODEL = 'tenant.Domain' 
+TENANT_SUBFOLDER_PREFIX = "organization"
+
 MIDDLEWARE = [
+    'django_tenants.middleware.main.TenantMainMiddleware',
+    'django_tenants.middleware.TenantSubfolderMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -102,6 +127,9 @@ DATABASES = {
     }
 }
 
+DATABASE_ROUTERS = (
+    'django_tenants.routers.TenantSyncRouter',
+)
 
 AUTH_PASSWORD_VALIDATORS = [
     {

@@ -1,11 +1,7 @@
 from django.db import models
-from django.utils import timezone
-
-from rest_framework.exceptions import ValidationError
 
 from phonenumber_field.modelfields import PhoneNumberField
 
-from qlab.apps.accounts.models import User
 from qlab.apps.core.utils.set_path import SetPathAndRename
 
 
@@ -32,7 +28,6 @@ class Vehicle(models.Model):
     def __str__(self):
         return self.plate
 
-
 class QualityMethod(models.Model):
     measurement_name = models.CharField(max_length=128)
     measurement_number = models.CharField(max_length=256)
@@ -49,7 +44,7 @@ class MethodParameters(models.Model):
 
 
 class LabDevice(models.Model):
-    user = models.ForeignKey(User, models.SET_NULL, null=True)
+    user = models.ForeignKey('accounts.User', models.SET_NULL, null=True)
     name = models.CharField(max_length=64)
     serial_number = models.CharField(max_length=128)
     # TODO devicehistory taşıncak date aralığı

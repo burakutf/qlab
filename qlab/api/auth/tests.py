@@ -1,9 +1,10 @@
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from rest_framework.test import APITestCase
+from django_tenants.test.cases import TenantTestCase
 
 
-class LoginWithEmailTestCase(APITestCase):
+class LoginWithEmailTestCase(TenantTestCase):
     def setUp(self):
         self.username = 'burak'
         self.password = '12345678'
