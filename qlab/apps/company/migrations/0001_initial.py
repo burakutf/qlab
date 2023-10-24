@@ -19,29 +19,77 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Company',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('name', models.CharField(max_length=100)),
                 ('address', models.CharField(max_length=200)),
-                ('tax_number', models.CharField(blank=True, max_length=10, null=True)),
+                (
+                    'tax_number',
+                    models.CharField(blank=True, max_length=10, null=True),
+                ),
                 ('authorized_person', models.CharField(max_length=50)),
-                ('contact_info', phonenumber_field.modelfields.PhoneNumberField(blank=True, db_index=True, max_length=128, null=True, region=None)),
-                ('contact_info_mail', models.EmailField(blank=True, max_length=254, null=True)),
+                (
+                    'contact_info',
+                    phonenumber_field.modelfields.PhoneNumberField(
+                        blank=True,
+                        db_index=True,
+                        max_length=128,
+                        null=True,
+                        region=None,
+                    ),
+                ),
+                (
+                    'contact_info_mail',
+                    models.EmailField(blank=True, max_length=254, null=True),
+                ),
             ],
         ),
         migrations.CreateModel(
             name='QualityMethod',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('measurement_name', models.CharField(max_length=128)),
                 ('measurement_number', models.CharField(max_length=256)),
                 ('acceptance_date', models.DateField(null=True)),
-                ('general_file', models.FileField(blank=True, null=True, upload_to=qlab.apps.core.utils.set_path.SetPathAndRename('method/'))),
+                (
+                    'general_file',
+                    models.FileField(
+                        blank=True,
+                        null=True,
+                        upload_to=qlab.apps.core.utils.set_path.SetPathAndRename(
+                            'method/'
+                        ),
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
             name='Vehicle',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('plate', models.CharField(max_length=16)),
                 ('brand', models.CharField(max_length=64)),
                 ('model', models.CharField(max_length=64)),
@@ -53,22 +101,63 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='MethodParameters',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('name', models.CharField(max_length=256)),
-                ('price', models.DecimalField(decimal_places=2, default=0, max_digits=10)),
-                ('method', models.ManyToManyField(related_name='parameters', to='company.qualitymethod')),
+                (
+                    'price',
+                    models.DecimalField(
+                        decimal_places=2, default=0, max_digits=10
+                    ),
+                ),
+                (
+                    'method',
+                    models.ManyToManyField(
+                        related_name='parameters', to='company.qualitymethod'
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
             name='LabDevice',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('name', models.CharField(max_length=64)),
                 ('serial_number', models.CharField(max_length=128)),
-                ('start_date', models.DateField(help_text='calibration date', null=True)),
+                (
+                    'start_date',
+                    models.DateField(help_text='calibration date', null=True),
+                ),
                 ('finish_date', models.DateField(blank=True, null=True)),
-                ('period', models.IntegerField(help_text='calibration period', null=True)),
-                ('user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
+                (
+                    'period',
+                    models.IntegerField(
+                        help_text='calibration period', null=True
+                    ),
+                ),
+                (
+                    'user',
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

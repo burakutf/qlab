@@ -44,7 +44,6 @@ SHARED_APPS = [
     'django_tenants',
     'qlab.apps.tenant',
     'django.contrib.contenttypes',
-
     'qlab.apps.accounts',
     'django.contrib.sessions',
     'django.contrib.admin',
@@ -60,9 +59,8 @@ SHARED_APPS = [
     'drf_yasg',
 ]
 
-TENANT_APPS =[
+TENANT_APPS = [
     'django.contrib.contenttypes',
-
     'qlab.apps.accounts',
     'django.contrib.sessions',
     'django.contrib.admin',
@@ -73,14 +71,16 @@ TENANT_APPS =[
     'qlab.apps.company',
 ]
 
-INSTALLED_APPS = SHARED_APPS + [app for app in TENANT_APPS if app not in SHARED_APPS]
+INSTALLED_APPS = SHARED_APPS + [
+    app for app in TENANT_APPS if app not in SHARED_APPS
+]
 
 AUTH_USER_MODEL = 'accounts.User'
 
-TENANT_MODEL = 'tenant.Organization' 
+TENANT_MODEL = 'tenant.Organization'
 
-TENANT_DOMAIN_MODEL = 'tenant.Domain' 
-TENANT_SUBFOLDER_PREFIX = "organization"
+TENANT_DOMAIN_MODEL = 'tenant.Domain'
+TENANT_SUBFOLDER_PREFIX = 'organization'
 
 MIDDLEWARE = [
     'django_tenants.middleware.main.TenantMainMiddleware',
@@ -93,6 +93,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'qlab.apps.core.middleware.TenantMediaMiddleware'
 ]
 
 ROOT_URLCONF = 'qlab.urls'
@@ -127,9 +128,7 @@ DATABASES = {
     }
 }
 
-DATABASE_ROUTERS = (
-    'django_tenants.routers.TenantSyncRouter',
-)
+DATABASE_ROUTERS = ('django_tenants.routers.TenantSyncRouter',)
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -159,11 +158,16 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 
-STATIC_ROOT ='/app/qlab/static/'
+STATIC_ROOT = '/app/qlab/static/'
 
-MEDIA_ROOT = '/app/qlab/media/'
+DEFAULT_FILE_STORAGE = 'django_tenants.files.storage.TenantFileSystemStorage'
+MULTITENANT_RELATIVE_MEDIA_ROOT = ''
+
+MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = 'media/'
 MEDIA_DOMAIN = env.str('MEDIA_DOMAIN')
+TENANT_STORAGE_FOLDER = 'tenant_storage'
+
 
 SEND_SMS = env.bool('SEND_SMS')
 SEND_EMAIL = env.bool('SEND_EMAIL')

@@ -5,12 +5,10 @@
   </div>
   <div class="invoice-info-container">
     <div class="client-name">{{client_name}}</div>
-    <div class="client-address">Anvil Co</div>
-    <div class="client-address">123 Main Street</div>
-    <div class="client-address">San Francisco CA, 94103</div>
+    <div class="client-address">{{preface}}</div>
+
     <div class="invoice-details">
       <div class="invoice-date">Tarih: <strong>{{today_date}}</strong></div>
-      <div class="invoice-number">Fatura No: <strong>12345</strong></div>
     </div>
   </div>
   <table class="line-items-container">
@@ -52,7 +50,8 @@
       </tr>
       <tr>
         <td class="payment-info">KDV Hariç Toplam: <strong>{{total}}</strong></td>
-        <td class="large total">Toplam <strong class="total-text">{{kdv_total}}</strong></td>
+        <td class="large total"> Kdv: <strong class="total-text">%{{vat_rate}}</strong> 
+           Toplam: <strong class="total-text">{{kdv_total}}</strong></td>
       </tr>
     </tbody>
   </table>
@@ -60,7 +59,7 @@
   <div class="footer">
     <div class="footer-info">infomail@qyazilim.com | +90 (543) 210 94 64 | qyazilim.com.tr</div>
     <div class="footer-thanks">
-      <img src="https://i.hizliresim.com/lh2mt8w.png" alt="heart" /> Qlab Not
+      <img src="https://i.hizliresim.com/lh2mt8w.png" alt="heart" /> <td>{{terms}}</td>
     </div>
   </div>
 </div>

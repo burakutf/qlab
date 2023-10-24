@@ -5,6 +5,14 @@ from phonenumber_field.modelfields import PhoneNumberField
 from qlab.apps.core.utils.set_path import SetPathAndRename
 
 
+class ProposalChoices(models.IntegerChoices):
+    SENDING = 0, ('Teklif Gönderildi')
+    APPROVAL = 1, ('Teklif Onaylandı')
+    REJECT = 2, ('Teklif Kabul Edilmedi')
+    TRANSACTION_CANCELED = 3, ('İşlem İptal Edildi')
+    TRANSACTION_ACCEPT = 4, ('İşlem Kabul Edildi')
+
+
 class Company(models.Model):
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=200)
@@ -28,6 +36,18 @@ class Vehicle(models.Model):
     def __str__(self):
         return self.plate
 
+
+class LabDevice(models.Model):
+    user = models.ForeignKey('accounts.User', models.SET_NULL, null=True)
+    name = models.CharField(max_length=64)
+    serial_number = models.CharField(max_length=128)
+    # TODO devicehistory taşıncak date aralığı
+    start_date = models.DateField(help_text='calibration date', null=True)
+    finish_date = models.DateField(null=True, blank=True)
+    period = models.IntegerField(help_text='calibration period', null=True)
+
+
+# TODO general_file silip düzenlenebilinir olması gerekiyor
 class QualityMethod(models.Model):
     measurement_name = models.CharField(max_length=128)
     measurement_number = models.CharField(max_length=256)
@@ -39,15 +59,27 @@ class QualityMethod(models.Model):
 
 class MethodParameters(models.Model):
     name = models.CharField(max_length=256)
-    method = models.ManyToManyField(QualityMethod,'parameters')
+    method = models.ManyToManyField(QualityMethod, related_name='parameters')
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
 
-class LabDevice(models.Model):
-    user = models.ForeignKey('accounts.User', models.SET_NULL, null=True)
-    name = models.CharField(max_length=64)
-    serial_number = models.CharField(max_length=128)
-    # TODO devicehistory taşıncak date aralığı
-    start_date = models.DateField(help_text='calibration date', null=True)
-    finish_date = models.DateField(null=True, blank=True)
-    period = models.IntegerField(help_text='calibration period', null=True)
+class ProposalDraft(models.Model):
+    title = models.CharField(max_length=128)
+    preface = models.TextField()
+    terms = models.TextField()
+
+
+class Proposal(models.Model):
+    company = models.ForeignKey(Company, models.SET_NULL, null=True)
+    draft = models.ForeignKey(ProposalDraft, models.SET_NULL, null=True)
+    status = models.IntegerField(
+        choices=ProposalChoices.choices, default=ProposalChoices.SENDING
+    )
+    file = models.FileField(null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class ProposalMethodParameters(models.Model):
+    proposal = models.ForeignKey(Proposal, on_delete=models.CASCADE)
+    parameter = models.ForeignKey(MethodParameters, on_delete=models.CASCADE)
+    count = models.SmallIntegerField()

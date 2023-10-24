@@ -1,9 +1,24 @@
-from rest_framework import serializers
-from qlab.apps.accounts.models import  User
-from django.utils import timezone
+import os
+from uuid import uuid4
+from datetime import datetime
 
-from qlab.apps.company.models import Company, LabDevice, MethodParameters, QualityMethod, Vehicle
+from rest_framework import serializers
+
+from django.utils import timezone
+from django.db import transaction
+
+from qlab.apps.company.models import (
+    Company,
+    LabDevice,
+    MethodParameters,
+    Proposal,
+    ProposalMethodParameters,
+    QualityMethod,
+    Vehicle,
+)
 from qlab.apps.core.models import Notification
+from qlab.apps.core.utils.offers_pdf_creater.invoice import InvoiceGenerator
+from qlab.apps.accounts.models import User
 
 
 class VehicleSerializers(serializers.ModelSerializer):
@@ -24,17 +39,18 @@ class CompanySerializers(serializers.ModelSerializer):
 
 
 class QualityMethodSerializers(serializers.ModelSerializer):
-    
     class Meta:
         model = QualityMethod
         fields = '__all__'
 
+
 class MinimalQualityMethodSerializers(serializers.ModelSerializer):
-    
     class Meta:
         model = QualityMethod
-        fields = ('id','measurement_number',)
-
+        fields = (
+            'id',
+            'measurement_number',
+        )
 
 
 class MethodParametersSerializers(serializers.ModelSerializer):
@@ -45,7 +61,9 @@ class MethodParametersSerializers(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_method_names(self, obj):
-        method_names = [method.measurement_number for method in obj.method.all()]
+        method_names = [
+            method.measurement_number for method in obj.method.all()
+        ]
         return method_names
 
 
@@ -112,3 +130,76 @@ class MinimalUserSerializers(serializers.ModelSerializer):
             'is_active',
             'is_superuser',
         )
+
+
+class ParametersSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    count = serializers.IntegerField()
+
+
+class ProposalSerializers(serializers.ModelSerializer):
+    parameters = ParametersSerializer(many=True, required=False)
+
+    class Meta:
+        model = Proposal
+        fields = '__all__'
+
+    def create(self, validated_data):
+        parameters_data = validated_data.pop('parameters', None)
+        proposal = Proposal.objects.create(**validated_data)
+
+        proposal_method_parameters = []
+        items = []
+        for parameter_data in parameters_data:
+            try:
+                parameter = MethodParameters.objects.get(
+                    id=parameter_data['id']
+                )
+            except MethodParameters.DoesNotExist:
+                continue
+
+            proposal_method_parameters.append(
+                ProposalMethodParameters(
+                    proposal=proposal,
+                    parameter=parameter,
+                    count=parameter_data['count'],
+                )
+            )
+            quality_method = parameter.method.get()
+            measurement_name = quality_method.measurement_name
+            items.append(
+                {
+                    'name': parameter.name,
+                    'description': measurement_name,
+                    'unit_price': parameter.price,
+                    'quantity': parameter_data['count'],
+                }
+            )
+
+        with transaction.atomic():
+            ProposalMethodParameters.objects.bulk_create(
+                proposal_method_parameters
+            )
+
+        request = self.context.get('request')
+        user = request.user
+        tenant_name = request.tenant.schema_name
+
+        invoice_generator = InvoiceGenerator(
+            (user.full_name).upper(),
+            items,
+            8,
+            proposal.draft.preface,
+            proposal.draft.terms,
+        )
+
+        timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+        filename = f'{str(uuid4())[:8]}_{timestamp}.pdf'
+
+        output_pdf_path = os.path.join('media', tenant_name)
+        invoice_generator.generate_pdf(output_pdf_path, filename)
+        proposal.file = (
+            f'/{filename}'
+        )
+        proposal.save()
+        return proposal
