@@ -50,17 +50,17 @@ class QualityMethodSerializers(serializers.ModelSerializer):
 
 
 class MethodParametersSerializers(serializers.ModelSerializer):
-    method_data = serializers.SerializerMethodField()
+    method_names = serializers.SerializerMethodField()
 
     class Meta:
         model = MethodParameters
         fields = '__all__'
 
-    def get_method_data(self, obj):
-        method_data = [
-            {'id': method.id, 'measurement_number': method.measurement_number} for method in obj.method.all()
+    def get_method_names(self, obj):
+        method_names = [
+            method.measurement_number for method in obj.method.all()
         ]
-        return method_data
+        return method_names
 
 class LabDeviceSerializers(serializers.ModelSerializer):
     remaining_days = serializers.SerializerMethodField()
