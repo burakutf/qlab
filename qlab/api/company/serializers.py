@@ -101,7 +101,7 @@ class NotificationSerializers(serializers.ModelSerializer):
 class ProposalDraftSerializers(serializers.ModelSerializer):
     class Meta:
         model = ProposalDraft
-        exclude = '__all__'
+        fields = '__all__'
 
 
 class UserSerializers(serializers.ModelSerializer):
