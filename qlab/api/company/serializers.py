@@ -40,14 +40,6 @@ class CompanySerializers(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class MinimalCompanySerializers(serializers.ModelSerializer):
-    class Meta:
-        model = Company
-        fields = (
-            'id',
-            'name',
-        )
-
 
 class QualityMethodSerializers(serializers.ModelSerializer):
     class Meta:
@@ -55,13 +47,6 @@ class QualityMethodSerializers(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class MinimalQualityMethodSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = QualityMethod
-        fields = (
-            'id',
-            'measurement_number',
-        )
 
 
 class MethodParametersSerializers(serializers.ModelSerializer):

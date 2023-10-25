@@ -22,8 +22,6 @@ from .serializers import (
     GroupSerializer,
     LabDeviceSerializers,
     MethodParametersSerializers,
-    MinimalCompanySerializers,
-    MinimalQualityMethodSerializers,
     MinimalUserSerializers,
     NotificationSerializers,
     PermissionSerializer,
@@ -87,12 +85,11 @@ class CompanyViewSet(viewsets.ModelViewSet):
         'contact_info',
     )
 
+
     @action(detail=False, methods=['get'], url_path='minimal')
     def minimal(self, request):
-        queryset = self.get_queryset()
-        serializer = MinimalCompanySerializers(queryset, many=True)
-        return Response(serializer.data)
-
+        queryset = self.get_queryset().values('id', 'name') 
+        return Response(list(queryset)) 
 
 class NotificationView(
     mixins.DestroyModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
@@ -125,10 +122,8 @@ class QualityMethodViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'], url_path='minimal')
     def minimal(self, request):
-        queryset = self.get_queryset()
-        serializer = MinimalQualityMethodSerializers(queryset, many=True)
-        return Response(serializer.data)
-
+        queryset = self.get_queryset().values('id', 'measurement_number') 
+        return Response(list(queryset)) 
 
 class MethodParametersViewSet(viewsets.ModelViewSet):
     queryset = MethodParameters.objects.all()
@@ -150,6 +145,10 @@ class ProposalDraftViewSet(viewsets.ModelViewSet):
     serializer_class = ProposalDraftSerializers
     search_fields = ('title',)
 
+    @action(detail=False, methods=['get'], url_path='minimal')
+    def minimal(self, request):
+        queryset = self.get_queryset().values('id', 'title') 
+        return Response(list(queryset)) 
 
 class ProposalListCreateView(generics.ListCreateAPIView):
     queryset = Proposal.objects.all()
