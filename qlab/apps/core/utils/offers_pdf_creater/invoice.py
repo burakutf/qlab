@@ -62,7 +62,7 @@ class InvoiceGenerator:
         config = pdfkit.configuration(wkhtmltopdf=env.str('WKHTMLTOPDF_PATH'))
 
         media_root=settings.MEDIA_ROOT.replace('/media/','')
-        output_path= media_root + settings.MEDIA_URL
+        output_path = media_root + settings.MEDIA_URL + name 
         pdfkit.from_string(
             output_text, output_path, configuration=config, css=self.css_file
         )

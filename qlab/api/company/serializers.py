@@ -54,7 +54,7 @@ class MethodParametersSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = MethodParameters
-        exclude = ('method',)
+        fields = '__all__'
 
     def get_method_data(self, obj):
         method_data = [
