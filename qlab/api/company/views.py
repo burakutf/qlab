@@ -128,11 +128,7 @@ class LabDeviceViewSet(viewsets.ModelViewSet):
 class ProposalDraftViewSet(viewsets.ModelViewSet):
     queryset = ProposalDraft.objects.all()
     serializer_class = ProposalDraftSerializers
-    search_fields = (
-        'title',
-        'preface',
-        'terms',
-    )
+    search_fields = ('title',)
 
 
 class ProposalListCreateView(generics.ListCreateAPIView):
