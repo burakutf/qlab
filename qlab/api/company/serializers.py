@@ -40,13 +40,10 @@ class CompanySerializers(serializers.ModelSerializer):
         fields = '__all__'
 
 
-
 class QualityMethodSerializers(serializers.ModelSerializer):
     class Meta:
         model = QualityMethod
         fields = '__all__'
-
-
 
 
 class MethodParametersSerializers(serializers.ModelSerializer):
@@ -61,6 +58,7 @@ class MethodParametersSerializers(serializers.ModelSerializer):
             method.measurement_number for method in obj.method.all()
         ]
         return method_names
+
 
 class LabDeviceSerializers(serializers.ModelSerializer):
     remaining_days = serializers.SerializerMethodField()
@@ -174,11 +172,14 @@ class ProposalSerializers(serializers.ModelSerializer):
             proposal_method_parameter = ProposalMethodParameters(
                 proposal=proposal,
                 parameter=parameter,
-                count=parameter_data['count']
+                count=parameter_data['count'],
             )
             proposal_method_parameter.save()
             proposal_method_parameter.method.set(parameter_data['method_id'])
-            method_names = [QualityMethod.objects.get(id=id).measurement_name for id in parameter_data['method_id']]
+            method_names = [
+                QualityMethod.objects.get(id=id).measurement_number
+                for id in parameter_data['method_id']
+            ]
             measurement_name = ', '.join(method_names)
             items.append(
                 {

@@ -93,7 +93,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'qlab.apps.core.middleware.TenantMediaMiddleware'
+    'qlab.apps.core.middleware.TenantMediaMiddleware',
 ]
 
 ROOT_URLCONF = 'qlab.urls'

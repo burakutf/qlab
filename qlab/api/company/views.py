@@ -85,11 +85,11 @@ class CompanyViewSet(viewsets.ModelViewSet):
         'contact_info',
     )
 
-
     @action(detail=False, methods=['get'], url_path='minimal')
     def minimal(self, request):
-        queryset = self.get_queryset().values('id', 'name') 
-        return Response(list(queryset)) 
+        queryset = self.get_queryset().values('id', 'name')
+        return Response(list(queryset))
+
 
 class NotificationView(
     mixins.DestroyModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
@@ -122,8 +122,9 @@ class QualityMethodViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'], url_path='minimal')
     def minimal(self, request):
-        queryset = self.get_queryset().values('id', 'measurement_number') 
-        return Response(list(queryset)) 
+        queryset = self.get_queryset().values('id', 'measurement_number')
+        return Response(list(queryset))
+
 
 class MethodParametersViewSet(viewsets.ModelViewSet):
     queryset = MethodParameters.objects.all()
@@ -147,8 +148,9 @@ class ProposalDraftViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'], url_path='minimal')
     def minimal(self, request):
-        queryset = self.get_queryset().values('id', 'title') 
-        return Response(list(queryset)) 
+        queryset = self.get_queryset().values('id', 'title')
+        return Response(list(queryset))
+
 
 class ProposalListCreateView(generics.ListCreateAPIView):
     queryset = Proposal.objects.all()

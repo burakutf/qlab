@@ -83,5 +83,7 @@ class Proposal(models.Model):
 class ProposalMethodParameters(models.Model):
     proposal = models.ForeignKey(Proposal, on_delete=models.CASCADE)
     parameter = models.ForeignKey(MethodParameters, on_delete=models.CASCADE)
-    method = models.ManyToManyField(QualityMethod, related_name='proposal_parameters')
+    method = models.ManyToManyField(
+        QualityMethod, related_name='proposal_parameters'
+    )
     count = models.SmallIntegerField()

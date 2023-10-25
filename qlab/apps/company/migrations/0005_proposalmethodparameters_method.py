@@ -13,6 +13,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='proposalmethodparameters',
             name='method',
-            field=models.ManyToManyField(related_name='proposal_parameters', to='company.qualitymethod'),
+            field=models.ManyToManyField(
+                related_name='proposal_parameters', to='company.qualitymethod'
+            ),
         ),
     ]
