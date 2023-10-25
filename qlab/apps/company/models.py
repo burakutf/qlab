@@ -1,5 +1,6 @@
 from django.db import models
 
+
 from phonenumber_field.modelfields import PhoneNumberField
 
 from qlab.apps.core.utils.set_path import SetPathAndRename

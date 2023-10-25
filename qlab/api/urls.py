@@ -19,9 +19,18 @@ schema_view = get_schema_view(
     public=True,
     permission_classes=(IsAuthenticated,),
 )
+
 router.register(
     'users',
     company.UserViewSet,
+)
+router.register(
+    'group',
+    company.GroupViewSet,
+)
+router.register(
+    'permission',
+    company.PermissionViewSet,
 )
 router.register(
     'companys',
@@ -52,6 +61,7 @@ router.register(
     'proposal/draft',
     company.ProposalDraftViewSet,
 )
+
 router.register(
     'notification',
     company.NotificationView,

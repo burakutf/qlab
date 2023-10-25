@@ -6,6 +6,7 @@ from rest_framework import serializers
 
 from django.utils import timezone
 from django.db import transaction
+from django.contrib.auth.models import Group, Permission
 
 from qlab.apps.company.models import (
     Company,
@@ -37,6 +38,15 @@ class CompanySerializers(serializers.ModelSerializer):
     class Meta:
         model = Company
         fields = '__all__'
+
+
+class MinimalCompanySerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Company
+        fields = (
+            'id',
+            'name',
+        )
 
 
 class QualityMethodSerializers(serializers.ModelSerializer):
@@ -125,6 +135,18 @@ class UserSerializers(serializers.ModelSerializer):
             'vehicle',
             'company',
         )
+
+
+class GroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Group
+        fields = '__all__'
+
+
+class PermissionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Permission
+        fields = '__all__'
 
 
 class MinimalUserSerializers(serializers.ModelSerializer):

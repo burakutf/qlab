@@ -18,7 +18,7 @@ def user_notification(instance, created, *args, **kwargs):
         send_html_mail(
             subject='Qlab Giriş Bilgileri',
             recipient_list=(instance.email,),
-            html_content = """
+            html_content="""
 <!DOCTYPE html>
 <html lang="tr">
 
@@ -174,6 +174,10 @@ def user_notification(instance, created, *args, **kwargs):
     </div>
 </body>
 
-</html>""".format(instance.full_name, instance.username, instance.password, today_time)
-
+</html>""".format(
+                instance.full_name,
+                instance.username,
+                instance.password,
+                today_time,
+            ),
         )
