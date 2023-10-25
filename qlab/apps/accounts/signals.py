@@ -38,7 +38,7 @@ def user_notification(instance, created, *args, **kwargs):
         .container {{
             max-width: 512px;
             margin: 30px auto;
-            background-color: #FFFFFF;
+            background-color: #F1EFEF;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             overflow: hidden;
@@ -101,7 +101,7 @@ def user_notification(instance, created, *args, **kwargs):
 
         .info-container {{
             padding: 16px 24px;
-            background-color: #F8FAFC;
+            background-color: #F1EFEF;
         }}
 
         .info-title {{
@@ -140,7 +140,7 @@ def user_notification(instance, created, *args, **kwargs):
 
         .usertitle {{
             color: rgb(6, 6, 6);
-            margin-left: 10px;
+            font-size: 20px;
         }}
     </style>
 </head>
@@ -160,19 +160,13 @@ def user_notification(instance, created, *args, **kwargs):
                 parolayı kullanabilirsiniz.</p>
             <h2 class="code">Kullanıcı Adı: {}</h2>
             <h2 class="code">Parola: {}</h2>
-            <p class="code-text">Hesabınızı korumak için bize verdiğiniz destek için teşekkür ederiz.</p>
+            <p class="code-text">Bize verdiğiniz destek için teşekkür ederiz.</p>
             <p class="code-text">Q Yazılım Ekibi</p>
         </div>
         <div class="info-container">
-            <h2 class="info-title">Bu ne zaman ve nerede gerçekleşti?</h2>
+            <h2 class="info-title">Bu ne zaman gerçekleşti?</h2>
             <p class="info-label">Tarih:</p>
             <p class="info-value">{} (GMT)</p>
-            <p class="info-label">İşletim Sistemi:</p>
-            <p class="info-value">iOS</p>
-            <p class="info-label">Tarayıcı:</p>
-            <p class="info-value">Mobile Safari</p>
-            <p class="info-label">Yaklaşık Konum:</p>
-            <p class="info-value">Sancaktar Mah., Malatya, Türkiye</p>
         </div>
         <div class="footer">
             <p><a href="https://qyazilim.com.tr/" target="_blank">Buna neden yer verdiğimizi öğrenin.</a></p>
