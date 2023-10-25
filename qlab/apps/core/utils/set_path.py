@@ -1,6 +1,7 @@
 from uuid import uuid4
 from django.utils.deconstruct import deconstructible
 
+
 @deconstructible
 class SetPathAndRename(object):
     """
@@ -12,5 +13,5 @@ class SetPathAndRename(object):
 
     def __call__(self, instance, filename):
         ext = filename.split('.')[-1]
- 
+
         return f'{self.sub_path}/{str(uuid4())[:8]}.{ext}'

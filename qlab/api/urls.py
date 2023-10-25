@@ -49,10 +49,13 @@ router.register(
     company.LabDeviceViewSet,
 )
 router.register(
+    'proposal/draft',
+    company.ProposalDraftViewSet,
+)
+router.register(
     'notification',
     company.NotificationView,
 )
-
 urlpatterns = [
     path('login/', auth.LoginView.as_view(), name='login'),
     path('profile/me/', company.ProfileView.as_view(), name='profile'),

@@ -93,7 +93,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'qlab.apps.core.middleware.TenantMediaMiddleware'
+    'qlab.apps.core.middleware.TenantMediaMiddleware',
 ]
 
 ROOT_URLCONF = 'qlab.urls'
@@ -163,7 +163,7 @@ STATIC_ROOT = '/app/qlab/static/'
 DEFAULT_FILE_STORAGE = 'django_tenants.files.storage.TenantFileSystemStorage'
 MULTITENANT_RELATIVE_MEDIA_ROOT = ''
 
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = '/app/qlab/media/'
 MEDIA_URL = 'media/'
 MEDIA_DOMAIN = env.str('MEDIA_DOMAIN')
 TENANT_STORAGE_FOLDER = 'tenant_storage'

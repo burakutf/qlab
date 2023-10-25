@@ -12,6 +12,7 @@ from qlab.apps.company.models import (
     LabDevice,
     MethodParameters,
     Proposal,
+    ProposalDraft,
     QualityMethod,
     Vehicle,
 )
@@ -22,6 +23,7 @@ from .serializers import (
     MinimalQualityMethodSerializers,
     MinimalUserSerializers,
     NotificationSerializers,
+    ProposalDraftSerializers,
     ProposalSerializers,
     QualityMethodSerializers,
     CompanySerializers,
@@ -49,13 +51,21 @@ class VehicleViewSet(viewsets.ModelViewSet):
 class CompanyViewSet(viewsets.ModelViewSet):
     queryset = Company.objects.all()
     serializer_class = CompanySerializers
-    search_fields = ('name', 'contact_info',)
+    search_fields = (
+        'name',
+        'contact_info',
+    )
 
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializers
-    search_fields = ('username', 'full_name', 'phone', 'email',)
+    search_fields = (
+        'username',
+        'full_name',
+        'phone',
+        'email',
+    )
 
 
 class NotificationView(
@@ -88,7 +98,10 @@ class ProfileView(APIView):
 class QualityMethodViewSet(viewsets.ModelViewSet):
     queryset = QualityMethod.objects.all()
     serializer_class = QualityMethodSerializers
-    search_fields = ('measurement_name', 'measurement_number',)
+    search_fields = (
+        'measurement_name',
+        'measurement_number',
+    )
 
     @action(detail=False, methods=['get'], url_path='minimal')
     def minimal(self, request):
@@ -100,7 +113,10 @@ class QualityMethodViewSet(viewsets.ModelViewSet):
 class MethodParametersViewSet(viewsets.ModelViewSet):
     queryset = MethodParameters.objects.all()
     serializer_class = MethodParametersSerializers
-    search_fields = ('name', 'method__measurement_name',)
+    search_fields = (
+        'name',
+        'method__measurement_name',
+    )
 
 
 class LabDeviceViewSet(viewsets.ModelViewSet):
@@ -109,10 +125,20 @@ class LabDeviceViewSet(viewsets.ModelViewSet):
     search_fields = ('name',)
 
 
+class ProposalDraftViewSet(viewsets.ModelViewSet):
+    queryset = ProposalDraft.objects.all()
+    serializer_class = ProposalDraftSerializers
+    search_fields = (
+        'title',
+        'preface',
+        'terms',
+    )
+
+
 class ProposalListCreateView(generics.ListCreateAPIView):
     queryset = Proposal.objects.all()
     serializer_class = ProposalSerializers
-    filterset_fields=('status',)
+    filterset_fields = ('status',)
     search_fields = (
         'company__name',
         'draft__title',

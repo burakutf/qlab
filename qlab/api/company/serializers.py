@@ -12,6 +12,7 @@ from qlab.apps.company.models import (
     LabDevice,
     MethodParameters,
     Proposal,
+    ProposalDraft,
     ProposalMethodParameters,
     QualityMethod,
     Vehicle,
@@ -95,6 +96,12 @@ class NotificationSerializers(serializers.ModelSerializer):
     class Meta:
         model = Notification
         exclude = ('user',)
+
+
+class ProposalDraftSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = ProposalDraft
+        exclude = '__all__'
 
 
 class UserSerializers(serializers.ModelSerializer):
@@ -198,8 +205,6 @@ class ProposalSerializers(serializers.ModelSerializer):
 
         output_pdf_path = os.path.join('media', tenant_name)
         invoice_generator.generate_pdf(output_pdf_path, filename)
-        proposal.file = (
-            f'/{filename}'
-        )
+        proposal.file = f'/{filename}'
         proposal.save()
         return proposal
