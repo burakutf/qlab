@@ -1,9 +1,12 @@
 import os
 import locale
+from django.conf import settings
 import jinja2
 import pdfkit
 from datetime import datetime
+from environ import Env
 
+env = Env()
 
 class InvoiceGenerator:
     def __init__(
@@ -28,7 +31,7 @@ class InvoiceGenerator:
 
         kdv = (self.total * vat_rate) / 100
         self.kdv_total = self.total + kdv
-        locale.setlocale(locale.LC_TIME, 'tr_TR')
+        locale.setlocale(locale.LC_TIME, env.str('LANGUAGE_PATH'))
         self.today_date = datetime.today().strftime('%d %b, %Y')
         self.month = datetime.today().strftime('%B')
         if template_path is None:
@@ -53,13 +56,13 @@ class InvoiceGenerator:
         }
         return template.render(context)
 
-    def generate_pdf(self, output_pdf, name):
-        if not os.path.exists(output_pdf):
-            os.makedirs(output_pdf)
-        output_pdf = output_pdf + '/' + name
+    def generate_pdf(self, name):
         output_text = self.render_template()
-        config = pdfkit.configuration(wkhtmltopdf='/usr/local/bin/wkhtmltopdf')
+
+        config = pdfkit.configuration(wkhtmltopdf=env.str('WKHTMLTOPDF_PATH'))
+
+        media_root=settings.MEDIA_ROOT.replace('/media/','')
+        output_path= media_root + settings.MEDIA_URL
         pdfkit.from_string(
-            output_text, output_pdf, configuration=config, css=self.css_file
+            output_text, output_path, configuration=config, css=self.css_file
         )
-        return output_pdf

@@ -196,7 +196,6 @@ class ProposalSerializers(serializers.ModelSerializer):
 
         request = self.context.get('request')
         user = request.user
-        tenant_name = request.tenant.schema_name
 
         invoice_generator = InvoiceGenerator(
             (user.full_name).upper(),
@@ -209,8 +208,7 @@ class ProposalSerializers(serializers.ModelSerializer):
         timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
         filename = f'{str(uuid4())[:8]}_{timestamp}.pdf'
 
-        output_pdf_path = os.path.join('media', tenant_name)
-        invoice_generator.generate_pdf(output_pdf_path, filename)
+        invoice_generator.generate_pdf(filename)
         proposal.file = f'/{filename}'
         proposal.save()
         return proposal
