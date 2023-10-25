@@ -65,18 +65,17 @@ class MinimalQualityMethodSerializers(serializers.ModelSerializer):
 
 
 class MethodParametersSerializers(serializers.ModelSerializer):
-    method_names = serializers.SerializerMethodField()
+    method_data = serializers.SerializerMethodField()
 
     class Meta:
         model = MethodParameters
-        fields = '__all__'
+        exclude = ('method',)
 
-    def get_method_names(self, obj):
-        method_names = [
-            method.measurement_number for method in obj.method.all()
+    def get_method_data(self, obj):
+        method_data = [
+            {'id': method.id, 'measurement_number': method.measurement_number} for method in obj.method.all()
         ]
-        return method_names
-
+        return method_data
 
 class LabDeviceSerializers(serializers.ModelSerializer):
     remaining_days = serializers.SerializerMethodField()
@@ -164,6 +163,7 @@ class MinimalUserSerializers(serializers.ModelSerializer):
 class ParametersSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     count = serializers.IntegerField()
+    method_id = serializers.ListField()
 
 
 class ProposalSerializers(serializers.ModelSerializer):
@@ -186,16 +186,15 @@ class ProposalSerializers(serializers.ModelSerializer):
                 )
             except MethodParameters.DoesNotExist:
                 continue
-
-            proposal_method_parameters.append(
-                ProposalMethodParameters(
-                    proposal=proposal,
-                    parameter=parameter,
-                    count=parameter_data['count'],
-                )
+            proposal_method_parameter = ProposalMethodParameters(
+                proposal=proposal,
+                parameter=parameter,
+                count=parameter_data['count']
             )
-            quality_method = parameter.method.get()
-            measurement_name = quality_method.measurement_name
+            proposal_method_parameter.save()
+            proposal_method_parameter.method.set(parameter_data['method_id'])
+            method_names = [QualityMethod.objects.get(id=id).measurement_name for id in parameter_data['method_id']]
+            measurement_name = ', '.join(method_names)
             items.append(
                 {
                     'name': parameter.name,
