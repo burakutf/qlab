@@ -105,7 +105,7 @@ class ProposalDraftSerializers(serializers.ModelSerializer):
 class ParametersSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     count = serializers.IntegerField()
-    method_id = serializers.ListField()
+    methods = serializers.ListField()
 
 
 class ProposalSerializers(serializers.ModelSerializer):
@@ -119,26 +119,20 @@ class ProposalSerializers(serializers.ModelSerializer):
         parameters_data = validated_data.pop('parameters', None)
         proposal = Proposal.objects.create(**validated_data)
 
-        proposal_method_parameters = []
         items = []
         for parameter_data in parameters_data:
             try:
                 parameter = MethodParameters.objects.get(
                     id=parameter_data['id']
                 )
+                
             except MethodParameters.DoesNotExist:
                 continue
-            proposal_method_parameter = ProposalMethodParameters(
-                proposal=proposal,
-                parameter=parameter,
-                count=parameter_data['count'],
-            )
-            proposal_method_parameter.save()
-            proposal_method_parameter.method.set(parameter_data['method_id'])
+
             method_names = [
-                QualityMethod.objects.get(id=id).measurement_number
-                for id in parameter_data['method_id']
+                  name for name in parameter_data['methods']
             ]
+
             measurement_name = ', '.join(method_names)
             items.append(
                 {
@@ -149,10 +143,6 @@ class ProposalSerializers(serializers.ModelSerializer):
                 }
             )
 
-        with transaction.atomic():
-            ProposalMethodParameters.objects.bulk_create(
-                proposal_method_parameters
-            )
 
         request = self.context.get('request')
         user = request.user
@@ -167,7 +157,7 @@ class ProposalSerializers(serializers.ModelSerializer):
 
         timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
         filename = f'{str(uuid4())[:8]}_{timestamp}.pdf'
-
+        breakpoint()
         invoice_generator.generate_pdf(filename)
         proposal.file = f'/{filename}'
         proposal.save()
