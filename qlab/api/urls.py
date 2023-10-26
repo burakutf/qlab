@@ -2,6 +2,7 @@ from rest_framework.routers import DefaultRouter
 from django.urls import path
 from .auth import views as auth
 from .company import views as company
+from .accounts import views as accounts
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework.permissions import IsAuthenticated
@@ -22,15 +23,19 @@ schema_view = get_schema_view(
 
 router.register(
     'users',
-    company.UserViewSet,
+    accounts.UserViewSet,
 )
 router.register(
     'group',
-    company.GroupViewSet,
+    accounts.GroupViewSet,
 )
 router.register(
     'permission',
-    company.PermissionViewSet,
+    accounts.PermissionViewSet,
+)
+router.register(
+    'minimal/user',
+    accounts.MinimalUserViewSet,
 )
 router.register(
     'companys',
@@ -41,10 +46,6 @@ router.register(
     company.VehicleViewSet,
 )
 
-router.register(
-    'minimal/user',
-    company.MinimalUserViewSet,
-)
 router.register(
     'quality/method',
     company.QualityMethodViewSet,
@@ -68,7 +69,7 @@ router.register(
 )
 urlpatterns = [
     path('login/', auth.LoginView.as_view(), name='login'),
-    path('profile/me/', company.ProfileView.as_view(), name='profile'),
+    path('profile/me/', accounts.ProfileView.as_view(), name='profile'),
     path(
         'proposal/', company.ProposalListCreateView.as_view(), name='proposal'
     ),

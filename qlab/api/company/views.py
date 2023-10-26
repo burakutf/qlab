@@ -1,13 +1,9 @@
-from django.shortcuts import get_object_or_404
 from rest_framework import generics, viewsets, mixins
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from django.utils.translation import gettext as _
-from django.contrib.auth.models import Group, Permission
 
-from qlab.apps.accounts.models import User
 from qlab.apps.company.models import (
     Company,
     LabDevice,
@@ -19,46 +15,15 @@ from qlab.apps.company.models import (
 )
 from qlab.apps.core.models import Mediums, Notification
 from .serializers import (
-    GroupSerializer,
     LabDeviceSerializers,
     MethodParametersSerializers,
-    MinimalUserSerializers,
     NotificationSerializers,
-    PermissionSerializer,
     ProposalDraftSerializers,
     ProposalSerializers,
     QualityMethodSerializers,
     CompanySerializers,
-    UserSerializers,
     VehicleSerializers,
 )
-
-
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializers
-    search_fields = (
-        'username',
-        'full_name',
-        'phone',
-        'email',
-    )
-
-
-class MinimalUserViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = MinimalUserSerializers
-    search_fields = ('full_name',)
-
-
-class GroupViewSet(viewsets.ModelViewSet):
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-
-
-class PermissionViewSet(viewsets.ModelViewSet):
-    queryset = Permission.objects.all()
-    serializer_class = PermissionSerializer
 
 
 class VehicleViewSet(viewsets.ModelViewSet):
@@ -103,13 +68,6 @@ class NotificationView(
             .filter(medium=Mediums.NOTIFICATION)
             .order_by('-created_at')
         )
-
-
-class ProfileView(APIView):
-    def get(self, request, *args, **kwargs):
-        user = get_object_or_404(User, id=request.user.id)
-        serializer = UserSerializers(user)
-        return Response(serializer.data)
 
 
 class QualityMethodViewSet(viewsets.ModelViewSet):
