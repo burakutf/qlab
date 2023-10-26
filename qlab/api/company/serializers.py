@@ -5,7 +5,6 @@ from datetime import datetime
 from rest_framework import serializers
 
 from django.utils import timezone
-from django.db import transaction
 
 from qlab.apps.company.models import (
     Company,
@@ -13,7 +12,6 @@ from qlab.apps.company.models import (
     MethodParameters,
     Proposal,
     ProposalDraft,
-    ProposalMethodParameters,
     QualityMethod,
     Vehicle,
 )
@@ -50,7 +48,7 @@ class MethodParametersSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = MethodParameters
-        exclude = ('method',)
+        fields = '__all__'
 
     def get_method_names(self, obj):
         method_names = [
@@ -125,13 +123,11 @@ class ProposalSerializers(serializers.ModelSerializer):
                 parameter = MethodParameters.objects.get(
                     id=parameter_data['id']
                 )
-                
+
             except MethodParameters.DoesNotExist:
                 continue
 
-            method_names = [
-                  name for name in parameter_data['methods']
-            ]
+            method_names = [name for name in parameter_data['methods']]
 
             measurement_name = ', '.join(method_names)
             items.append(
@@ -142,7 +138,6 @@ class ProposalSerializers(serializers.ModelSerializer):
                     'quantity': parameter_data['count'],
                 }
             )
-
 
         request = self.context.get('request')
         user = request.user
@@ -157,7 +152,6 @@ class ProposalSerializers(serializers.ModelSerializer):
 
         timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
         filename = f'{str(uuid4())[:8]}_{timestamp}.pdf'
-        breakpoint()
         invoice_generator.generate_pdf(filename)
         proposal.file = f'/{filename}'
         proposal.save()

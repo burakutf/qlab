@@ -79,11 +79,3 @@ class Proposal(models.Model):
     file = models.FileField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-
-class ProposalMethodParameters(models.Model):
-    proposal = models.ForeignKey(Proposal, on_delete=models.CASCADE)
-    parameter = models.ForeignKey(MethodParameters, on_delete=models.CASCADE)
-    method = models.ManyToManyField(
-        QualityMethod, related_name='proposal_parameters'
-    )
-    count = models.SmallIntegerField()
