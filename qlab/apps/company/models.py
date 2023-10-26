@@ -69,7 +69,7 @@ class ProposalDraft(models.Model):
     preface = models.TextField()
     terms = models.TextField()
 
-
+#TODO user foreginkeyi ekle buraya fakat serializersada eklemeyi unutma
 class Proposal(models.Model):
     company = models.ForeignKey(Company, models.SET_NULL, null=True)
     draft = models.ForeignKey(ProposalDraft, models.SET_NULL, null=True)
@@ -79,3 +79,9 @@ class Proposal(models.Model):
     file = models.FileField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+
+class ProposalMethodParameters(models.Model):
+    proposal = models.ForeignKey(Proposal, on_delete=models.CASCADE)
+    parameter = models.ForeignKey(MethodParameters, on_delete=models.CASCADE)
+    count = models.SmallIntegerField()
+    method_name = models.JSONField(null=True)

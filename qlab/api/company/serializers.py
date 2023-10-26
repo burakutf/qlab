@@ -5,6 +5,7 @@ from datetime import datetime
 from rest_framework import serializers
 
 from django.utils import timezone
+from django.db import transaction
 
 from qlab.apps.company.models import (
     Company,
@@ -12,6 +13,7 @@ from qlab.apps.company.models import (
     MethodParameters,
     Proposal,
     ProposalDraft,
+    ProposalMethodParameters,
     QualityMethod,
     Vehicle,
 )
@@ -116,6 +118,7 @@ class ProposalSerializers(serializers.ModelSerializer):
     def create(self, validated_data):
         parameters_data = validated_data.pop('parameters', None)
         proposal = Proposal.objects.create(**validated_data)
+        proposal_method_parameters = []
 
         items = []
         for parameter_data in parameters_data:
@@ -138,7 +141,18 @@ class ProposalSerializers(serializers.ModelSerializer):
                     'quantity': parameter_data['count'],
                 }
             )
+            proposal_method_parameter = ProposalMethodParameters(
+                proposal=proposal,
+                parameter=parameter,
+                count=parameter_data['count'],
+                method_name=method_names,
+            )
+            proposal_method_parameter.save()
 
+        with transaction.atomic():
+            ProposalMethodParameters.objects.bulk_create(
+                proposal_method_parameters
+            )
         request = self.context.get('request')
         user = request.user
 
