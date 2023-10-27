@@ -71,13 +71,14 @@ class ProposalDraft(models.Model):
 
 
 class Proposal(models.Model):
-    user = models.ForeignKey('accounts.User',models.SET_NULL,null=True)
+    user = models.ForeignKey('accounts.User', models.SET_NULL, null=True)
     company = models.ForeignKey(Company, models.SET_NULL, null=True)
     draft = models.ForeignKey(ProposalDraft, models.SET_NULL, null=True)
     status = models.IntegerField(
         choices=ProposalChoices.choices, default=ProposalChoices.SENDING
     )
     file = models.FileField(null=True)
+    note = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
 

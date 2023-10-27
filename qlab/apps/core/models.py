@@ -25,14 +25,14 @@ class Mediums(models.TextChoices):
 
 class Notification(models.Model):
     user = models.ForeignKey(User, models.CASCADE, null=True)
-    title = models.CharField(max_length=64, null=True)
+    title = models.CharField(max_length=128, null=True)
     text = models.TextField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     medium = models.CharField(
         'Kanal',
         max_length=16,
         choices=Mediums.choices,
-        default=Mediums.EMAIL,
+        default=Mediums.NOTIFICATION,
     )
 
     def __str__(self):

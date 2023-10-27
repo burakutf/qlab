@@ -108,13 +108,15 @@ class ParametersSerializer(serializers.Serializer):
     methods = serializers.ListField()
 
 
-# TODO eğer sonra parametereleride kullanmak isterlerse get methoduna ekle
 class ProposalSerializers(serializers.ModelSerializer):
     parameters = ParametersSerializer(many=True, required=False)
-    company_name = serializers.CharField(source='company.name',read_only=True)
-    user_full_name = serializers.CharField(source='user.full_name',read_only=True)
+    company_name = serializers.CharField(source='company.name', read_only=True)
+    user_full_name = serializers.CharField(
+        source='user.full_name', read_only=True
+    )
+    note = serializers.CharField()
+    draft_name = serializers.CharField(source='draft.title', read_only=True)
 
-    draft_name = serializers.CharField(source='draft.title',read_only=True)
     class Meta:
         model = Proposal
         fields = '__all__'
@@ -123,7 +125,6 @@ class ProposalSerializers(serializers.ModelSerializer):
         parameters_data = validated_data.pop('parameters', None)
         proposal_object = Proposal.objects.create(**validated_data)
         proposal_method_parameters = []
-
         items = []
         for parameter_data in parameters_data:
             try:

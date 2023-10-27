@@ -14,6 +14,10 @@ from qlab.apps.company.models import (
     Vehicle,
 )
 from qlab.apps.core.models import Mediums, Notification
+from qlab.apps.core.utils.send_email import (
+    general_html_content,
+    send_html_mail,
+)
 from .serializers import (
     LabDeviceSerializers,
     MethodParametersSerializers,
@@ -114,7 +118,10 @@ class ProposalListCreateView(generics.ListCreateAPIView):
     queryset = Proposal.objects.all()
     serializer_class = ProposalSerializers
     ordering_fields = ('-created_at',)
-    filterset_fields = ('status','user',)
+    filterset_fields = (
+        'status',
+        'user',
+    )
     search_fields = (
         'company__name',
         'draft__title',
@@ -132,6 +139,25 @@ class ProposalRetrieveUpdateView(generics.RetrieveUpdateAPIView):
         )
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
+
+        note = request.data.get('note')
+        status = request.data.get('status')
+
+        if note and status == 2:
+            company_name = instance.company.name
+            rejection_title = f'{company_name} Şirketine gönderilen teklifiniz yönetici tarafından reddedildi'
+            Notification.objects.create(
+                user=instance.user, title=rejection_title, text=note
+            )
+            send_html_mail(
+                subject='Qlab Teklif Durumu',
+                recipient_list=(instance.user.email,),
+                html_content= general_html_content(
+                    name=instance.user.full_name,
+                    title=rejection_title,
+                    text=f'Neden: {note}',
+                ),
+            )
 
         if getattr(instance, '_prefetched_objects_cache', None):
             instance._prefetched_objects_cache = {}
