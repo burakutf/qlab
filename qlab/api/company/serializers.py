@@ -111,7 +111,10 @@ class ParametersSerializer(serializers.Serializer):
 # TODO eğer sonra parametereleride kullanmak isterlerse get methoduna ekle
 class ProposalSerializers(serializers.ModelSerializer):
     parameters = ParametersSerializer(many=True, required=False)
+    company_name = serializers.CharField(source='company.name',read_only=True)
+    user_full_name = serializers.CharField(source='user.full_name',read_only=True)
 
+    draft_name = serializers.CharField(source='draft.title',read_only=True)
     class Meta:
         model = Proposal
         fields = '__all__'

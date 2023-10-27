@@ -113,6 +113,7 @@ class ProposalDraftViewSet(viewsets.ModelViewSet):
 class ProposalListCreateView(generics.ListCreateAPIView):
     queryset = Proposal.objects.all()
     serializer_class = ProposalSerializers
+    ordering_fields = ('-created_at',)
     filterset_fields = ('status','user',)
     search_fields = (
         'company__name',
