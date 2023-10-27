@@ -127,9 +127,10 @@ class ProposalSerializers(serializers.ModelSerializer):
                 parameter = MethodParameters.objects.get(
                     id=parameter_data['id']
                 )
-
             except MethodParameters.DoesNotExist:
-                continue
+                raise serializers.ValidationError(
+                    {'error': ['Parametre bulunamadı!']}
+                )
 
             method_names = [name for name in parameter_data['methods']]
             measurement_name = ', '.join(method_names)
@@ -167,6 +168,7 @@ class ProposalSerializers(serializers.ModelSerializer):
         timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
         filename = f'{str(uuid4())[:8]}_{timestamp}.pdf'
         invoice_generator.generate_pdf(filename)
+        proposal_object.user = user
         proposal_object.file = f'/{filename}'
         proposal_object.save()
         return proposal_object

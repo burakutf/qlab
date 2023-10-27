@@ -70,8 +70,8 @@ class ProposalDraft(models.Model):
     terms = models.TextField()
 
 
-# TODO user foreginkeyi ekle buraya fakat serializersada eklemeyi unutma
 class Proposal(models.Model):
+    user = models.ForeignKey('accounts.User',models.SET_NULL,null=True)
     company = models.ForeignKey(Company, models.SET_NULL, null=True)
     draft = models.ForeignKey(ProposalDraft, models.SET_NULL, null=True)
     status = models.IntegerField(
