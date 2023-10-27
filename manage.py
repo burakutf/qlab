@@ -5,8 +5,12 @@ import sys
 
 
 def main():
+
+    settings_filename = 'test' if 'test' in sys.argv else 'local'
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'qlab.settings')
+    os.environ.setdefault(
+        'DJANGO_SETTINGS_MODULE', f'qlab.{settings_filename}'
+    )
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

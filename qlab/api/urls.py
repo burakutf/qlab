@@ -3,6 +3,7 @@ from django.urls import path
 from .auth import views as auth
 from .company import views as company
 from .accounts import views as accounts
+from .core import views as core
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework.permissions import IsAuthenticated
@@ -69,6 +70,7 @@ router.register(
 )
 urlpatterns = [
     path('login/', auth.LoginView.as_view(), name='login'),
+    path('statistics/', core.StatisticsView.as_view(), name='statistics'),
     path('profile/me/', accounts.ProfileView.as_view(), name='profile'),
     path(
         'proposal/', company.ProposalListCreateView.as_view(), name='proposal'

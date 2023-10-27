@@ -83,8 +83,8 @@ target/
 *.pot
 *.pyc
 __pycache__/
-local_settings.py
-local_test_settings.py
+local_test.py
+local.py
 
 # IDE
 .idea/
