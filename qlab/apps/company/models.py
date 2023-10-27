@@ -79,7 +79,10 @@ class Proposal(models.Model):
     )
     file = models.FileField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-
+    
+    def delete(self, *args, **kwargs):
+        self.file.delete()
+        super().delete(*args, **kwargs)
 
 class ProposalMethodParameters(models.Model):
     proposal = models.ForeignKey(Proposal, models.CASCADE, 'parameters')
