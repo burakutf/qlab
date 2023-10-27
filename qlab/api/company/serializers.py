@@ -108,6 +108,7 @@ class ParametersSerializer(serializers.Serializer):
     methods = serializers.ListField()
 
 
+# TODO eğer sonra parametereleride kullanmak isterlerse get methoduna ekle
 class ProposalSerializers(serializers.ModelSerializer):
     parameters = ParametersSerializer(many=True, required=False)
 
@@ -117,7 +118,7 @@ class ProposalSerializers(serializers.ModelSerializer):
 
     def create(self, validated_data):
         parameters_data = validated_data.pop('parameters', None)
-        proposal = Proposal.objects.create(**validated_data)
+        proposal_object = Proposal.objects.create(**validated_data)
         proposal_method_parameters = []
 
         items = []
@@ -131,7 +132,6 @@ class ProposalSerializers(serializers.ModelSerializer):
                 continue
 
             method_names = [name for name in parameter_data['methods']]
-
             measurement_name = ', '.join(method_names)
             items.append(
                 {
@@ -142,10 +142,10 @@ class ProposalSerializers(serializers.ModelSerializer):
                 }
             )
             proposal_method_parameter = ProposalMethodParameters(
-                proposal=proposal,
+                proposal=proposal_object,
                 parameter=parameter,
                 count=parameter_data['count'],
-                method_name=method_names,
+                methods=method_names,
             )
             proposal_method_parameter.save()
 
@@ -160,13 +160,13 @@ class ProposalSerializers(serializers.ModelSerializer):
             (user.full_name).upper(),
             items,
             8,
-            proposal.draft.preface,
-            proposal.draft.terms,
+            proposal_object.draft.preface,
+            proposal_object.draft.terms,
         )
 
         timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
         filename = f'{str(uuid4())[:8]}_{timestamp}.pdf'
         invoice_generator.generate_pdf(filename)
-        proposal.file = f'/{filename}'
-        proposal.save()
-        return proposal
+        proposal_object.file = f'/{filename}'
+        proposal_object.save()
+        return proposal_object

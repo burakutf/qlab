@@ -23,6 +23,10 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='proposalmethodparameters',
             name='proposal',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='parameters', to='company.proposal'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name='parameters',
+                to='company.proposal',
+            ),
         ),
     ]
