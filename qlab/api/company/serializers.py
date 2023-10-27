@@ -114,7 +114,6 @@ class ProposalSerializers(serializers.ModelSerializer):
     user_full_name = serializers.CharField(
         source='user.full_name', read_only=True
     )
-    note = serializers.CharField()
     draft_name = serializers.CharField(source='draft.title', read_only=True)
 
     class Meta:
