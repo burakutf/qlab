@@ -100,7 +100,7 @@ class LabDeviceSerializers(serializers.ModelSerializer):
 class NotificationSerializers(serializers.ModelSerializer):
     class Meta:
         model = Notification
-        exclude = ('user',)
+        exclude = ('user','medium')
 
 
 class ProposalDraftSerializers(serializers.ModelSerializer):

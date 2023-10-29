@@ -27,6 +27,7 @@ class Notification(models.Model):
     user = models.ForeignKey(User, models.CASCADE, null=True)
     title = models.CharField(max_length=128, null=True)
     text = models.TextField(null=True)
+    seen = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     medium = models.CharField(
         'Kanal',
