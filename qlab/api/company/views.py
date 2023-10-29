@@ -119,7 +119,7 @@ class ProposalDraftViewSet(viewsets.ModelViewSet):
 class ProposalListCreateView(generics.ListCreateAPIView):
     queryset = Proposal.objects.all()
     serializer_class = ProposalSerializers
-    ordering_fields = ('-created_at',)
+    ordering_fields = ('created_at',)
     filterset_fields = (
         'status',
         'user',
@@ -148,7 +148,7 @@ class ProposalRetrieveUpdateView(generics.RetrieveUpdateAPIView):
             note = request.data.get('note')
             company_name = instance.company.name
             user = instance.user
-            rejection_title = f'{company_name} Şirketine Hazırladığınız Teklif Yöneticiniz Tarafından Reddedilmiştir.'
+            rejection_title = f'{company_name} Şirketine Hazırladığınız Teklif Yöneticiniz Tarafından Reddedilmiştir'
             Notification.objects.create(
                 user=user, title=rejection_title, text=note
             )
