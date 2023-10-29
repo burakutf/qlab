@@ -6,6 +6,7 @@ from django.utils.translation import gettext as _
 
 from qlab.apps.company.models import (
     Company,
+    CompanyNote,
     LabDevice,
     MethodParameters,
     Proposal,
@@ -19,6 +20,7 @@ from qlab.apps.core.utils.send_email import (
     send_html_mail,
 )
 from .serializers import (
+    CompanyNoteSerializers,
     LabDeviceSerializers,
     MethodParametersSerializers,
     NotificationSerializers,
@@ -140,20 +142,21 @@ class ProposalRetrieveUpdateView(generics.RetrieveUpdateAPIView):
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
 
-        note = request.data.get('note')
         status = request.data.get('status')
 
-        if note and status == 2:
+        if status == 2:
+            note = request.data.get('note')
             company_name = instance.company.name
+            user = instance.user
             rejection_title = f'{company_name} Şirketine gönderilen teklifiniz yönetici tarafından reddedildi'
             Notification.objects.create(
-                user=instance.user, title=rejection_title, text=note
+                user=user, title=rejection_title, text=note
             )
             send_html_mail(
                 subject='Qlab Teklif Durumu',
-                recipient_list=(instance.user.email,),
-                html_content= general_html_content(
-                    name=instance.user.full_name,
+                recipient_list=(user.email,),
+                html_content=general_html_content(
+                    name=user.full_name,
                     title=rejection_title,
                     text=f'Neden: {note}',
                 ),
@@ -163,3 +166,8 @@ class ProposalRetrieveUpdateView(generics.RetrieveUpdateAPIView):
             instance._prefetched_objects_cache = {}
 
         return Response(serializer.data)
+
+
+class CompanyNoteViewSet(viewsets.ModelViewSet):
+    queryset = CompanyNote.objects.all()
+    serializer_class = CompanyNoteSerializers

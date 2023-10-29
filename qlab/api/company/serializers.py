@@ -9,6 +9,7 @@ from django.db import transaction
 
 from qlab.apps.company.models import (
     Company,
+    CompanyNote,
     LabDevice,
     MethodParameters,
     Proposal,
@@ -42,6 +43,12 @@ class QualityMethodSerializers(serializers.ModelSerializer):
     class Meta:
         model = QualityMethod
         fields = '__all__'
+
+
+class CompanyNoteSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = CompanyNote
+        exclude = ('id',)
 
 
 class MethodParametersSerializers(serializers.ModelSerializer):
@@ -105,8 +112,9 @@ class ProposalDraftSerializers(serializers.ModelSerializer):
 class ParametersSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     count = serializers.IntegerField()
+    price = serializers.IntegerField()
     methods = serializers.ListField()
-
+    
 
 class ProposalSerializers(serializers.ModelSerializer):
     parameters = ParametersSerializer(many=True, required=False)
@@ -141,7 +149,7 @@ class ProposalSerializers(serializers.ModelSerializer):
                 {
                     'name': parameter.name,
                     'description': measurement_name,
-                    'unit_price': parameter.price,
+                    'unit_price': parameter_data['price'],
                     'quantity': parameter_data['count'],
                 }
             )
@@ -149,6 +157,7 @@ class ProposalSerializers(serializers.ModelSerializer):
                 proposal=proposal_object,
                 parameter=parameter,
                 count=parameter_data['count'],
+                price=parameter_data['price'],
                 methods=method_names,
             )
             proposal_method_parameter.save()

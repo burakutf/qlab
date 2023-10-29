@@ -63,7 +63,10 @@ router.register(
     'proposal/draft',
     company.ProposalDraftViewSet,
 )
-
+router.register(
+    'notes',
+    company.CompanyNoteViewSet,
+)
 router.register(
     'notification',
     company.NotificationView,

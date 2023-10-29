@@ -1,5 +1,6 @@
 from django.contrib import admin
 from qlab.apps.company.models import (
+    CompanyNote,
     LabDevice,
     QualityMethod,
     Company,
@@ -18,3 +19,4 @@ admin.site.register(MethodParameters)
 admin.site.register(ProposalDraft)
 admin.site.register(Proposal)
 admin.site.register(ProposalMethodParameters)
+admin.site.register(CompanyNote)
