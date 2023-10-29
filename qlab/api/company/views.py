@@ -144,7 +144,7 @@ class ProposalRetrieveUpdateView(generics.RetrieveUpdateAPIView):
 
         status = request.data.get('status')
 
-        if status == 2:
+        if status == 2 or "2":
             note = request.data.get('note')
             company_name = instance.company.name
             user = instance.user
