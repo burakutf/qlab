@@ -112,7 +112,7 @@ class ProposalDraftSerializers(serializers.ModelSerializer):
 class ParametersSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     count = serializers.IntegerField()
-    price = serializers.IntegerField()
+    price = serializers.DecimalField(max_digits=10, decimal_places=2, default=0)
     methods = serializers.ListField()
     
 
