@@ -63,7 +63,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
 
 
 class NotificationView(
-    mixins.DestroyModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
+   mixins.UpdateModelMixin, mixins.DestroyModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
 ):
     serializer_class = NotificationSerializers
     queryset = Notification.objects.none()
