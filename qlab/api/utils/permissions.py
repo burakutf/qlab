@@ -5,8 +5,10 @@ from django.db.models import Q
 from django.conf import settings
 
 from rest_framework.permissions import BasePermission, SAFE_METHODS
+
 from ipware import get_client_ip
 from qlab.apps.core.models import AuthAttempt
+from qlab.apps.accounts.permissions import PERMS_MAP
 
 
 class CanAttemptPerm(BasePermission):
@@ -40,3 +42,31 @@ class CanAttemptPerm(BasePermission):
 
         AuthAttempt.objects.create(username=username, ip=ip)
         return True
+
+
+class ActionPermission(BasePermission):
+    default_permission_map = {
+        'get': 'app.view_model',
+        'post': 'app.add_model',
+        'put': 'app.change_model',
+        'delete': 'app.delete_model',
+    }
+
+    def has_permission(self, request, view):
+        action = self._get_action(view)
+        action_permission_map = getattr(
+            view, 'action_permission_map', self.default_permission_map
+        )
+        required_permission = action_permission_map.get(action)
+        if not required_permission:
+            return True
+        self.message = f'Bu işlem için "{required_permission.lower()}" izninizin olması gerekir.'
+        return required_permission in request.action_permissions
+
+    def _get_action(self, view):
+        action = getattr(view, 'action', 'default')
+        if action in ['retrieve', 'list']:
+            action = 'view'
+        if action == 'partial_update':
+            action = 'update'
+        return action

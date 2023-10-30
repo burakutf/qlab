@@ -2,10 +2,27 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 
-
 from phonenumber_field.modelfields import PhoneNumberField
+from qlab.apps.accounts.permissions import PermissionChoice
 
 from qlab.apps.company.models import Company, Vehicle
+from qlab.apps.core.models import ChoiceArrayField
+
+
+class Role(models.Model):
+
+    name = models.CharField(max_length=32)
+    permissions = ChoiceArrayField(
+        models.CharField(max_length=32, choices=PermissionChoice.choices),
+        blank=True,
+        null=True,
+    )
+
+    def __str__(self):
+        return f'{self.name}'
+
+    class Meta:
+        unique_together = ('name',)
 
 
 class User(AbstractUser):
@@ -24,7 +41,18 @@ class User(AbstractUser):
     vehicle = models.ForeignKey(
         Vehicle, models.SET_NULL, 'user', null=True, blank=True
     )
-
+    role = models.ForeignKey(
+        Role,
+        on_delete=models.SET_NULL,
+        related_name='roles',
+        null=True,
+        blank=True,
+    )
+    permissions = ChoiceArrayField(
+        models.CharField(max_length=32, choices=PermissionChoice.choices),
+        blank=True,
+        default=list,
+    )
     company = models.ForeignKey(
         Company, models.SET_NULL, 'user', null=True, blank=True
     )

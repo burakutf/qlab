@@ -1,11 +1,12 @@
 from rest_framework import serializers
 
-from django.contrib.auth.models import Group, Permission
 
-from qlab.apps.accounts.models import User
+from qlab.apps.accounts.models import Role, User
 
 
 class UserSerializers(serializers.ModelSerializer):
+    role_name = serializers.CharField(source='role.name')
+
     class Meta:
         model = User
         fields = (
@@ -25,18 +26,15 @@ class UserSerializers(serializers.ModelSerializer):
             'gender',
             'vehicle',
             'company',
+            'permissions',
+            'role',
+            'role_name',
         )
 
 
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Group
-        fields = '__all__'
-
-
-class PermissionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Permission
+        model = Role
         fields = '__all__'
 
 

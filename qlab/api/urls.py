@@ -31,10 +31,6 @@ router.register(
     accounts.GroupViewSet,
 )
 router.register(
-    'permission',
-    accounts.PermissionViewSet,
-)
-router.register(
     'minimal/user',
     accounts.MinimalUserViewSet,
 )
@@ -74,6 +70,9 @@ router.register(
 urlpatterns = [
     path('login/', auth.LoginView.as_view(), name='login'),
     path('statistics/', core.StatisticsView.as_view(), name='statistics'),
+    path(
+        'permissions/', accounts.PermissionView.as_view(), name='permissions'
+    ),
     path('profile/me/', accounts.ProfileView.as_view(), name='profile'),
     path(
         'proposal/', company.ProposalListCreateView.as_view(), name='proposal'

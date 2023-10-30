@@ -1,7 +1,9 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.contrib.admin.widgets import FilteredSelectMultiple
+from django.contrib.postgres.fields import ArrayField
+from django.forms import MultipleChoiceField
 
-from qlab.apps.accounts.models import User
 from qlab.apps.core.utils.send_email import send_html_mail
 
 # Create your models here.
@@ -24,7 +26,7 @@ class Mediums(models.TextChoices):
 
 
 class Notification(models.Model):
-    user = models.ForeignKey(User, models.CASCADE, null=True)
+    user = models.ForeignKey('accounts.User', models.CASCADE, null=True)
     title = models.CharField(max_length=128, null=True)
     text = models.TextField(null=True)
     seen = models.BooleanField(default=False)
@@ -59,3 +61,16 @@ class Notification(models.Model):
 
     # def _send_sms(self):
     #     raise ValidationError('Sms Pek Yakında Eklenecek!')
+
+
+class ChoiceArrayField(ArrayField):
+
+    def formfield(self, **kwargs):
+        widget = FilteredSelectMultiple(self.verbose_name, False)
+        defaults = {
+            'form_class': MultipleChoiceField,
+            'widget': widget,
+            'choices': self.base_field.choices,
+        }
+        defaults.update(kwargs)
+        return super(ArrayField, self).formfield(**defaults)

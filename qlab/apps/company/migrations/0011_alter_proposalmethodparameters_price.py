@@ -13,6 +13,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='proposalmethodparameters',
             name='price',
-            field=models.DecimalField(decimal_places=2, default=0, max_digits=10, null=True),
+            field=models.DecimalField(
+                decimal_places=2, default=0, max_digits=10, null=True
+            ),
         ),
     ]

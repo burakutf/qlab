@@ -87,7 +87,10 @@ class ProposalMethodParameters(models.Model):
     parameter = models.ForeignKey(MethodParameters, on_delete=models.CASCADE)
     count = models.SmallIntegerField()
     methods = models.JSONField(null=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2, default=0,null=True)
+    price = models.DecimalField(
+        max_digits=10, decimal_places=2, default=0, null=True
+    )
+
 
 class CompanyNote(models.Model):
     notes = models.JSONField()

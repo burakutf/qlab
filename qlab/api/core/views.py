@@ -9,8 +9,10 @@ from django.db.models.functions import TruncMonth
 
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
+from rest_framework.exceptions import PermissionDenied
 
 from qlab.apps.accounts.models import User
+from qlab.apps.accounts.permissions import PermissionChoice
 from qlab.apps.company.models import Company, Proposal, Vehicle
 
 env = Env()
@@ -59,6 +61,13 @@ def get_monthly_list(months, monthly_data):
 
 class StatisticsView(ListAPIView):
     def get(self, request, *args, **kwargs):
+        has_perm = (
+            PermissionChoice.STATISTICS_VIEW in self.request.action_permissions
+        )
+
+        if not has_perm:
+            raise PermissionDenied(('İstatistik görüntüleme yetkiniz yok!'))
+
         key = 'user-statistics'
         data = cache.get(key)
 

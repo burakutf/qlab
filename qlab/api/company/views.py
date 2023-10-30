@@ -1,8 +1,10 @@
 from rest_framework import generics, viewsets, mixins
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.exceptions import PermissionDenied
 
 from django.utils.translation import gettext as _
+from qlab.apps.accounts.permissions import PermissionChoice
 
 from qlab.apps.company.models import (
     Company,
@@ -40,6 +42,12 @@ class VehicleViewSet(viewsets.ModelViewSet):
         'model',
         'plate',
     )
+    action_permission_map = {
+        'create': PermissionChoice.VEHICLE_CREATE,
+        'update': PermissionChoice.VEHICLE_UPDATE,
+        'destroy': PermissionChoice.VEHICLE_DELETE,
+        'view': PermissionChoice.VEHICLE_VIEW,
+    }
 
     def get_queryset(self):
         fullness = self.request.query_params.get('fullness', None)
@@ -55,6 +63,12 @@ class CompanyViewSet(viewsets.ModelViewSet):
         'name',
         'contact_info',
     )
+    action_permission_map = {
+        'create': PermissionChoice.COMPANY_CREATE,
+        'update': PermissionChoice.COMPANY_UPDATE,
+        'destroy': PermissionChoice.COMPANY_DELETE,
+        'view': PermissionChoice.COMPANY_VIEW,
+    }
 
     @action(detail=False, methods=['get'], url_path='minimal')
     def minimal(self, request):
@@ -63,7 +77,10 @@ class CompanyViewSet(viewsets.ModelViewSet):
 
 
 class NotificationView(
-   mixins.UpdateModelMixin, mixins.DestroyModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet,
 ):
     serializer_class = NotificationSerializers
     queryset = Notification.objects.none()
@@ -83,6 +100,12 @@ class QualityMethodViewSet(viewsets.ModelViewSet):
         'measurement_name',
         'measurement_number',
     )
+    action_permission_map = {
+        'create': PermissionChoice.METHOD_CREATE,
+        'update': PermissionChoice.METHOD_UPDATE,
+        'destroy': PermissionChoice.METHOD_DELETE,
+        'view': PermissionChoice.METHOD_VIEW,
+    }
 
     @action(detail=False, methods=['get'], url_path='minimal')
     def minimal(self, request):
@@ -97,18 +120,36 @@ class MethodParametersViewSet(viewsets.ModelViewSet):
         'name',
         'method__measurement_name',
     )
+    action_permission_map = {
+        'create': PermissionChoice.PARAMETER_CREATE,
+        'update': PermissionChoice.PARAMETER_UPDATE,
+        'destroy': PermissionChoice.PARAMETER_DELETE,
+        'view': PermissionChoice.PARAMETER_VIEW,
+    }
 
 
 class LabDeviceViewSet(viewsets.ModelViewSet):
     queryset = LabDevice.objects.all()
     serializer_class = LabDeviceSerializers
     search_fields = ('name',)
+    action_permission_map = {
+        'create': PermissionChoice.DEVICE_CREATE,
+        'update': PermissionChoice.DEVICE_UPDATE,
+        'destroy': PermissionChoice.DEVICE_DELETE,
+        'view': PermissionChoice.DEVICE_VIEW,
+    }
 
 
 class ProposalDraftViewSet(viewsets.ModelViewSet):
     queryset = ProposalDraft.objects.all()
     serializer_class = ProposalDraftSerializers
     search_fields = ('title',)
+    action_permission_map = {
+        'create': PermissionChoice.DRAFT_CREATE,
+        'update': PermissionChoice.DRAFT_UPDATE,
+        'destroy': PermissionChoice.DRAFT_DELETE,
+        'view': PermissionChoice.DRAFT_VIEW,
+    }
 
     @action(detail=False, methods=['get'], url_path='minimal')
     def minimal(self, request):
@@ -135,6 +176,11 @@ class ProposalRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     serializer_class = ProposalSerializers
 
     def patch(self, request, *args, **kwargs):
+        has_perm = (
+            PermissionChoice.PROPOSAL_UPDATE in self.request.action_permissions
+        )
+        if not has_perm:
+            raise PermissionDenied(('İstatistik görüntüleme yetkiniz yok!'))
         instance = self.get_object()
         serializer = self.get_serializer(
             instance, data=request.data, partial=True
@@ -144,7 +190,7 @@ class ProposalRetrieveUpdateView(generics.RetrieveUpdateAPIView):
 
         status = request.data.get('status')
 
-        if status == 2 or "2":
+        if status == 2 or '2':
             note = request.data.get('note')
             company_name = instance.company.name
             user = instance.user
@@ -171,3 +217,9 @@ class ProposalRetrieveUpdateView(generics.RetrieveUpdateAPIView):
 class CompanyNoteViewSet(viewsets.ModelViewSet):
     queryset = CompanyNote.objects.all()
     serializer_class = CompanyNoteSerializers
+    action_permission_map = {
+        'create': PermissionChoice.NOTE_CREATE,
+        'update': PermissionChoice.NOTE_UPDATE,
+        'destroy': PermissionChoice.NOTE_DELETE,
+        'view': PermissionChoice.NOTE_VIEW,
+    }

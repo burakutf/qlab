@@ -3,9 +3,11 @@ from uuid import uuid4
 from datetime import datetime
 
 from rest_framework import serializers
+from rest_framework.exceptions import PermissionDenied
 
 from django.utils import timezone
 from django.db import transaction
+from qlab.apps.accounts.permissions import PermissionChoice
 
 from qlab.apps.company.models import (
     Company,
@@ -100,7 +102,7 @@ class LabDeviceSerializers(serializers.ModelSerializer):
 class NotificationSerializers(serializers.ModelSerializer):
     class Meta:
         model = Notification
-        exclude = ('user','medium')
+        exclude = ('user', 'medium')
 
 
 class ProposalDraftSerializers(serializers.ModelSerializer):
@@ -112,9 +114,11 @@ class ProposalDraftSerializers(serializers.ModelSerializer):
 class ParametersSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     count = serializers.IntegerField()
-    price = serializers.DecimalField(max_digits=10, decimal_places=2, default=0)
+    price = serializers.DecimalField(
+        max_digits=10, decimal_places=2, default=0
+    )
     methods = serializers.ListField()
-    
+
 
 class ProposalSerializers(serializers.ModelSerializer):
     parameters = ParametersSerializer(many=True, required=False)
@@ -128,11 +132,25 @@ class ProposalSerializers(serializers.ModelSerializer):
         model = Proposal
         fields = '__all__'
 
+    def retrieve(self, instance):
+        has_perm = (
+            PermissionChoice.PROPOSAL_VIEW in self.request.action_permissions
+        )
+        if not has_perm:
+            raise PermissionDenied(('İstatistik görüntüleme yetkiniz yok!'))
+
     def create(self, validated_data):
+        has_perm = (
+            PermissionChoice.PROPOSAL_CREATE in self.request.action_permissions
+        )
+        if not has_perm:
+            raise PermissionDenied(('İstatistik oluşturma yetkiniz yok!'))
+
         parameters_data = validated_data.pop('parameters', None)
         proposal_object = Proposal.objects.create(**validated_data)
         proposal_method_parameters = []
         items = []
+
         for parameter_data in parameters_data:
             try:
                 parameter = MethodParameters.objects.get(

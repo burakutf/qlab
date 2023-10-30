@@ -2,16 +2,15 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from django.contrib.auth.models import Group, Permission
 from django.shortcuts import get_object_or_404
 
 from qlab.api.accounts.serializers import (
     GroupSerializer,
     MinimalUserSerializers,
-    PermissionSerializer,
     UserSerializers,
 )
-from qlab.apps.accounts.models import User
+from qlab.apps.accounts.models import Role, User
+from qlab.apps.accounts.permissions import PERMS_MAP, PermissionChoice
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -23,6 +22,12 @@ class UserViewSet(viewsets.ModelViewSet):
         'phone',
         'email',
     )
+    action_permission_map = {
+        'create': PermissionChoice.USER_CREATE,
+        'update': PermissionChoice.USER_UPDATE,
+        'destroy': PermissionChoice.USER_DELETE,
+        'view': PermissionChoice.USER_VIEW,
+    }
 
 
 class MinimalUserViewSet(viewsets.ReadOnlyModelViewSet):
@@ -32,13 +37,19 @@ class MinimalUserViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class GroupViewSet(viewsets.ModelViewSet):
-    queryset = Group.objects.all()
+    queryset = Role.objects.all()
     serializer_class = GroupSerializer
+    action_permission_map = {
+        'create': PermissionChoice.GROUP_CREATE,
+        'update': PermissionChoice.GROUP_UPDATE,
+        'destroy': PermissionChoice.GROUP_DELETE,
+        'view': PermissionChoice.GROUP_VIEW,
+    }
 
 
-class PermissionViewSet(viewsets.ModelViewSet):
-    queryset = Permission.objects.all()
-    serializer_class = PermissionSerializer
+class PermissionView(APIView):
+    def get(self, request, *args, **kwargs):
+        return Response(PERMS_MAP)
 
 
 class ProfileView(APIView):
