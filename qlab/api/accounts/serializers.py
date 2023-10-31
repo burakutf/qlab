@@ -5,7 +5,7 @@ from qlab.apps.accounts.models import Role, User
 
 
 class UserSerializers(serializers.ModelSerializer):
-    role_name = serializers.CharField(source='role.name')
+    role_name = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -30,6 +30,11 @@ class UserSerializers(serializers.ModelSerializer):
             'role',
             'role_name',
         )
+
+    def get_role_name(self, obj):
+        if hasattr(obj, 'role') and obj.role is not None:
+            return obj.role.name
+        return ''
 
 
 class GroupSerializer(serializers.ModelSerializer):

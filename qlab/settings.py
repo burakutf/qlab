@@ -44,10 +44,10 @@ SHARED_APPS = [
     'django_tenants',
     'qlab.apps.tenant',
     'django.contrib.contenttypes',
-    'qlab.apps.accounts',
     'django.contrib.sessions',
     'django.contrib.admin',
     'django.contrib.auth',
+    'qlab.apps.accounts',
     'rest_framework',
     'rest_framework.authtoken',
     'qlab.apps.core',
@@ -61,10 +61,10 @@ SHARED_APPS = [
 
 TENANT_APPS = [
     'django.contrib.contenttypes',
-    'qlab.apps.accounts',
     'django.contrib.sessions',
     'django.contrib.admin',
     'django.contrib.auth',
+    'qlab.apps.accounts',
     'rest_framework',
     'rest_framework.authtoken',
     'qlab.apps.core',
@@ -91,10 +91,10 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'qlab.apps.core.middleware.TenantMediaMiddleware',
     'qlab.apps.core.middleware.UserPermissionMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'qlab.urls'
@@ -149,7 +149,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'tr-tr'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Istanbul'
 
 USE_I18N = True
 

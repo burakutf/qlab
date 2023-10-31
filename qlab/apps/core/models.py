@@ -64,7 +64,6 @@ class Notification(models.Model):
 
 
 class ChoiceArrayField(ArrayField):
-
     def formfield(self, **kwargs):
         widget = FilteredSelectMultiple(self.verbose_name, False)
         defaults = {

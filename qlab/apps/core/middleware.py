@@ -1,9 +1,8 @@
 from django.conf import settings
-from django.http import HttpResponseForbidden
-from django.db.models import Value, CharField
-from django.db.models.functions import Concat
 
-from qlab.apps.accounts.models import User
+
+from re import sub
+from rest_framework.authtoken.models import Token
 
 
 class TenantMediaMiddleware:
@@ -24,18 +23,26 @@ class UserPermissionMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        user = request.user
+        # TODO burası çok güvenli değil sonra kontrol et  https://stackoverflow.com/questions/26240832/django-and-middleware-which-uses-request-user-is-always-anonymous
+        header_token = request.META.get('HTTP_AUTHORIZATION', None)
+        if header_token is not None:
+            try:
+                token = sub('Token ', '', header_token)
+                token_obj = Token.objects.get(key=token)
+                request.user = token_obj.user
+                user = request.user
+                if not request.META.get('PATH_INFO', '').startswith('/api/'):
+                    return self.get_response(request)
 
-        if not request.META.get('PATH_INFO', '').startswith('/api/'):
-            return self.get_response(request)
+                if not user.is_authenticated:
+                    return self.get_response(request)
 
-        if not user.is_authenticated:
-            return self.get_response(request)
+                permissions = []
+                if hasattr(user, 'role.permissions'):
+                    permissions = user.role.permissions
+                request.action_permissions = user.permissions + permissions
 
-        user = User.objects.filter(id=user.id).first()
-        if not user:
-            return HttpResponseForbidden('User not found!')
-
-        request.action_permissions = user.permissions + user.role.permissions
+            except Token.DoesNotExist:
+                pass
 
         return self.get_response(request)

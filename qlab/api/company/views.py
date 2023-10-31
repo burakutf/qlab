@@ -12,6 +12,7 @@ from qlab.apps.company.models import (
     LabDevice,
     MethodParameters,
     Proposal,
+    ProposalChoices,
     ProposalDraft,
     QualityMethod,
     Vehicle,
@@ -170,6 +171,14 @@ class ProposalListCreateView(generics.ListCreateAPIView):
         'draft__title',
     )
 
+    def get_permissions(self):
+        has_perm = (
+            PermissionChoice.PROPOSAL_VIEW in self.request.action_permissions
+        )
+        if not has_perm:
+            raise PermissionDenied('İstatistik görüntüleme yetkiniz yok!')
+        return super().get_permissions()
+
 
 class ProposalRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     queryset = Proposal.objects.all()
@@ -190,7 +199,7 @@ class ProposalRetrieveUpdateView(generics.RetrieveUpdateAPIView):
 
         status = request.data.get('status')
 
-        if status == 2 or '2':
+        if status == ProposalChoices.REJECT:
             note = request.data.get('note')
             company_name = instance.company.name
             user = instance.user

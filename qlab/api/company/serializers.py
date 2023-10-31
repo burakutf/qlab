@@ -1,4 +1,3 @@
-import os
 from uuid import uuid4
 from datetime import datetime
 
@@ -131,13 +130,6 @@ class ProposalSerializers(serializers.ModelSerializer):
     class Meta:
         model = Proposal
         fields = '__all__'
-
-    def retrieve(self, instance):
-        has_perm = (
-            PermissionChoice.PROPOSAL_VIEW in self.request.action_permissions
-        )
-        if not has_perm:
-            raise PermissionDenied(('İstatistik görüntüleme yetkiniz yok!'))
 
     def create(self, validated_data):
         has_perm = (
