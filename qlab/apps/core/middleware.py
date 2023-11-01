@@ -22,27 +22,31 @@ class UserPermissionMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
+    def set_permissions(self, request):
+        user = request.user
+        if not request.META.get('PATH_INFO', '').startswith('/api/'):
+            return self.get_response(request)
+
+        if not user.is_authenticated:
+            return self.get_response(request)
+
+        permissions = []
+        if hasattr(user, 'role.permissions'):
+            permissions = user.role.permissions
+        request.action_permissions = user.permissions + permissions
+
     def __call__(self, request):
-        # TODO burası çok güvenli değil sonra kontrol et  https://stackoverflow.com/questions/26240832/django-and-middleware-which-uses-request-user-is-always-anonymous
         header_token = request.META.get('HTTP_AUTHORIZATION', None)
         if header_token is not None:
             try:
                 token = sub('Token ', '', header_token)
                 token_obj = Token.objects.get(key=token)
                 request.user = token_obj.user
-                user = request.user
-                if not request.META.get('PATH_INFO', '').startswith('/api/'):
-                    return self.get_response(request)
-
-                if not user.is_authenticated:
-                    return self.get_response(request)
-
-                permissions = []
-                if hasattr(user, 'role.permissions'):
-                    permissions = user.role.permissions
-                request.action_permissions = user.permissions + permissions
-
+                self.set_permissions(request)
             except Token.DoesNotExist:
                 pass
+        #TODO BU kısımı swagger için yaptım ama sonradan kaldırılanabilinir hacky yöntem gibi geliyor
+        if request.user:
+            self.set_permissions(request)
 
         return self.get_response(request)
