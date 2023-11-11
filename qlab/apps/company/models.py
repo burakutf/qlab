@@ -92,5 +92,5 @@ class ProposalMethodParameters(models.Model):
 
 
 class CompanyNote(models.Model):
-    notes = models.JSONField()
+    notes = models.CharField(max_length=256, null=True)
     date = models.DateField()

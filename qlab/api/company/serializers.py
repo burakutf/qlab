@@ -49,7 +49,7 @@ class QualityMethodSerializers(serializers.ModelSerializer):
 class CompanyNoteSerializers(serializers.ModelSerializer):
     class Meta:
         model = CompanyNote
-        exclude = ('id',)
+        fields = '__all__'
 
 
 class MethodParametersSerializers(serializers.ModelSerializer):
@@ -132,7 +132,7 @@ class ProposalSerializers(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        request = self.context.get("request")
+        request = self.context.get('request')
         has_perm = (
             PermissionChoice.PROPOSAL_CREATE in request.action_permissions
         )
