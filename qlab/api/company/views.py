@@ -232,3 +232,15 @@ class CompanyNoteViewSet(viewsets.ModelViewSet):
         'destroy': PermissionChoice.NOTE_DELETE,
         'view': PermissionChoice.NOTE_VIEW,
     }
+
+    def create(self, request, *args, **kwargs):
+        date = request.data.get('date')
+        note_exists = CompanyNote.objects.filter(date=date).first()
+
+        if note_exists:
+            serializer = self.get_serializer(note_exists, data=request.data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+            return Response(serializer.data)
+
+        return super().create(request, *args, **kwargs)
