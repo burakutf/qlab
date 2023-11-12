@@ -29,4 +29,10 @@ class LoginView(views.APIView):
 
         token, x = Token.objects.get_or_create(user=user)
         update_last_login(None, user)
-        return Response(data={'token': str(token)})
+        return Response(
+            data={
+                'token': str(token),
+                'full_name': user.full_name,
+                'permissions': user.permissions,
+            }
+        )

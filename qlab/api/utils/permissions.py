@@ -10,7 +10,6 @@ from ipware import get_client_ip
 from qlab.apps.core.models import AuthAttempt
 from qlab.apps.accounts.permissions import PERMS_MAP
 
-
 class CanAttemptPerm(BasePermission):
     message = (
         'Çok fazla denemede bulundunuz! Bir kaç saat sonra tekrar deneyin!'
@@ -26,6 +25,9 @@ class CanAttemptPerm(BasePermission):
             self.message = 'Ip adresiniz ile ilgili bir sorun oluştu!'
             return False
         username = request.data.get('username', None)
+        if username is None:
+            self.message = 'Username gerekli!'
+            return False
         a_hour_ago = timezone.now() - timedelta(hours=1)
 
         total_attempts_in_last_hour = (

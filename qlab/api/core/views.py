@@ -13,7 +13,7 @@ from rest_framework.exceptions import PermissionDenied
 
 from qlab.apps.accounts.models import User
 from qlab.apps.accounts.permissions import PermissionChoice
-from qlab.apps.company.models import Company, Proposal, Vehicle
+from qlab.apps.company.models import Company, LabDevice, Proposal, ProposalChoices, Vehicle
 
 env = Env()
 
@@ -77,9 +77,12 @@ class StatisticsView(ListAPIView):
         personal_count = User.objects.filter(is_active=True).count()
         vehicles_count = Vehicle.objects.count()
         company_count = Company.objects.count()
-
+        device_count = LabDevice.objects.count()
         monthly_proposals = get_monthly_data(
             Proposal.objects.all(), 'created_at'
+        )
+        monthly_approve_proposals = get_monthly_data(
+            Proposal.objects.filter(status=ProposalChoices.APPROVAL), 'created_at'
         )
         monthly_earnings = get_monthly_data(
             Proposal.objects.filter(
@@ -96,13 +99,17 @@ class StatisticsView(ListAPIView):
         ]
 
         monthly_proposal_list = get_monthly_list(months, monthly_proposals)
+        monthly_approval_proposal_list = get_monthly_list(months, monthly_approve_proposals)
+
         proposals_earnings = get_monthly_list(months, monthly_earnings)
 
         data = {
             'personal_count': personal_count,
             'vehicles_count': vehicles_count,
             'company_count': company_count,
+            'device_count': device_count,
             'monthly_proposal': monthly_proposal_list,
+            'monthly_approval_proposal':monthly_approval_proposal_list,
             'monthly_earnings': proposals_earnings,
         }
         cache.set(key, data, env.int('CACHE_TIMEOUT', default=30))

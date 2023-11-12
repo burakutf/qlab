@@ -10,8 +10,6 @@ class ProposalChoices(models.IntegerChoices):
     SENDING = 0, ('Teklif Gönderildi')
     APPROVAL = 1, ('Teklif Onaylandı')
     REJECT = 2, ('Teklif Kabul Edilmedi')
-    TRANSACTION_CANCELED = 3, ('İşlem İptal Edildi')
-    TRANSACTION_ACCEPT = 4, ('İşlem Kabul Edildi')
 
 
 class Company(models.Model):
