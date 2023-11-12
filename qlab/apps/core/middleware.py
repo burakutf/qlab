@@ -37,7 +37,7 @@ class UserPermissionMiddleware:
                 if not user.is_authenticated:
                     return self.get_response(request)
 
-                request.action_permissions = user.permissions 
+                request.action_permissions = user.permissions
 
             except Token.DoesNotExist:
                 pass

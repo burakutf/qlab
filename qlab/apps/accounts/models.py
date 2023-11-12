@@ -7,10 +7,10 @@ from qlab.apps.accounts.permissions import PermissionChoice
 
 from qlab.apps.company.models import Company, Vehicle
 from qlab.apps.core.models import ChoiceArrayField
+from qlab.apps.core.utils.set_path import SetPathAndRename
 
 
 class Role(models.Model):
-
     name = models.CharField(max_length=32)
     permissions = ChoiceArrayField(
         models.CharField(max_length=32, choices=PermissionChoice.choices),
@@ -63,3 +63,44 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.full_name or self.get_full_name() or str(self.id)
+
+
+class UserDetail(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    detail = models.CharField(max_length=256, null=True, blank=True)
+    criminal_record = models.FileField(
+        upload_to=SetPathAndRename('profile/criminal_record/'),
+        null=True,
+        blank=True,
+    )
+    military_certificate = models.FileField(
+        upload_to=SetPathAndRename('profile/military_document/'),
+        null=True,
+        blank=True,
+    )
+    blood_group_certificate = models.FileField(
+        upload_to=SetPathAndRename('profile/blood_group/'),
+        null=True,
+        blank=True,
+    )
+    driver_certificate = models.FileField(
+        upload_to=SetPathAndRename('profile/driver_certificate/'),
+        null=True,
+        blank=True,
+    )
+    emission_certificate = models.FileField(
+        upload_to=SetPathAndRename('profile/emission_certificate/'),
+        null=True,
+        blank=True,
+    )
+    height_certificate = models.FileField(
+        upload_to=SetPathAndRename('profile/height_certificate/'),
+        null=True,
+        blank=True,
+        help_text='Yüksekte çalışma belgesi',
+    )
+    graduate_certificate = models.FileField(
+        upload_to=SetPathAndRename('profile/graduate_certificate/'),
+        null=True,
+        blank=True,
+    )

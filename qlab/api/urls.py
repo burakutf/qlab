@@ -27,6 +27,10 @@ router.register(
     accounts.UserViewSet,
 )
 router.register(
+    'user/detail',
+    accounts.UserDetailViewSet,
+)
+router.register(
     'group',
     accounts.GroupViewSet,
 )

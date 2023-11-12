@@ -176,7 +176,7 @@ class ProposalListCreateView(generics.ListCreateAPIView):
             PermissionChoice.PROPOSAL_VIEW in self.request.action_permissions
         )
         if not has_perm:
-            raise PermissionDenied('İstatistik görüntüleme yetkiniz yok!')
+            raise PermissionDenied('Teklif görüntüleme yetkiniz yok!')
         return super().get_permissions()
 
 
@@ -189,7 +189,7 @@ class ProposalRetrieveUpdateView(generics.RetrieveUpdateAPIView):
             PermissionChoice.PROPOSAL_UPDATE in self.request.action_permissions
         )
         if not has_perm:
-            raise PermissionDenied(('İstatistik görüntüleme yetkiniz yok!'))
+            raise PermissionDenied(('Teklif Güncelleme yetkiniz yok!'))
         instance = self.get_object()
         serializer = self.get_serializer(
             instance, data=request.data, partial=True

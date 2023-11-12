@@ -137,7 +137,7 @@ class ProposalSerializers(serializers.ModelSerializer):
             PermissionChoice.PROPOSAL_CREATE in request.action_permissions
         )
         if not has_perm:
-            raise PermissionDenied(('İstatistik oluşturma yetkiniz yok!'))
+            raise PermissionDenied(('Teklif oluşturma yetkiniz yok!'))
 
         parameters_data = validated_data.pop('parameters', None)
         proposal_object = Proposal.objects.create(**validated_data)

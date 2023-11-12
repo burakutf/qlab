@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 
-from qlab.apps.accounts.models import Role, User
+from qlab.apps.accounts.models import Role, User, UserDetail
 
 
 class UserSerializers(serializers.ModelSerializer):
@@ -35,6 +35,14 @@ class UserSerializers(serializers.ModelSerializer):
         if hasattr(obj, 'role') and obj.role is not None:
             return obj.role.name
         return ''
+
+
+class UserDetailSerializers(serializers.ModelSerializer):
+    full_name = serializers.CharField(source='user.full_name')
+
+    class Meta:
+        model = UserDetail
+        fields = '__all__'
 
 
 class GroupSerializer(serializers.ModelSerializer):

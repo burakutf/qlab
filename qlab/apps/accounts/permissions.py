@@ -7,6 +7,11 @@ class PermissionChoice(TextChoices):
     USER_UPDATE = 'user.update', ('KULLANICI GÜNCELLE')
     USER_DELETE = 'user.destroy', ('KULLANICI SİL')
 
+    USER_DETAIL_CREATE = 'user_detail.create', ('KULLANICI DETAY OLUŞTUR')
+    USER_DETAIL_UPDATE = 'user_detail.update', ('KULLANICI DETAY GÜNCELLE')
+    USER_DETAIL_VIEW = 'user_detail.view', ('KULLANICI DETAY GÖRÜNTÜLE')
+    USER_DETAIL_DELETE = 'user_detail.destroy', ('KULLANICI DETAY SİL')
+
     GROUP_CREATE = 'group.create', ('GRUP OLUŞTUR')
     GROUP_VIEW = 'group.view', ('GRUP GÖRÜNTÜLE')
     GROUP_UPDATE = 'group.update', ('GRUP GÜNCELLE')
@@ -42,9 +47,9 @@ class PermissionChoice(TextChoices):
     DRAFT_UPDATE = 'draft.update', ('TASLAK GÜNCELLE')
     DRAFT_DELETE = 'draft.destroy', ('TASLAK SİL')
 
-    PROPOSAL_CREATE = 'proposal_create', ('TEKLİF OLUŞTUR')
-    PROPOSAL_UPDATE = 'proposal_update', ('TEKLİF GÜNCELLE')
-    PROPOSAL_VIEW = 'proposal_view', ('TEKLİF GÖRÜNTÜLE')
+    PROPOSAL_CREATE = 'proposal.create', ('TEKLİF OLUŞTUR')
+    PROPOSAL_UPDATE = 'proposal.update', ('TEKLİF GÜNCELLE')
+    PROPOSAL_VIEW = 'proposal.view', ('TEKLİF GÖRÜNTÜLE')
 
     STATISTICS_VIEW = 'statistics.view', ('İSTATİSTİK GÖRÜNTÜLE')
 

@@ -7,9 +7,10 @@ from django.shortcuts import get_object_or_404
 from qlab.api.accounts.serializers import (
     GroupSerializer,
     MinimalUserSerializers,
+    UserDetailSerializers,
     UserSerializers,
 )
-from qlab.apps.accounts.models import Role, User
+from qlab.apps.accounts.models import Role, User, UserDetail
 from qlab.apps.accounts.permissions import PERMS_MAP, PermissionChoice
 
 
@@ -27,6 +28,18 @@ class UserViewSet(viewsets.ModelViewSet):
         'update': PermissionChoice.USER_UPDATE,
         'destroy': PermissionChoice.USER_DELETE,
         'view': PermissionChoice.USER_VIEW,
+    }
+
+
+class UserDetailViewSet(viewsets.ModelViewSet):
+    queryset = UserDetail.objects.all()
+    serializer_class = UserDetailSerializers
+    search_fields = ('user__full_name',)
+    action_permission_map = {
+        'create': PermissionChoice.USER_DETAIL_CREATE,
+        'update': PermissionChoice.USER_DETAIL_UPDATE,
+        'destroy': PermissionChoice.USER_DETAIL_DELETE,
+        'view': PermissionChoice.USER_DETAIL_VIEW,
     }
 
 
