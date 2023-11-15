@@ -13,9 +13,7 @@ from django.conf import settings
 from django.core.exceptions import DisallowedHost
 from django.db import connection
 from django_tenants.middleware.main import TenantMainMiddleware
-from django_tenants.utils import (
-    get_tenant_domain_model,
-)
+from django_tenants.utils import get_tenant_domain_model
 
 
 class CustomTenantMainMiddleware(TenantMainMiddleware):
@@ -25,7 +23,7 @@ class CustomTenantMainMiddleware(TenantMainMiddleware):
 
         else:
             domain = domain_model.objects.select_related('tenant').get(
-                domain='localhost'
+                domain=settings.DOMAIN
             )
             return domain.tenant
 

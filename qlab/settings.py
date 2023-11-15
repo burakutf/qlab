@@ -34,7 +34,7 @@ DEVELOPMENT_MODE = env.bool('DEVELOPMENT_MODE', False)
 # Keeps system safe from abusing, may need to False on development mode
 ATTEMPT_PROTECTION = env.bool('ATTEMPT_PROTECTION', True)
 
-
+DOMAIN = env.str('DOMAIN')
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 
 
