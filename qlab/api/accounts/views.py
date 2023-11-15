@@ -52,6 +52,7 @@ class MinimalUserViewSet(viewsets.ReadOnlyModelViewSet):
 class GroupViewSet(viewsets.ModelViewSet):
     queryset = Role.objects.all()
     serializer_class = GroupSerializer
+    search_fields = ('name',)
     action_permission_map = {
         'create': PermissionChoice.GROUP_CREATE,
         'update': PermissionChoice.GROUP_UPDATE,

@@ -10,6 +10,7 @@ from ipware import get_client_ip
 from qlab.apps.core.models import AuthAttempt
 from qlab.apps.accounts.permissions import PERMS_MAP
 
+
 class CanAttemptPerm(BasePermission):
     message = (
         'Çok fazla denemede bulundunuz! Bir kaç saat sonra tekrar deneyin!'

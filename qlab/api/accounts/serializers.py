@@ -17,11 +17,9 @@ class UserSerializers(serializers.ModelSerializer):
             'last_name',
             'full_name',
             'email',
-            'is_staff',
             'is_active',
             'date_joined',
             'phone',
-            'is_superuser',
             'birth_date',
             'gender',
             'vehicle',
@@ -30,6 +28,14 @@ class UserSerializers(serializers.ModelSerializer):
             'role',
             'role_name',
         )
+
+    def create(self, validated_data):
+        request = self.context.get('request')
+        organization = request.user.organization
+
+        if organization:
+            validated_data['organization'] = organization
+            return super().create(validated_data)
 
     def get_role_name(self, obj):
         if hasattr(obj, 'role') and obj.role is not None:

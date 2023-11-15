@@ -60,13 +60,6 @@ SHARED_APPS = [
 ]
 
 TENANT_APPS = [
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'qlab.apps.accounts',
-    'rest_framework',
-    'rest_framework.authtoken',
     'qlab.apps.core',
     'qlab.apps.company',
 ]
@@ -83,14 +76,14 @@ TENANT_DOMAIN_MODEL = 'tenant.Domain'
 TENANT_SUBFOLDER_PREFIX = 'organization'
 
 MIDDLEWARE = [
-    'django_tenants.middleware.main.TenantMainMiddleware',
-    'django_tenants.middleware.TenantSubfolderMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'qlab.apps.core.middleware.CustomTenantMainMiddleware',
+    'django_tenants.middleware.TenantSubfolderMiddleware',
     'qlab.apps.core.middleware.TenantMediaMiddleware',
     'qlab.apps.core.middleware.UserPermissionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',

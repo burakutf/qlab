@@ -8,6 +8,7 @@ from qlab.apps.accounts.permissions import PermissionChoice
 from qlab.apps.company.models import Company, Vehicle
 from qlab.apps.core.models import ChoiceArrayField
 from qlab.apps.core.utils.set_path import SetPathAndRename
+from qlab.apps.tenant.models import Organization
 
 
 class Role(models.Model):
@@ -30,9 +31,9 @@ class User(AbstractUser):
         MAN = 'MN', 'Erkek'
         WOMAN = 'WMN', 'Kadın'
 
+    organization = models.ForeignKey(Organization, models.CASCADE, null=True)
     full_name = models.CharField(max_length=255, blank=True, null=True)
     phone = PhoneNumberField(null=True, blank=True, db_index=True)
-    is_staff = models.BooleanField('is staff', default=False)
 
     birth_date = models.DateField(null=True, blank=True)
     gender = models.CharField(

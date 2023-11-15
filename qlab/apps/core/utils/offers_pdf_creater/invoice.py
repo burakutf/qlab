@@ -22,9 +22,13 @@ class InvoiceGenerator:
         css_file='invoice.css',
     ):
         self.preface = preface
-        self.terms = terms
         self.client_name = client_name
         self.items = items
+        sentences = terms.split('.')
+        sentences = [
+            sentence.strip() + '.' for sentence in sentences if sentence
+        ]
+        self.terms = '\n'.join(sentences)
         self.vat_rate = vat_rate
         self.total = float(
             sum(item['quantity'] * item['unit_price'] for item in items)
@@ -61,9 +65,11 @@ class InvoiceGenerator:
         output_text = self.render_template()
 
         config = pdfkit.configuration(wkhtmltopdf=env.str('WKHTMLTOPDF_PATH'))
-
-        media_root = settings.MEDIA_ROOT.replace('/media/', '')
-        output_path = media_root + settings.MEDIA_URL + name
+        if settings.DEBUG:
+            output_path = '/Users/burak/Desktop/projeler/qlab/qlab/media/test.pdf'   # TODO ürün aşamasında bu kontrolü kaldır
+        else:
+            media_root = settings.MEDIA_ROOT.replace('/media/', '')
+            output_path = media_root + settings.MEDIA_URL + name
         pdfkit.from_string(
             output_text, output_path, configuration=config, css=self.css_file
         )

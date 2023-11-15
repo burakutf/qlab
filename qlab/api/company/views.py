@@ -161,7 +161,6 @@ class ProposalDraftViewSet(viewsets.ModelViewSet):
 class ProposalListCreateView(generics.ListCreateAPIView):
     queryset = Proposal.objects.all()
     serializer_class = ProposalSerializers
-    ordering_fields = ('created_at',)
     filterset_fields = (
         'status',
         'user',
@@ -198,8 +197,7 @@ class ProposalRetrieveUpdateView(generics.RetrieveUpdateAPIView):
         self.perform_update(serializer)
 
         status = request.data.get('status')
-
-        if status == ProposalChoices.REJECT:
+        if int(status) == 2:
             note = request.data.get('note')
             company_name = instance.company.name
             user = instance.user
