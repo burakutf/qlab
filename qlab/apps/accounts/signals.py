@@ -5,7 +5,7 @@ from django.dispatch import receiver
 
 from qlab.apps.core.utils.send_email import send_html_mail
 
-from .models import User
+from .models import User, UserDetail
 
 
 @receiver(post_save, sender=User)
@@ -13,6 +13,7 @@ def user_notification(instance, created, *args, **kwargs):
     if not created:
         return
     today_time = datetime.today().strftime('%d %b, %Y %H:%M')
+    UserDetail.objects.create(user=instance)
 
     if instance.email:
         send_html_mail(
