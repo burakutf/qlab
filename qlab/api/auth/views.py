@@ -19,6 +19,7 @@ class LoginView(views.APIView):
 
     def post(self, request, *args, **kwargs):
         serializer = LoginSerializer(data=request.data)
+
         if not serializer.is_valid():
             return Response(data=serializer.errors, status=400)
         user = User.objects.get(username=serializer.data['username'])
@@ -26,13 +27,12 @@ class LoginView(views.APIView):
             return Response(
                 data={'detail': _('Hesabınız aktif değil!')}, status=403
             )
-
         token, x = Token.objects.get_or_create(user=user)
         update_last_login(None, user)
         return Response(
             data={
                 'token': str(token),
                 'full_name': user.full_name,
-                'permissions': user.permissions,
+                'permissions': list(set(user.permissions + user.role.permissions)), #TODO burayı request.action_permissionsdan al
             }
         )

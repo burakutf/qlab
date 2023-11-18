@@ -84,10 +84,10 @@ class UserPermissionMiddleware:
                     return self.get_response(request)
 
                 permissions = []
-                if hasattr(user, 'role.permissions'):
+                if hasattr(user, 'role'):
                     permissions = user.role.permissions
-                request.action_permissions = user.permissions + permissions
-                
+                request.action_permissions = list(set(user.permissions + permissions))
+
             except Token.DoesNotExist:
                 pass
         if request.user:
