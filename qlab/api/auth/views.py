@@ -29,10 +29,11 @@ class LoginView(views.APIView):
             )
         token, x = Token.objects.get_or_create(user=user)
         update_last_login(None, user)
+
         return Response(
             data={
                 'token': str(token),
                 'full_name': user.full_name,
-                'permissions': list(set(user.permissions + user.role.permissions)), #TODO burayı request.action_permissionsdan al
+                'permissions':list(set(user.permissions + user.role.permissions)) #TODO burayı request.action_permissionsdan alabiliyorsan al
             }
         )

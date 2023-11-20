@@ -70,20 +70,8 @@ class UserPermissionMiddleware:
 
     def __call__(self, request):
         # TODO burası çok güvenli değil sonra kontrol et  https://stackoverflow.com/questions/26240832/django-and-middleware-which-uses-request-user-is-always-anonymous
-        if request.user:
-            user = request.user
-            if not request.META.get('PATH_INFO', '').startswith('/api/'):
-                return self.get_response(request)
-
-            if not user.is_authenticated:
-                return self.get_response(request)
-
-            permissions = []
-            if hasattr(user, 'role'):
-                permissions = user.role.permissions
-            request.action_permissions = list(set(user.permissions + permissions))
         header_token = request.META.get('HTTP_AUTHORIZATION', None)
-        if header_token is not None:
+        if header_token:
             try:
                 token = sub('Token ', '', header_token)
                 token_obj = Token.objects.get(key=token)
@@ -99,8 +87,19 @@ class UserPermissionMiddleware:
                 if hasattr(user, 'role'):
                     permissions = user.role.permissions
                 request.action_permissions = list(set(user.permissions + permissions))
-
             except Token.DoesNotExist:
                 pass
+        if request.user:
+            user = request.user
+            if not request.META.get('PATH_INFO', '').startswith('/api/'):
+                return self.get_response(request)
+
+            if not user.is_authenticated:
+                return self.get_response(request)
+
+            permissions = []
+            if hasattr(user, 'role'):
+                permissions = user.role.permissions
+            request.action_permissions = list(set(user.permissions + permissions))
 
         return self.get_response(request)
