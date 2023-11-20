@@ -15,6 +15,7 @@ from qlab.apps.company.models import (
     MethodParameters,
     Proposal,
     ProposalDraft,
+    ProposalLogo,
     ProposalMethodParameters,
     QualityMethod,
     Vehicle,
@@ -107,6 +108,12 @@ class NotificationSerializers(serializers.ModelSerializer):
 class ProposalDraftSerializers(serializers.ModelSerializer):
     class Meta:
         model = ProposalDraft
+        fields = '__all__'
+
+
+class ProposalLogoSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = ProposalLogo
         fields = '__all__'
 
 

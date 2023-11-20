@@ -10,3 +10,4 @@ phonenumberslite==8.12.44
 pdfkit==1.0.0
 jinja2==3.1.2
 django-tenants==3.5.0
+Pillow==10.1.0

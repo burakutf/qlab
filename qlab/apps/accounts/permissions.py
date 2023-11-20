@@ -47,6 +47,11 @@ class PermissionChoice(TextChoices):
     DRAFT_UPDATE = 'draft.update', ('TASLAK GÜNCELLE')
     DRAFT_DELETE = 'draft.destroy', ('TASLAK SİL')
 
+    LOGO_CREATE = 'logo.create', ('LOGO OLUŞTUR')
+    LOGO_VIEW = 'logo.view', ('LOGO GÖRÜNTÜLE')
+    LOGO_UPDATE = 'logo.update', ('LOGO GÜNCELLE')
+    LOGO_DELETE = 'logo.destroy', ('LOGO SİL')
+
     PROPOSAL_CREATE = 'proposal.create', ('TEKLİF OLUŞTUR')
     PROPOSAL_UPDATE = 'proposal.update', ('TEKLİF GÜNCELLE')
     PROPOSAL_VIEW = 'proposal.view', ('TEKLİF GÖRÜNTÜLE')

@@ -67,10 +67,26 @@ class ProposalDraft(models.Model):
     terms = models.TextField()
 
 
+class ProposalLogo(models.Model):
+    title = models.CharField(max_length=128)
+    left_logo = models.ImageField(
+        upload_to=SetPathAndRename('proposal/logo/'),
+        blank=True,
+        null=True,
+    )
+
+    right_logo = models.ImageField(
+        upload_to=SetPathAndRename('proposal/logo/'),
+        blank=True,
+        null=True,
+    )
+
+
 class Proposal(models.Model):
     user = models.ForeignKey('accounts.User', models.SET_NULL, null=True)
-    company = models.ForeignKey(Company, models.SET_NULL, null=True)
+    company = models.ForeignKey(Company, models.PROTECT, null=True)
     draft = models.ForeignKey(ProposalDraft, models.SET_NULL, null=True)
+    logo = models.ForeignKey(ProposalLogo, models.SET_NULL, null=True)
     status = models.IntegerField(
         choices=ProposalChoices.choices, default=ProposalChoices.SENDING
     )

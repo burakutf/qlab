@@ -64,6 +64,10 @@ router.register(
     company.ProposalDraftViewSet,
 )
 router.register(
+    'proposal/logo',
+    company.ProposalLogoViewSet,
+)
+router.register(
     'notes',
     company.CompanyNoteViewSet,
 )

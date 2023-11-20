@@ -31,7 +31,7 @@ class User(AbstractUser):
         MAN = 'MN', 'Erkek'
         WOMAN = 'WMN', 'Kadın'
 
-    organization = models.ForeignKey(Organization, models.CASCADE, null=True)
+    organization = models.ForeignKey(Organization, models.PROTECT, null=True)
     full_name = models.CharField(max_length=255, blank=True, null=True)
     phone = PhoneNumberField(null=True, blank=True, db_index=True)
 
@@ -44,7 +44,7 @@ class User(AbstractUser):
     )
     role = models.ForeignKey(
         Role,
-        on_delete=models.SET_NULL,
+        on_delete=models.PROTECT,
         related_name='roles',
         null=True,
         blank=True,

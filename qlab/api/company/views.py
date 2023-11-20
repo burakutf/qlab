@@ -12,8 +12,8 @@ from qlab.apps.company.models import (
     LabDevice,
     MethodParameters,
     Proposal,
-    ProposalChoices,
     ProposalDraft,
+    ProposalLogo,
     QualityMethod,
     Vehicle,
 )
@@ -28,6 +28,7 @@ from .serializers import (
     MethodParametersSerializers,
     NotificationSerializers,
     ProposalDraftSerializers,
+    ProposalLogoSerializers,
     ProposalSerializers,
     QualityMethodSerializers,
     CompanySerializers,
@@ -156,6 +157,18 @@ class ProposalDraftViewSet(viewsets.ModelViewSet):
     def minimal(self, request):
         queryset = self.get_queryset().values('id', 'title')
         return Response(list(queryset))
+
+
+class ProposalLogoViewSet(viewsets.ModelViewSet):
+    queryset = ProposalLogo.objects.all()
+    serializer_class = ProposalLogoSerializers
+    search_fields = ('title',)
+    action_permission_map = {
+        'create': PermissionChoice.LOGO_CREATE,
+        'update': PermissionChoice.LOGO_UPDATE,
+        'destroy': PermissionChoice.LOGO_DELETE,
+        'view': PermissionChoice.LOGO_VIEW,
+    }
 
 
 class ProposalListCreateView(generics.ListCreateAPIView):

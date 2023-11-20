@@ -34,6 +34,8 @@ class LoginView(views.APIView):
             data={
                 'token': str(token),
                 'full_name': user.full_name,
-                'permissions':list(set(user.permissions + user.role.permissions)) #TODO burayı request.action_permissionsdan alabiliyorsan al
+                'permissions': list(
+                    set(user.permissions + user.role.permissions)
+                ),  # TODO burayı request.action_permissionsdan alabiliyorsan al
             }
         )
