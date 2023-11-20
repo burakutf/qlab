@@ -82,26 +82,25 @@ class UserPermissionMiddleware:
             if hasattr(user, 'role'):
                 permissions = user.role.permissions
             request.action_permissions = list(set(user.permissions + permissions))
-    
-        # header_token = request.META.get('HTTP_AUTHORIZATION', None)
-        # if header_token is not None:
-        #     try:
-        #         token = sub('Token ', '', header_token)
-        #         token_obj = Token.objects.get(key=token)
-        #         request.user = token_obj.user
-        #         user = request.user
-        #         if not request.META.get('PATH_INFO', '').startswith('/api/'):
-        #             return self.get_response(request)
+        header_token = request.META.get('HTTP_AUTHORIZATION', None)
+        if header_token is not None:
+            try:
+                token = sub('Token ', '', header_token)
+                token_obj = Token.objects.get(key=token)
+                request.user = token_obj.user
+                user = request.user
+                if not request.META.get('PATH_INFO', '').startswith('/api/'):
+                    return self.get_response(request)
 
-        #         if not user.is_authenticated:
-        #             return self.get_response(request)
+                if not user.is_authenticated:
+                    return self.get_response(request)
 
-        #         permissions = []
-        #         if hasattr(user, 'role'):
-        #             permissions = user.role.permissions
-        #         request.action_permissions = list(set(user.permissions + permissions))
+                permissions = []
+                if hasattr(user, 'role'):
+                    permissions = user.role.permissions
+                request.action_permissions = list(set(user.permissions + permissions))
 
-        #     except Token.DoesNotExist:
-        #         pass
+            except Token.DoesNotExist:
+                pass
 
         return self.get_response(request)
