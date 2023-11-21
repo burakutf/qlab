@@ -18,6 +18,7 @@ class Role(models.Model):
         blank=True,
         null=True,
     )
+    is_primary = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.name}'
@@ -34,7 +35,7 @@ class User(AbstractUser):
     organization = models.ForeignKey(Organization, models.PROTECT, null=True)
     full_name = models.CharField(max_length=255, blank=True, null=True)
     phone = PhoneNumberField(null=True, blank=True, db_index=True)
-
+    is_staff = models.BooleanField(default=False)
     birth_date = models.DateField(null=True, blank=True)
     gender = models.CharField(
         max_length=3, choices=Genders.choices, null=True, blank=True

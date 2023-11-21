@@ -24,11 +24,10 @@ class UserSerializers(serializers.ModelSerializer):
             'gender',
             'vehicle',
             'company',
-            'permissions',
             'role',
             'role_name',
+            'is_staff',
         )
-
     def create(self, validated_data):
         request = self.context.get('request')
         organization = request.user.organization
