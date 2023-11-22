@@ -47,10 +47,10 @@ class PermissionChoice(TextChoices):
     DRAFT_UPDATE = 'draft.update', ('TASLAK GÜNCELLE')
     DRAFT_DELETE = 'draft.destroy', ('TASLAK SİL')
 
-    LOGO_CREATE = 'logo.create', ('LOGO OLUŞTUR')
-    LOGO_VIEW = 'logo.view', ('LOGO GÖRÜNTÜLE')
-    LOGO_UPDATE = 'logo.update', ('LOGO GÜNCELLE')
-    LOGO_DELETE = 'logo.destroy', ('LOGO SİL')
+    ORG_INFO_CREATE = 'org_info.create', ('ORGANİZASYON BİLGİSİ OLUŞTUR')
+    ORG_INFO_VIEW = 'org_info.view', ('ORGANİZASYON BİLGİSİ GÖRÜNTÜLE')
+    ORG_INFO_UPDATE = 'org_info.update', ('ORGANİZASYON BİLGİSİ GÜNCELLE')
+    ORG_INFO_DELETE = 'org_info.destroy', ('ORGANİZASYON BİLGİSİ SİL')
 
     PROPOSAL_CREATE = 'proposal.create', ('TEKLİF OLUŞTUR')
     PROPOSAL_UPDATE = 'proposal.update', ('TEKLİF GÜNCELLE')

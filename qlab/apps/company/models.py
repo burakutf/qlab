@@ -11,6 +11,24 @@ class ProposalChoices(models.IntegerChoices):
     APPROVAL = 1, ('Teklif Onaylandı')
     REJECT = 2, ('Teklif Kabul Edilmedi')
 
+class OrganizationInformation(models.Model):
+    owner = models.CharField(128)
+    name = models.CharField(256)
+    address= models.CharField(256)
+    phone = PhoneNumberField()
+    mail = models.EmailField()
+    signature = models.FileField(upload_to=SetPathAndRename('signature/'), null=True, blank=True)
+    title = models.CharField(max_length=128)
+    left_logo = models.ImageField(
+        upload_to=SetPathAndRename('organization/logo/'),
+        blank=True,
+        null=True,
+    )
+    right_logo = models.ImageField(
+        upload_to=SetPathAndRename('organization/logo/'),
+        blank=True,
+        null=True,
+    )
 
 class Company(models.Model):
     name = models.CharField(max_length=100)
@@ -67,26 +85,13 @@ class ProposalDraft(models.Model):
     terms = models.TextField()
 
 
-class ProposalLogo(models.Model):
-    title = models.CharField(max_length=128)
-    left_logo = models.ImageField(
-        upload_to=SetPathAndRename('proposal/logo/'),
-        blank=True,
-        null=True,
-    )
-
-    right_logo = models.ImageField(
-        upload_to=SetPathAndRename('proposal/logo/'),
-        blank=True,
-        null=True,
-    )
 
 
 class Proposal(models.Model):
-    user = models.ForeignKey('accounts.User', models.SET_NULL, null=True)
+    user = models.ForeignKey('accounts.User', models.PROTECT, null=True)
     company = models.ForeignKey(Company, models.PROTECT, null=True)
     draft = models.ForeignKey(ProposalDraft, models.SET_NULL, null=True)
-    logo = models.ForeignKey(ProposalLogo, models.SET_NULL, null=True)
+    organization_info = models.ForeignKey(OrganizationInformation, models.SET_NULL, null=True)
     status = models.IntegerField(
         choices=ProposalChoices.choices, default=ProposalChoices.SENDING
     )

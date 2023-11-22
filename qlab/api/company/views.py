@@ -11,9 +11,9 @@ from qlab.apps.company.models import (
     CompanyNote,
     LabDevice,
     MethodParameters,
+    OrganizationInformation,
     Proposal,
     ProposalDraft,
-    ProposalLogo,
     QualityMethod,
     Vehicle,
 )
@@ -28,7 +28,6 @@ from .serializers import (
     MethodParametersSerializers,
     NotificationSerializers,
     ProposalDraftSerializers,
-    ProposalLogoSerializers,
     ProposalSerializers,
     QualityMethodSerializers,
     CompanySerializers,
@@ -159,15 +158,14 @@ class ProposalDraftViewSet(viewsets.ModelViewSet):
         return Response(list(queryset))
 
 
-class ProposalLogoViewSet(viewsets.ModelViewSet):
-    queryset = ProposalLogo.objects.all()
-    serializer_class = ProposalLogoSerializers
-    search_fields = ('title',)
+class OrganizationInformationViewSet(viewsets.ModelViewSet):
+    queryset = OrganizationInformation.objects.all()
+    serializer_class = OrganizationInformation
     action_permission_map = {
-        'create': PermissionChoice.LOGO_CREATE,
-        'update': PermissionChoice.LOGO_UPDATE,
-        'destroy': PermissionChoice.LOGO_DELETE,
-        'view': PermissionChoice.LOGO_VIEW,
+        'create': PermissionChoice.ORG_INFO_CREATE,
+        'update': PermissionChoice.ORG_INFO_UPDATE,
+        'destroy': PermissionChoice.ORG_INFO_DELETE,
+        'view': PermissionChoice.ORG_INFO_VIEW,
     }
 
 
