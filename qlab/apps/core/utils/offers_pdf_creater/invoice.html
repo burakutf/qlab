@@ -1,65 +1,288 @@
-<meta charset="UTF-8"> 
-<div class="page-container">
-  <div class="logo-container">
-    <img src="https://i.hizliresim.com/o88mzmb.png" alt="Qtblabs Logo">
-  </div>
-  <div class="invoice-info-container">
-    <div class="client-name">{{client_name}}</div>
-    <div class="client-address">{{preface}}</div>
+<!DOCTYPE html>
+<html lang="tr">
 
-    <div class="invoice-details">
-      <div class="invoice-date">Tarih: <strong>{{today_date}}</strong></div>
-    </div>
-  </div>
-  <table class="line-items-container">
-    <thead>
-      <tr>
-        <th class="heading-name">Analiz / Ölçüm parametreleri</th>
-        <th class="heading-description">Ölçüm Methodu / Açıklama</th>
-        <th class="heading-quantity">Nokta / Kişi sayısı</th>
-        <th class="heading-price">Birim Fiyat</th>
-        <th class="heading-subtotal">Toplam Fiyat</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for item in items %}
-      <tr>
-        <td>{{item.name}}</td>
-        <td>{{item.description}}</td>
-        <td>{{item.quantity}}</td>
-        <td>₺{{item.unit_price}}</td>
-        <td>₺{{item.quantity * item.unit_price}}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  <table class="line-items-container has-bottom-border">
-    <thead>
-      <tr>
-        <th>Ödeme Bilgiler</th>
-        <th>Ay</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="payment-info">
-          <div>Hesap No: <strong>123567744</strong></div>
-          <div>Yönlendiren No: <strong>120000547</strong></div>
-        </td>
-        <td class="payment-info">{{month}}</td>
-      </tr>
-      <tr>
-        <td class="payment-info">KDV Hariç Toplam: <strong>{{total}}</strong></td>
-        <td class="large total"> Kdv: <strong class="total-text">%{{vat_rate}}</strong> 
-           Toplam: <strong class="total-text">{{kdv_total}}</strong></td>
-      </tr>
-    </tbody>
-  </table>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTB Lab</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+        }
 
-  <div class="footer">
-    <div class="footer-info">infomail@qyazilim.com | +90 (543) 210 94 64 | qyazilim.com.tr</div>
-    <div class="footer-thanks">
-     <td>{{terms}}</td>
+        .container {
+            width: 85%;
+            margin: auto;
+        }
+
+        .header {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            margin-top: 20px;
+            border: 0;
+            border-radius: 10px;
+            page-break-before: always;
+        }
+
+        .header th,
+        .header td {
+            padding: 20px;
+            text-align: center;
+            border: 0;
+            background-color: #fff;
+        }
+
+        .header img {
+            width: 100px;
+            height: 100px;
+        }
+
+        .header-content {
+            text-align: center;
+        }
+
+        .header h2,
+        .header p {
+            margin: 5px;
+            word-wrap: break-word;
+            word-break: break-word;
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #fff;
+        }
+
+        th,
+        td {
+            border: 1px solid #a8a8a8;
+            padding: 8px;
+            text-align: left;
+            word-wrap: break-word;
+            word-break: break-word;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            min-width: 50px;
+        }
+
+        .right-align {
+            text-align: right;
+        }
+
+        img {
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Taslak 1 -->
+        <table class="header">
+            <thead>
+                <tr>
+                    <th><img src={{left_logo}} alt="Logo 1"></th>
+                    <th><img src={{right_logo}} alt="Logo 2"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="2">
+                        <div class="header-content">
+                            <h2>{{org_name}}</h2>
+                            <p>{{address}}
+                                Tel: {{phone}}
+                                e-mail: {{email}}</p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 class="form-title">TEKLİF/SÖZLEŞME FORMU</h3>
+        <table>
+            <tr>
+                <th>Firma</th>
+                <td>{{company_name}}</td>
+            </tr>
+            <tr>
+                <th>Adresi</th>
+                <td>{{company_address}}</td>
+            </tr>
+            <tr>
+                <th>İlgili</th>
+                <td>{{company_person}}</td>
+            </tr>
+            <tr>
+                <th>Telefon</th>
+                <td>{{company_number}}
+                </td>
+            </tr>
+            <tr>
+                <th>E-mail</th>
+                <td>{{company_email}}</td>
+            </tr>
+        </table>
+
+        <table>
+            <tr>
+                <th>Konu</th>
+                <td>{{subject}}</td>
+            </tr>
+
+            <tr>
+                <th>Tarih</th>
+                <td>{{today_date}}</td>
+            </tr>
+        </table>
+
+        <p>{{preface}}</p>
+        <div class="right-align">
+            <p><b>{{org_owner}}</b></p>
+            <img src={{signature}}
+                alt="İmza">
+        </div>
+        <!-- Taslak 2 -->
+        <table class="header">
+            <thead>
+                <tr>
+                    <th><img src={{left_logo}} alt="Logo 1"></th>
+                    <th><img src={{right_logo}} alt="Logo 2"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="2">
+                        <div class="header-content">
+                            <h2>{{org_name}}</h2>
+                            <p>{{address}}
+                                Tel: {{phone}}
+                                e-mail: {{email}}</p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 class="form-title">TEKLİF/SÖZLEŞME FORMU</h3>
+
+        <table class="line-items-container">
+            <thead>
+                <tr>
+                    <th class="heading-name">Analiz / Ölçüm parametreleri</th>
+                    <th class="heading-description">Ölçüm Methodu / Açıklama</th>
+                    <th class="heading-quantity">Nokta / Kişi sayısı</th>
+                    <th class="heading-price">Birim Fiyat</th>
+                    <th class="heading-subtotal">Toplam Fiyat</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{item.name}}</td>
+                    <td>{{item.description}}</td>
+                    <td>{{item.quantity}}</td>
+                    <td>₺{{item.unit_price}}</td>
+                    <td>₺{{item.quantity * item.unit_price}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <table class="line-items-container has-bottom-border">
+            <thead>
+                <tr>
+                    <th>KDV HARİÇ TOPLAM</th>
+                    <th>TOPLAM</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td class="payment-info">KDV Hariç Toplam: <strong>{{total}}</strong></td>
+                    <td class="large total"> Kdv: <strong class="total-text">%{{vat_rate}}</strong>
+                        Toplam: <strong class="total-text">{{kdv_total}}</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        {{terms}}
+        <!-- Taslak 3 -->
+
+       <table class="header">
+            <thead>
+                <tr>
+                    <th><img src={{left_logo}} alt="Logo 1"></th>
+                    <th><img src={{right_logo}} alt="Logo 2"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="2">
+                        <div class="header-content">
+                            <h2>{{org_name}}</h2>
+                            <p>{{address}}
+                                Tel: {{phone}}
+                                e-mail: {{email}}</p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Banka Hesap Bilgileri</h3>
+        <table>
+            <tr>
+                <th>Banka</th>
+                <th>Şube</th>
+                <th>Hesap No</th>
+                <th>IBAN</th>
+            </tr>
+
+            <tr>
+                <td>{{bank_name}}</td>
+                <td>{{bank_branch}}</td>
+                <td>{{bank_no}}</td>
+                <td>{{bank_iban}}</td>
+            </tr>
+        </table>
+
+
+        <h3>Teklif Onayı</h3>
+        <table>
+
+            <tr>
+                <th colspan="2">Firma Onayı</th>
+                <th>{{org_name}}</th>
+            </tr>
+
+
+            <tr>
+                <td>Kaşe / İmza</td>
+                <td style="min-width: 100px;"></td>
+                <td style="min-width: 100px;"> <img
+                        src={{signature}}
+                        alt="İmza"></td>
+            </tr>
+        </table>
+
     </div>
-  </div>
-</div>
+</body>
+
+</html>

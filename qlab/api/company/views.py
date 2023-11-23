@@ -27,6 +27,7 @@ from .serializers import (
     LabDeviceSerializers,
     MethodParametersSerializers,
     NotificationSerializers,
+    OrganizationInformationSerializers,
     ProposalDraftSerializers,
     ProposalSerializers,
     QualityMethodSerializers,
@@ -160,7 +161,7 @@ class ProposalDraftViewSet(viewsets.ModelViewSet):
 
 class OrganizationInformationViewSet(viewsets.ModelViewSet):
     queryset = OrganizationInformation.objects.all()
-    serializer_class = OrganizationInformation
+    serializer_class = OrganizationInformationSerializers
     action_permission_map = {
         'create': PermissionChoice.ORG_INFO_CREATE,
         'update': PermissionChoice.ORG_INFO_UPDATE,

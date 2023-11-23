@@ -28,6 +28,7 @@ class UserSerializers(serializers.ModelSerializer):
             'role_name',
             'is_staff',
         )
+
     def create(self, validated_data):
         request = self.context.get('request')
         organization = request.user.organization

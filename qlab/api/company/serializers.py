@@ -185,6 +185,7 @@ class ProposalSerializers(serializers.ModelSerializer):
                 proposal_method_parameters
             )
         user = request.user
+        org_info = OrganizationInformation.objects.first()
 
         invoice_generator = InvoiceGenerator(
             (user.full_name).upper(),
@@ -192,6 +193,24 @@ class ProposalSerializers(serializers.ModelSerializer):
             8,
             proposal_object.draft.preface,
             proposal_object.draft.terms,
+            org_info.owner,
+            org_info.name,
+            org_info.address,
+            org_info.phone,
+            org_info.mail,
+            org_info.left_logo,
+            org_info.right_logo,
+            org_info.signature,
+            org_info.bank_name,
+            org_info.bank_no,
+            org_info.bank_branch,
+            org_info.bank_iban,
+            proposal_object.company.name,
+            proposal_object.company.address,
+            proposal_object.company.authorized_person,
+            proposal_object.company.contact_info,
+            proposal_object.company.contact_info_mail,
+            proposal_object.draft.title,
         )
 
         timestamp = datetime.now().strftime('%Y%m%d%H%M%S')

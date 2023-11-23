@@ -1,5 +1,6 @@
+import re
 from django.db import models
-
+from django.core.exceptions import ValidationError
 
 from phonenumber_field.modelfields import PhoneNumberField
 
@@ -11,14 +12,34 @@ class ProposalChoices(models.IntegerChoices):
     APPROVAL = 1, ('Teklif Onaylandı')
     REJECT = 2, ('Teklif Kabul Edilmedi')
 
+
+def validate_iban(value):
+    if value:
+        if not re.match(r'^[A-Z]{2}\d+$', value):
+            raise ValidationError(
+                'IBAN must start with two letters followed by digits.'
+            )
+
+
 class OrganizationInformation(models.Model):
-    owner = models.CharField(128)
-    name = models.CharField(256)
-    address= models.CharField(256)
+    user = models.OneToOneField('accounts.User', models.PROTECT, null=True)
+    owner = models.CharField(max_length=128)
+    name = models.CharField(max_length=128)
+    address = models.CharField(max_length=128)
     phone = PhoneNumberField()
     mail = models.EmailField()
-    signature = models.FileField(upload_to=SetPathAndRename('signature/'), null=True, blank=True)
+    signature = models.ImageField(
+        upload_to=SetPathAndRename('signature/'), null=True, blank=True
+    )
     title = models.CharField(max_length=128)
+    bank_name = models.CharField(max_length=128, null=True)
+    bank_no = models.CharField(max_length=128, null=True)
+    bank_branch = models.CharField(max_length=128, null=True)
+    bank_iban = models.CharField(
+        max_length=128,
+        null=True,
+        validators=[validate_iban],
+    )
     left_logo = models.ImageField(
         upload_to=SetPathAndRename('organization/logo/'),
         blank=True,
@@ -29,6 +50,7 @@ class OrganizationInformation(models.Model):
         blank=True,
         null=True,
     )
+
 
 class Company(models.Model):
     name = models.CharField(max_length=100)
@@ -85,13 +107,10 @@ class ProposalDraft(models.Model):
     terms = models.TextField()
 
 
-
-
 class Proposal(models.Model):
     user = models.ForeignKey('accounts.User', models.PROTECT, null=True)
     company = models.ForeignKey(Company, models.PROTECT, null=True)
     draft = models.ForeignKey(ProposalDraft, models.SET_NULL, null=True)
-    organization_info = models.ForeignKey(OrganizationInformation, models.SET_NULL, null=True)
     status = models.IntegerField(
         choices=ProposalChoices.choices, default=ProposalChoices.SENDING
     )
