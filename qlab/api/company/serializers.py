@@ -19,6 +19,7 @@ from qlab.apps.company.models import (
     ProposalMethodParameters,
     QualityMethod,
     Vehicle,
+    WorkOrder,
 )
 from qlab.apps.core.models import Notification
 from qlab.apps.core.utils.offers_pdf_creater.invoice import InvoiceGenerator
@@ -124,6 +125,16 @@ class ParametersSerializer(serializers.Serializer):
         max_digits=10, decimal_places=2, default=0
     )
     methods = serializers.ListField()
+
+class WorkOrderSerializers(serializers.ModelSerializer):
+    company_name = serializers.CharField(source = 'proposal.company.name',read_only=True)
+    company_address = serializers.CharField(source = 'proposal.company.address',read_only=True)
+    company_authorized_person = serializers.CharField(source = 'proposal.company.authorized_person',read_only=True)
+    company_advisor = serializers.CharField(source = 'proposal.company.advisor',read_only=True)
+
+    class Meta:
+        model = WorkOrder
+        fields = '__all__'
 
 
 class ProposalSerializers(serializers.ModelSerializer):

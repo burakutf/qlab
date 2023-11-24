@@ -75,6 +75,10 @@ router.register(
     'notification',
     company.NotificationView,
 )
+router.register(
+    'work/orders',
+    company.WorkOrderView
+)
 urlpatterns = [
     path('login/', auth.LoginView.as_view(), name='login'),
     path('statistics/', core.StatisticsView.as_view(), name='statistics'),

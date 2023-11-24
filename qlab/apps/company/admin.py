@@ -9,6 +9,7 @@ from qlab.apps.company.models import (
     ProposalDraft,
     Proposal,
     ProposalMethodParameters,
+    WorkOrder,
 )
 
 admin.site.register(QualityMethod)
@@ -20,3 +21,4 @@ admin.site.register(ProposalDraft)
 admin.site.register(Proposal)
 admin.site.register(ProposalMethodParameters)
 admin.site.register(CompanyNote)
+admin.site.register(WorkOrder)

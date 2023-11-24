@@ -63,6 +63,10 @@ class PermissionChoice(TextChoices):
     NOTE_UPDATE = 'note.update', ('NOT GÜNCELLE')
     NOTE_DELETE = 'note.destroy', ('NOT SİL')
 
+    WORK_ORDER_CREATE = 'work_order.create', ('İŞ EMRİ OLUŞTUR')
+    WORK_ORDER_VIEW = 'work_order.view', ('İŞ EMRİ GÖRÜNTÜLE')
+    WORK_ORDER_UPDATE = 'work_order.update', ('İŞ EMRİ GÜNCELLE')
+    WORK_ORDER_DELETE = 'work_order.destroy', ('İŞ EMRİ SİL')
 
 ALL_PERMS = [perm for perm, x in PermissionChoice.choices]
 PERMS_MAP = {perm: value for perm, value in PermissionChoice.choices}

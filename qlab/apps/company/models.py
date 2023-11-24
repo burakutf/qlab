@@ -57,6 +57,7 @@ class Company(models.Model):
     address = models.CharField(max_length=200)
     tax_number = models.CharField(max_length=10, null=True, blank=True)
     authorized_person = models.CharField(max_length=50)
+    advisor = models.CharField(max_length=100,null=True,blank=True)
     contact_info = PhoneNumberField(null=True, blank=True, db_index=True)
     contact_info_mail = models.EmailField(null=True, blank=True)
 
@@ -132,3 +133,12 @@ class ProposalMethodParameters(models.Model):
 class CompanyNote(models.Model):
     notes = models.CharField(max_length=256, null=True)
     date = models.DateField()
+
+class WorkOrder(models.Model):
+    proposal = models.ForeignKey(Proposal,models.CASCADE,'work_order')
+    personal = models.ManyToManyField('accounts.User',related_name='work_order')
+    vehicles = models.ManyToManyField(Vehicle,related_name='work_order')
+    devices = models.ManyToManyField(LabDevice,related_name='work_order')
+    start_date = models.DateField(null=True)
+    end_date = models.DateField(null=True)
+    goal = models.TextField(null=True,blank=True)

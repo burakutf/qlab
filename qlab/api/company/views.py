@@ -16,6 +16,7 @@ from qlab.apps.company.models import (
     ProposalDraft,
     QualityMethod,
     Vehicle,
+    WorkOrder,
 )
 from qlab.apps.core.models import Mediums, Notification
 from qlab.apps.core.utils.send_email import (
@@ -33,6 +34,7 @@ from .serializers import (
     QualityMethodSerializers,
     CompanySerializers,
     VehicleSerializers,
+    WorkOrderSerializers,
 )
 
 
@@ -254,3 +256,13 @@ class CompanyNoteViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
 
         return super().create(request, *args, **kwargs)
+
+class WorkOrderView(viewsets.ModelViewSet):
+    queryset = WorkOrder.objects.all() 
+    serializer_class = WorkOrderSerializers
+    action_permission_map = {
+        'create': PermissionChoice.WORK_ORDER_CREATE,
+        'update': PermissionChoice.WORK_ORDER_UPDATE,
+        'destroy': PermissionChoice.WORK_ORDER_DELETE,
+        'view': PermissionChoice.WORK_ORDER_VIEW,
+    }
