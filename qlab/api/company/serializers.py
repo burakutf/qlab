@@ -130,7 +130,7 @@ class WorkOrderSerializers(serializers.ModelSerializer):
     )
     company_authorized_person = serializers.CharField(
         source='proposal.company.authorized_person', read_only=True
-    )
+    )#TODO kullanılmazsa kaldır altakiyle bunu
     company_advisor = serializers.CharField(
         source='proposal.company.advisor', read_only=True
     )

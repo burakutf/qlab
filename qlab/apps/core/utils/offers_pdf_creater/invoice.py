@@ -59,7 +59,8 @@ class InvoiceGenerator:
         self.preface = preface
         self.client_name = client_name
         self.items = items
-        self.terms = terms
+        self.terms = terms.replace('\n','<br>')
+
         self.vat_rate = vat_rate
         self.total = float(
             sum(item['quantity'] * item['unit_price'] for item in items)
@@ -90,9 +91,9 @@ class InvoiceGenerator:
             'address': self.address,
             'phone': self.phone,
             'email': self.email,
-            'left_logo': settings.MEDIA_DOMAIN + self.left_logo.url,
-            'right_logo': settings.MEDIA_DOMAIN + self.right_logo.url,
-            'signature': settings.MEDIA_DOMAIN + self.signature.url,
+            'left_logo': 'https://api.otb-lab.com' + self.left_logo.url,
+            'right_logo': 'https://api.otb-lab.com' + self.right_logo.url,
+            'signature': 'https://api.otb-lab.com' + self.signature.url,
             'bank_name': self.bank_name,
             'bank_no': self.bank_no,
             'bank_branch': self.bank_branch,
