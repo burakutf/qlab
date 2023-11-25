@@ -223,7 +223,6 @@ class ProposalSerializers(serializers.ModelSerializer):
         if not has_perm:
             raise PermissionDenied(('Teklif oluşturma yetkiniz yok!'))
 
-        breakpoint()
         parameters_data = validated_data.pop('parameters', None)
         proposal_object = Proposal.objects.create(**validated_data)
         proposal_method_parameters = []
