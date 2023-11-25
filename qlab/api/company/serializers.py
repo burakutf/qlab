@@ -23,6 +23,9 @@ from qlab.apps.company.models import (
 )
 from qlab.apps.core.models import Notification
 from qlab.apps.core.utils.offers_pdf_creater.invoice import InvoiceGenerator
+from qlab.apps.core.utils.offers_pdf_creater.work_order import (
+    WorkOrderGenerator,
+)
 
 
 class VehicleSerializers(serializers.ModelSerializer):
@@ -118,27 +121,82 @@ class OrganizationInformationSerializers(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ParametersSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
-    count = serializers.IntegerField()
-    price = serializers.DecimalField(
-        max_digits=10, decimal_places=2, default=0
-    )
-    methods = serializers.ListField()
-
 class WorkOrderSerializers(serializers.ModelSerializer):
-    company_name = serializers.CharField(source = 'proposal.company.name',read_only=True)
-    company_address = serializers.CharField(source = 'proposal.company.address',read_only=True)
-    company_authorized_person = serializers.CharField(source = 'proposal.company.authorized_person',read_only=True)
-    company_advisor = serializers.CharField(source = 'proposal.company.advisor',read_only=True)
+    company_name = serializers.CharField(
+        source='proposal.company.name', read_only=True
+    )
+    company_address = serializers.CharField(
+        source='proposal.company.address', read_only=True
+    )
+    company_authorized_person = serializers.CharField(
+        source='proposal.company.authorized_person', read_only=True
+    )
+    company_advisor = serializers.CharField(
+        source='proposal.company.advisor', read_only=True
+    )
 
     class Meta:
         model = WorkOrder
         fields = '__all__'
 
+    def create(self, validated_data):
+        vehicles = validated_data['vehicles']
+        devices = validated_data['devices']
+        proposal = validated_data['proposal']
+        personal = validated_data['personal']
+        vehicles_name = [i.plate for i in vehicles]
+        vehicles_name_str = ', '.join(vehicles_name)
+        personal_name = [i.full_name for i in personal]
+        personal_name_str = ', '.join(personal_name)
+        lab_devices = [
+            {
+                'id': i.id,
+                'name': i.name,
+                'serial_number': i.serial_number,
+            }
+            for i in devices
+        ]
+        items = [
+            {
+                'id': i.id,
+                'price': i.price,
+                'methods': i.methods,
+                'count': i.count,
+                'parameter': i.parameter.name,
+            }
+            for i in proposal.parameters.all()
+        ]
+        org_info = OrganizationInformation.objects.first()
+        work_order_pdf = WorkOrderGenerator(
+            proposal_id=proposal.id,
+            items=items,
+            org_owner=org_info.owner,
+            signature=org_info.signature,
+            left_logo=org_info.left_logo,
+            devices=lab_devices,
+            company_name=proposal.company.name,
+            company_address=proposal.company.address,
+            company_advisor=proposal.company.advisor,
+            company_person=proposal.company.authorized_person,
+            company_number=proposal.company.contact_info,
+            start_date=validated_data['start_date'],
+            end_date=validated_data['end_date'],
+            goal=validated_data['goal'],
+            vehicles=vehicles_name_str,
+            personal=personal_name_str,
+        )
+        timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+        filename = f'{str(uuid4())[:8]}_{timestamp}.pdf'
+        work_order_object = super().create(validated_data)
+
+        work_order_pdf.generate_pdf(filename)
+
+        work_order_object.file = f'/{filename}'
+        work_order_object.save()
+        return work_order_object
+
 
 class ProposalSerializers(serializers.ModelSerializer):
-    parameters = ParametersSerializer(many=True, required=False)
     company_name = serializers.CharField(source='company.name', read_only=True)
     user_full_name = serializers.CharField(
         source='user.full_name', read_only=True
@@ -226,7 +284,12 @@ class ProposalSerializers(serializers.ModelSerializer):
 
         timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
         filename = f'{str(uuid4())[:8]}_{timestamp}.pdf'
-        invoice_generator.generate_pdf(filename)
+        try:
+            invoice_generator.generate_pdf(filename)
+        except:
+            raise serializers.ValidationError(
+                {'error': ['Pdf Oluşturulamadı!']}
+            )
         proposal_object.user = user
         proposal_object.file = f'/{filename}'
         proposal_object.save()

@@ -21,14 +21,44 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='WorkOrder',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('start_date', models.DateField(null=True)),
                 ('end_date', models.DateField(null=True)),
                 ('goal', models.TextField(blank=True, null=True)),
-                ('devices', models.ManyToManyField(related_name='work_order', to='company.labdevice')),
-                ('personal', models.ManyToManyField(related_name='work_order', to=settings.AUTH_USER_MODEL)),
-                ('proposal', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='work_order', to='company.proposal')),
-                ('vehicles', models.ManyToManyField(related_name='work_order', to='company.vehicle')),
+                (
+                    'devices',
+                    models.ManyToManyField(
+                        related_name='work_order', to='company.labdevice'
+                    ),
+                ),
+                (
+                    'personal',
+                    models.ManyToManyField(
+                        related_name='work_order', to=settings.AUTH_USER_MODEL
+                    ),
+                ),
+                (
+                    'proposal',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name='work_order',
+                        to='company.proposal',
+                    ),
+                ),
+                (
+                    'vehicles',
+                    models.ManyToManyField(
+                        related_name='work_order', to='company.vehicle'
+                    ),
+                ),
             ],
         ),
     ]

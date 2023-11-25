@@ -19,7 +19,7 @@ from django_tenants.utils import get_tenant_domain_model
 class CustomTenantMainMiddleware(TenantMainMiddleware):
     def get_tenant(self, domain_model, hostname, request):
         header_token = request.META.get('HTTP_AUTHORIZATION', None)
-        #TODO user anonymous geliyor diye aşağıdaki middlewaredede burdada header_tokendan almak zorunda kaldım
+        # TODO user anonymous geliyor diye aşağıdaki middlewaredede burdada header_tokendan almak zorunda kaldım
         if header_token:
             token = sub('Token ', '', header_token)
             token_obj = Token.objects.get(key=token)

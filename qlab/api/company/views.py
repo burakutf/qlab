@@ -257,8 +257,9 @@ class CompanyNoteViewSet(viewsets.ModelViewSet):
 
         return super().create(request, *args, **kwargs)
 
+
 class WorkOrderView(viewsets.ModelViewSet):
-    queryset = WorkOrder.objects.all() 
+    queryset = WorkOrder.objects.all()
     serializer_class = WorkOrderSerializers
     action_permission_map = {
         'create': PermissionChoice.WORK_ORDER_CREATE,

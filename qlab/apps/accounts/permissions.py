@@ -68,5 +68,6 @@ class PermissionChoice(TextChoices):
     WORK_ORDER_UPDATE = 'work_order.update', ('İŞ EMRİ GÜNCELLE')
     WORK_ORDER_DELETE = 'work_order.destroy', ('İŞ EMRİ SİL')
 
+
 ALL_PERMS = [perm for perm, x in PermissionChoice.choices]
 PERMS_MAP = {perm: value for perm, value in PermissionChoice.choices}
