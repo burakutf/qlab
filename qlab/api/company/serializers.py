@@ -195,8 +195,16 @@ class WorkOrderSerializers(serializers.ModelSerializer):
         work_order_object.save()
         return work_order_object
 
+class ParametersSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    count = serializers.IntegerField()
+    price = serializers.DecimalField(
+        max_digits=10, decimal_places=2, default=0
+    )
+    methods = serializers.ListField()
 
 class ProposalSerializers(serializers.ModelSerializer):
+    parameters = ParametersSerializer(many=True, required=False)
     company_name = serializers.CharField(source='company.name', read_only=True)
     user_full_name = serializers.CharField(
         source='user.full_name', read_only=True
@@ -215,11 +223,11 @@ class ProposalSerializers(serializers.ModelSerializer):
         if not has_perm:
             raise PermissionDenied(('Teklif oluşturma yetkiniz yok!'))
 
+        breakpoint()
         parameters_data = validated_data.pop('parameters', None)
         proposal_object = Proposal.objects.create(**validated_data)
         proposal_method_parameters = []
         items = []
-
         for parameter_data in parameters_data:
             try:
                 parameter = MethodParameters.objects.get(
