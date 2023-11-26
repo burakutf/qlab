@@ -203,7 +203,7 @@ class ParametersSerializer(serializers.Serializer):
         max_digits=10, decimal_places=2, default=0
     )
     methods = serializers.ListField()
-    parameter_name = serializers.CharField(source='parameter.name')
+    parameter_name = serializers.CharField(source='parameter.name',read_only=True)
 
 
 class ProposalSerializers(serializers.ModelSerializer):
