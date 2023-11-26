@@ -204,7 +204,7 @@ class ParametersSerializer(serializers.Serializer):
     )
     methods = serializers.ListField()
     parameter_name = serializers.CharField(source='parameter.name',read_only=True)
-
+    parameter_id = serializers.IntegerField(source='id')
 
 class ProposalSerializers(serializers.ModelSerializer):
     parameters = ParametersSerializer(many=True, required=False)
