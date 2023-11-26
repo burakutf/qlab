@@ -130,7 +130,7 @@ class WorkOrderSerializers(serializers.ModelSerializer):
     )
     company_authorized_person = serializers.CharField(
         source='proposal.company.authorized_person', read_only=True
-    )#TODO kullanılmazsa kaldır altakiyle bunu
+    )  # TODO kullanılmazsa kaldır altakiyle bunu
     company_advisor = serializers.CharField(
         source='proposal.company.advisor', read_only=True
     )
@@ -195,6 +195,7 @@ class WorkOrderSerializers(serializers.ModelSerializer):
         work_order_object.save()
         return work_order_object
 
+
 class ParametersSerializer(serializers.Serializer):
     id = serializers.IntegerField(source='parameter.id')
     count = serializers.IntegerField()
@@ -202,6 +203,8 @@ class ParametersSerializer(serializers.Serializer):
         max_digits=10, decimal_places=2, default=0
     )
     methods = serializers.ListField()
+    parameter_name = serializers.CharField(source='parameter.name')
+
 
 class ProposalSerializers(serializers.ModelSerializer):
     parameters = ParametersSerializer(many=True, required=False)

@@ -87,8 +87,8 @@ class WorkOrderGenerator:
         else:
             media_root = settings.MEDIA_ROOT.replace('/media/', '')
             output_path = media_root + settings.MEDIA_URL + name
-        optionse = {
-            'enable-local-file-access': None
-        }
+        optionse = {'enable-local-file-access': None}
 
-        pdfkit.from_string(output_text, output_path, configuration=config,options=optionse)
+        pdfkit.from_string(
+            output_text, output_path, configuration=config, options=optionse
+        )

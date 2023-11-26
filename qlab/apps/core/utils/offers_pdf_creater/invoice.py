@@ -59,7 +59,7 @@ class InvoiceGenerator:
         self.preface = preface
         self.client_name = client_name
         self.items = items
-        self.terms = terms.replace('\n','<br>')
+        self.terms = terms.replace('\n', '<br>')
 
         self.vat_rate = vat_rate
         self.total = float(

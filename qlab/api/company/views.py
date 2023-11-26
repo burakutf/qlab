@@ -261,9 +261,7 @@ class CompanyNoteViewSet(viewsets.ModelViewSet):
 class WorkOrderView(viewsets.ModelViewSet):
     queryset = WorkOrder.objects.all()
     serializer_class = WorkOrderSerializers
-    search_fields = (
-        'proposal__company__name',
-       )
+    search_fields = ('proposal__company__name',)
     action_permission_map = {
         'create': PermissionChoice.WORK_ORDER_CREATE,
         'update': PermissionChoice.WORK_ORDER_UPDATE,
