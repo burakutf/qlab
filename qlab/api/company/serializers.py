@@ -196,7 +196,7 @@ class WorkOrderSerializers(serializers.ModelSerializer):
         return work_order_object
 
 class ParametersSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
+    id = serializers.IntegerField(source='parameter.id')
     count = serializers.IntegerField()
     price = serializers.DecimalField(
         max_digits=10, decimal_places=2, default=0
@@ -230,7 +230,7 @@ class ProposalSerializers(serializers.ModelSerializer):
         for parameter_data in parameters_data:
             try:
                 parameter = MethodParameters.objects.get(
-                    id=parameter_data['id']
+                    id=parameter_data['parameter']['id']
                 )
             except MethodParameters.DoesNotExist:
                 raise serializers.ValidationError(
