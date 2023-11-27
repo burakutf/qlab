@@ -18,6 +18,14 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='proposal',
             name='status',
-            field=models.IntegerField(choices=[(0, 'Teklif Gönderildi'), (1, 'Teklif Onaylandı'), (2, 'Teklif Kabul Edilmedi'), (3, 'İş Emri Oluşturuldu')], default=0),
+            field=models.IntegerField(
+                choices=[
+                    (0, 'Teklif Gönderildi'),
+                    (1, 'Teklif Onaylandı'),
+                    (2, 'Teklif Kabul Edilmedi'),
+                    (3, 'İş Emri Oluşturuldu'),
+                ],
+                default=0,
+            ),
         ),
     ]

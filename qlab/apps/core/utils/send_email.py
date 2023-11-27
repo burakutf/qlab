@@ -10,10 +10,11 @@ logger = logging.getLogger('SEND SMS')
 
 
 class EmailThread(threading.Thread):
-    def __init__(self, subject, html_content, recipient_list):
+    def __init__(self, subject, html_content, recipient_list, file_path):
         self.subject = subject
         self.recipient_list = recipient_list
         self.html_content = html_content
+        self.file_path = file_path
         threading.Thread.__init__(self)
 
     def run(self):
@@ -24,14 +25,15 @@ class EmailThread(threading.Thread):
             self.recipient_list,
         )
         msg.content_subtype = 'html'
+        if self.file_path is not None:
+            msg.attach_file(self.file_path)
         msg.send()
 
 
-def send_html_mail(subject, html_content, recipient_list):
+def send_html_mail(subject, html_content, recipient_list, file_path):
     if not settings.SEND_EMAIL:
         return
-
-    EmailThread(subject, html_content, recipient_list).start()
+    EmailThread(subject, html_content, recipient_list, file_path).start()
 
 
 def general_html_content(name, title, text):
@@ -177,8 +179,8 @@ def general_html_content(name, title, text):
             </div>
             <p class="code-text">{}.</p>
             <h2 class="code">{}</h2>
-            <p class="code-text">Bize verdiğiniz destek için teşekkür ederiz.</p>
-            <p class="code-text">Q Yazılım Ekibi</p>
+            <p class="code-text"><a href="https://otb-lab.com/" target="_blank">Detaylı Bilgi İçin Giriş Yapınız.</a></p>
+            <p class="code-text">Bize verdiğiniz destek için teşekkür ederiz. Q Yazılım Ekibi</p>
         </div>
         <div class="info-container">
             <h2 class="info-title">Bu ne zaman gerçekleşti?</h2>

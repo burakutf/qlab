@@ -1,3 +1,6 @@
+import os
+from django.conf import settings
+
 from uuid import uuid4
 from datetime import datetime
 
@@ -26,7 +29,10 @@ from qlab.apps.core.utils.offers_pdf_creater.invoice import InvoiceGenerator
 from qlab.apps.core.utils.offers_pdf_creater.work_order import (
     WorkOrderGenerator,
 )
-from qlab.apps.core.utils.send_email import general_html_content, send_html_mail
+from qlab.apps.core.utils.send_email import (
+    general_html_content,
+    send_html_mail,
+)
 
 
 class VehicleSerializers(serializers.ModelSerializer):
@@ -167,8 +173,8 @@ class WorkOrderSerializers(serializers.ModelSerializer):
             }
             for i in proposal.parameters.all()
         ]
-        start_date=validated_data['start_date']
-        end_date =validated_data['end_date']
+        start_date = validated_data['start_date']
+        end_date = validated_data['end_date']
         org_info = OrganizationInformation.objects.first()
         work_order_pdf = WorkOrderGenerator(
             proposal_id=proposal.id,
@@ -200,17 +206,20 @@ class WorkOrderSerializers(serializers.ModelSerializer):
 
         work_order_object.file = f'/{filename}'
         work_order_object.save()
-  
-        # send_html_mail(
-        #     subject='Qlab İş Emri Durumu',
-        #     recipient_list=[user.mail for user in personal],
-        #     html_content=general_html_content(
-        #         name=personal_name_str,
-        #         title='İş Emriniz Oluşturuldu',
-        #         text=f"""{proposal.company.name} Şirketine Keşif Emri oluşturulmuştur
-        #           Başlangıç Tarihi: {start_date}, Bitiş Tarihi: {end_date}""",
-        #     ),
-        # )
+        file_url = work_order_object.file.url
+        file_path = os.path.join(settings.BASE_DIR) + file_url
+        user_email = [user.email for user in personal]
+        send_html_mail(
+            subject='Qlab İş Emri Durumu',
+            recipient_list=user_email,
+            html_content=general_html_content(
+                name=personal_name_str,
+                title='İş Emriniz Oluşturuldu',
+                text=f"""{proposal.company.name} Şirketine keşif emri oluşturulmuştur Ek Dosya Mailde iletilmiştir.
+                 Görev Başlangıç Tarihi: {start_date}, Görev Bitiş Tarihi: {end_date} """,
+            ),
+            file_path=file_path,
+        )
         return work_order_object
 
 
@@ -221,13 +230,15 @@ class ParametersSerializer(serializers.Serializer):
         max_digits=10, decimal_places=2, default=0
     )
     methods = serializers.ListField()
-    parameter_name = serializers.CharField(source='parameter.name',read_only=True)
+    parameter_name = serializers.CharField(
+        source='parameter.name', read_only=True
+    )
     parameter_id = serializers.IntegerField(source='id')
 
 
 class ProposalSerializers(serializers.ModelSerializer):
     parameters = ParametersSerializer(many=True, required=False)
-    
+
     company_name = serializers.CharField(source='company.name', read_only=True)
     user_full_name = serializers.CharField(
         source='user.full_name', read_only=True
@@ -299,7 +310,7 @@ class ProposalSerializers(serializers.ModelSerializer):
             org_info.address,
             org_info.phone,
             org_info.mail,
-            org_info.left_logo, 
+            org_info.left_logo,
             org_info.right_logo,
             org_info.signature,
             org_info.bank_name,

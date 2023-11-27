@@ -13,6 +13,7 @@ class ProposalChoices(models.IntegerChoices):
     REJECT = 2, ('Teklif Kabul Edilmedi')
     WORKORDER = 3, ('İş Emri Oluşturuldu')
 
+
 def validate_iban(value):
     if value:
         if not re.match(r'^[A-Z]{2}\d+$', value):
