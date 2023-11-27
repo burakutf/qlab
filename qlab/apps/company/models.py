@@ -101,7 +101,8 @@ class MethodParameters(models.Model):
     name = models.CharField(max_length=256)
     method = models.ManyToManyField(QualityMethod, related_name='parameters')
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-
+    sample_type = models.CharField(max_length=128,null=True,blank=True)
+    barcode_count = models.PositiveSmallIntegerField(null=True,blank=True)
 
 class ProposalDraft(models.Model):
     title = models.CharField(max_length=128)
@@ -129,7 +130,7 @@ class ProposalMethodParameters(models.Model):
     price = models.DecimalField(
         max_digits=10, decimal_places=2, default=0, null=True
     )
-
+    source_code = models.CharField(null=True,blank=True)
 
 class CompanyNote(models.Model):
     notes = models.TextField(null=True)
