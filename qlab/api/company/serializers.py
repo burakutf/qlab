@@ -26,6 +26,7 @@ from qlab.apps.core.utils.offers_pdf_creater.invoice import InvoiceGenerator
 from qlab.apps.core.utils.offers_pdf_creater.work_order import (
     WorkOrderGenerator,
 )
+from qlab.apps.core.utils.send_email import general_html_content, send_html_mail
 
 
 class VehicleSerializers(serializers.ModelSerializer):
@@ -142,8 +143,8 @@ class WorkOrderSerializers(serializers.ModelSerializer):
     def create(self, validated_data):
         vehicles = validated_data['vehicles']
         devices = validated_data['devices']
-        proposal = validated_data['proposal']
         personal = validated_data['personal']
+        proposal = validated_data['proposal']
         vehicles_name = [i.plate for i in vehicles]
         vehicles_name_str = ', '.join(vehicles_name)
         personal_name = [i.full_name for i in personal]
@@ -166,6 +167,8 @@ class WorkOrderSerializers(serializers.ModelSerializer):
             }
             for i in proposal.parameters.all()
         ]
+        start_date=validated_data['start_date']
+        end_date =validated_data['end_date']
         org_info = OrganizationInformation.objects.first()
         work_order_pdf = WorkOrderGenerator(
             proposal_id=proposal.id,
@@ -179,8 +182,8 @@ class WorkOrderSerializers(serializers.ModelSerializer):
             company_advisor=proposal.company.advisor,
             company_person=proposal.company.authorized_person,
             company_number=proposal.company.contact_info,
-            start_date=validated_data['start_date'],
-            end_date=validated_data['end_date'],
+            start_date=start_date,
+            end_date=end_date,
             goal=validated_data['goal'],
             vehicles=vehicles_name_str,
             personal=personal_name_str,
@@ -191,8 +194,23 @@ class WorkOrderSerializers(serializers.ModelSerializer):
 
         work_order_pdf.generate_pdf(filename)
 
+        work_order_object.personal.set(personal)
+        work_order_object.vehicles.set(vehicles)
+        work_order_object.devices.set(devices)
+
         work_order_object.file = f'/{filename}'
         work_order_object.save()
+  
+        # send_html_mail(
+        #     subject='Qlab İş Emri Durumu',
+        #     recipient_list=[user.mail for user in personal],
+        #     html_content=general_html_content(
+        #         name=personal_name_str,
+        #         title='İş Emriniz Oluşturuldu',
+        #         text=f"""{proposal.company.name} Şirketine Keşif Emri oluşturulmuştur
+        #           Başlangıç Tarihi: {start_date}, Bitiş Tarihi: {end_date}""",
+        #     ),
+        # )
         return work_order_object
 
 
@@ -206,8 +224,10 @@ class ParametersSerializer(serializers.Serializer):
     parameter_name = serializers.CharField(source='parameter.name',read_only=True)
     parameter_id = serializers.IntegerField(source='id')
 
+
 class ProposalSerializers(serializers.ModelSerializer):
     parameters = ParametersSerializer(many=True, required=False)
+    
     company_name = serializers.CharField(source='company.name', read_only=True)
     user_full_name = serializers.CharField(
         source='user.full_name', read_only=True
@@ -225,6 +245,8 @@ class ProposalSerializers(serializers.ModelSerializer):
         )
         if not has_perm:
             raise PermissionDenied(('Teklif oluşturma yetkiniz yok!'))
+        if request.data.get('id'):
+            Proposal.objects.get(id=request.data['id']).delete()
 
         parameters_data = validated_data.pop('parameters', None)
         proposal_object = Proposal.objects.create(**validated_data)
@@ -277,7 +299,7 @@ class ProposalSerializers(serializers.ModelSerializer):
             org_info.address,
             org_info.phone,
             org_info.mail,
-            org_info.left_logo,
+            org_info.left_logo, 
             org_info.right_logo,
             org_info.signature,
             org_info.bank_name,

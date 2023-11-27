@@ -11,7 +11,7 @@ class ProposalChoices(models.IntegerChoices):
     SENDING = 0, ('Teklif Gönderildi')
     APPROVAL = 1, ('Teklif Onaylandı')
     REJECT = 2, ('Teklif Kabul Edilmedi')
-
+    WORKORDER = 3, ('İş Emri Oluşturuldu')
 
 def validate_iban(value):
     if value:
@@ -131,7 +131,7 @@ class ProposalMethodParameters(models.Model):
 
 
 class CompanyNote(models.Model):
-    notes = models.CharField(max_length=256, null=True)
+    notes = models.TextField(null=True)
     date = models.DateField()
 
 
