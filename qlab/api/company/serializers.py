@@ -170,7 +170,7 @@ class WorkOrderSerializers(serializers.ModelSerializer):
                 'methods': i.methods,
                 'count': i.count,
                 'parameter': i.parameter.name,
-                'source_code':i.source_code
+                'source_code': i.source_code,
             }
             for i in proposal.parameters.all()
         ]
@@ -237,6 +237,7 @@ class ParametersSerializer(serializers.Serializer):
     parameter_id = serializers.IntegerField(source='id')
     source_code = serializers.CharField()
 
+
 class ProposalSerializers(serializers.ModelSerializer):
     parameters = ParametersSerializer(many=True, required=False)
 
@@ -287,7 +288,7 @@ class ProposalSerializers(serializers.ModelSerializer):
             proposal_method_parameter = ProposalMethodParameters(
                 proposal=proposal_object,
                 parameter=parameter,
-                source_code = parameter_data['source_code'],
+                source_code=parameter_data['source_code'],
                 count=parameter_data['count'],
                 price=parameter_data['price'],
                 methods=method_names,

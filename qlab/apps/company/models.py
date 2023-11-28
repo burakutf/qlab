@@ -22,7 +22,9 @@ def validate_iban(value):
             )
 
 
-class OrganizationInformation(models.Model):
+class OrganizationInformation(
+    models.Model
+):   # TODO sadece bir tane oluşturulabilinir olması lazım
     user = models.OneToOneField('accounts.User', models.PROTECT, null=True)
     owner = models.CharField(max_length=128)
     name = models.CharField(max_length=128)
@@ -59,8 +61,12 @@ class Company(models.Model):
     tax_number = models.CharField(max_length=10, null=True, blank=True)
     authorized_person = models.CharField(max_length=50)
     advisor = models.CharField(max_length=100, null=True, blank=True)
-    contact_info = models.CharField(max_length=16,null=True, blank=True, db_index=True)
-    contact_info_mail = models.CharField(max_length=64,null=True, blank=True)
+    contact_info = models.CharField(
+        max_length=16, null=True, blank=True, db_index=True
+    )   # TODO burayıda PhoneField
+    contact_info_mail = models.CharField(
+        max_length=64, null=True, blank=True
+    )  # TODO burayı EmailField yap
 
     def __str__(self):
         return self.name
@@ -101,8 +107,9 @@ class MethodParameters(models.Model):
     name = models.CharField(max_length=256)
     method = models.ManyToManyField(QualityMethod, related_name='parameters')
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    sample_type = models.CharField(max_length=128,null=True,blank=True)
-    barcode_count = models.PositiveSmallIntegerField(null=True,blank=True)
+    sample_type = models.CharField(max_length=128, null=True, blank=True)
+    barcode_count = models.PositiveSmallIntegerField(null=True, blank=True)
+
 
 class ProposalDraft(models.Model):
     title = models.CharField(max_length=128)
@@ -130,7 +137,8 @@ class ProposalMethodParameters(models.Model):
     price = models.DecimalField(
         max_digits=10, decimal_places=2, default=0, null=True
     )
-    source_code = models.CharField(null=True,blank=True)
+    source_code = models.CharField(null=True, blank=True)
+
 
 class CompanyNote(models.Model):
     notes = models.TextField(null=True)

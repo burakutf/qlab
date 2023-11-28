@@ -29,17 +29,28 @@ locale.setlocale(locale.LC_TIME, env.str('LANGUAGE_PATH'))
 def get_monthly_data(queryset, date_field, value_field=None):
     data = queryset.annotate(month=TruncMonth(date_field))
     if value_field:
-        data = data.annotate(value=Sum(value_field)).values('month', 'value')
+        data = data.annotate(total_count=Sum(value_field)).values(
+            'month', 'total_count'
+        )
+        result = {}
+        for item in data:
+            if item['month'] in result:
+                result[item['month']] += item['total_count']
+            else:
+                result[item['month']] = item['total_count']
+
+        result = [{'name': k.strftime('%B'), 'value': v} for k, v in result.items()]
+        return result
     else:
         data = (
             data.values('month')
-            .annotate(count=Count('id'))
-            .values('month', 'count')
+            .annotate(total_count=Count('id'))
+            .values('month', 'total_count')
         )
     return [
         {
             'name': item['month'].strftime('%B'),
-            'value': item.get('value', item.get('count')),
+            'value': item.get('value', item.get('total_count')),
         }
         for item in data
     ]
@@ -84,15 +95,14 @@ class StatisticsView(ListAPIView):
         vehicles_count = Vehicle.objects.count()
         company_count = Company.objects.count()
         device_count = LabDevice.objects.count()
-        monthly_proposals = get_monthly_data(
-            Proposal.objects.all(), 'created_at'
-        )
+        proposal = Proposal.objects.all()
+        monthly_proposals = get_monthly_data(proposal, 'created_at')
         monthly_approve_proposals = get_monthly_data(
-            Proposal.objects.filter(status=ProposalChoices.APPROVAL),
+            proposal.filter(status=ProposalChoices.APPROVAL),
             'created_at',
         )
         monthly_earnings = get_monthly_data(
-            Proposal.objects.filter(
+            proposal.filter(
                 Q(parameters__count__isnull=False),
                 Q(parameters__parameter__price__isnull=False),
             ),
@@ -109,9 +119,7 @@ class StatisticsView(ListAPIView):
         monthly_approval_proposal_list = get_monthly_list(
             months, monthly_approve_proposals
         )
-
         proposals_earnings = get_monthly_list(months, monthly_earnings)
-
         data = {
             'personal_count': personal_count,
             'vehicles_count': vehicles_count,

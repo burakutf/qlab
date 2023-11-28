@@ -15,7 +15,7 @@ from qlab.apps.accounts.permissions import PERMS_MAP, PermissionChoice
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    queryset = User.objects.none()
     serializer_class = UserSerializers
     search_fields = (
         'username',
@@ -29,10 +29,12 @@ class UserViewSet(viewsets.ModelViewSet):
         'destroy': PermissionChoice.USER_DELETE,
         'view': PermissionChoice.USER_VIEW,
     }
-
-
+    def get_queryset(self):
+        user = self.request.user
+        return User.objects.filter(organization=user.organization)
+    
 class UserDetailViewSet(viewsets.ModelViewSet):
-    queryset = UserDetail.objects.all()
+    queryset = UserDetail.objects.none()
     serializer_class = UserDetailSerializers
     search_fields = ('user__full_name',)
     action_permission_map = {
@@ -41,16 +43,21 @@ class UserDetailViewSet(viewsets.ModelViewSet):
         'destroy': PermissionChoice.USER_DETAIL_DELETE,
         'view': PermissionChoice.USER_DETAIL_VIEW,
     }
-
+    def get_queryset(self):
+        user = self.request.user
+        return UserDetail.objects.filter(user__organization=user.organization)
+    
 
 class MinimalUserViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = User.objects.all()
+    queryset = User.objects.none()
     serializer_class = MinimalUserSerializers
     search_fields = ('full_name',)
-
-
+    def get_queryset(self):
+        user = self.request.user
+        return User.objects.filter(organization=user.organization)
+    
 class GroupViewSet(viewsets.ModelViewSet):
-    queryset = Role.objects.all()
+    queryset = Role.objects.none()
     serializer_class = GroupSerializer
     search_fields = ('name',)
     action_permission_map = {
@@ -59,7 +66,10 @@ class GroupViewSet(viewsets.ModelViewSet):
         'destroy': PermissionChoice.GROUP_DELETE,
         'view': PermissionChoice.GROUP_VIEW,
     }
-
+    def get_queryset(self):
+        user = self.request.user
+        return Role.objects.filter(roles__organization=user.organization)
+    
 
 class PermissionView(APIView):
     def get(self, request, *args, **kwargs):
