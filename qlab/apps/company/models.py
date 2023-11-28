@@ -59,8 +59,8 @@ class Company(models.Model):
     tax_number = models.CharField(max_length=10, null=True, blank=True)
     authorized_person = models.CharField(max_length=50)
     advisor = models.CharField(max_length=100, null=True, blank=True)
-    contact_info = PhoneNumberField(null=True, blank=True, db_index=True)
-    contact_info_mail = models.EmailField(null=True, blank=True)
+    contact_info = models.CharField(max_length=16,null=True, blank=True, db_index=True)
+    contact_info_mail = models.CharField(max_length=64,null=True, blank=True)
 
     def __str__(self):
         return self.name

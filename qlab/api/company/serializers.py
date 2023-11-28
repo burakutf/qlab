@@ -282,7 +282,6 @@ class ProposalSerializers(serializers.ModelSerializer):
                     'description': measurement_name,
                     'unit_price': parameter_data['price'],
                     'quantity': parameter_data['count'],
-                    'source_code': parameter_data['source_code']
                 }
             )
             proposal_method_parameter = ProposalMethodParameters(
