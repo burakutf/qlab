@@ -27,6 +27,7 @@ class Role(models.Model):
     class Meta:
         unique_together = ('name',)
 
+
 class User(AbstractUser):
     class Genders(models.TextChoices):
         MAN = 'MN', 'Erkek'
@@ -63,9 +64,9 @@ class User(AbstractUser):
         self.full_name = f'{self.first_name} {self.last_name}'
         return super().save(*args, **kwargs)
 
-
     def __str__(self):
         return self.full_name or self.get_full_name() or str(self.id)
+
 
 class UserDetail(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

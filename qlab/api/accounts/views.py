@@ -54,7 +54,6 @@ class UserDetailViewSet(viewsets.ModelViewSet):
         return UserDetail.objects.filter(user__organization=user.organization)
 
 
-
 class MinimalUserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.none()
     serializer_class = MinimalUserSerializers
@@ -82,12 +81,18 @@ class GroupViewSet(viewsets.ModelViewSet):
             organization=user.organization, is_primary=False
         )
         return queryset
+
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         try:
             instance.delete()
         except ProtectedError:
-            return Response({"message": "Bu rol silinemez çünkü başka bir kullanıcı tarafından kullanılıyor."}, status=400)
+            return Response(
+                {
+                    'message': 'Bu rol bir kullanıcıya atanmış olduğu için silinemez.'
+                },
+                status=400,
+            )
         return Response(status=204)
 
 

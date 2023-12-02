@@ -220,6 +220,7 @@ class ProposalRetrieveUpdateView(generics.RetrieveUpdateAPIView):
             Notification.objects.create(
                 user=user, title=rejection_title, text=note
             )
+
             send_html_mail(
                 subject='Qlab Teklif Durumu',
                 recipient_list=(user.email,),

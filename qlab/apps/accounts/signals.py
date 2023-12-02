@@ -17,7 +17,7 @@ def user_notification(instance, created, *args, **kwargs):
 
     if instance.email:
         send_html_mail(
-            subject='Qlab Giriş Bilgileri',
+            subject='OTBLab Giriş Bilgileri',
             recipient_list=(instance.email,),
             html_content="""
 <!DOCTYPE html>
@@ -26,7 +26,7 @@ def user_notification(instance, created, *args, **kwargs):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QLab Email Confirmation</title>
+    <title>OTBLab Email Confirmation</title>
     <style>
         body {{
             font-family: Arial, sans-serif;
@@ -150,19 +150,19 @@ def user_notification(instance, created, *args, **kwargs):
     <div class="container">
         <div class="header">
             <a href="https://qyazilim.com.tr/">
-                <img src="https://i.hizliresim.com/f3cfgu6.png" alt="QLab Logo">
+                <img src="https://i.hizliresim.com/sch0cd4.png" alt="OTBLab Logo">
             </a>
         </div>
         <div class="code-container">
             <div class="profile">
                 <p class="usertitle">Merhaba {},</p>
             </div>
-            <p class="code-text">Kimliğinizi doğrulamak ve QLab hesabınıza erişim sağlamak için aşağıdaki kullanıcı adı
+            <p class="code-text">Kimliğinizi doğrulamak ve OTBLab hesabınıza erişim sağlamak için aşağıdaki kullanıcı adı
                 parolayı kullanabilirsiniz.</p>
             <h2 class="code">Kullanıcı Adı: {}</h2>
             <h2 class="code">Parola: {}</h2>
-            <p class="code-text">Bize verdiğiniz destek için teşekkür ederiz.</p>
-            <p class="code-text">Q Yazılım Ekibi</p>
+            <p class="code-text"><a href="https://otb-lab.com/" target="_blank">Detaylı Bilgi İçin Giriş Yapınız.</a></p>
+            <p class="code-text">Bize verdiğiniz destek için teşekkür ederiz. Q Yazılım Ekibi</p>
         </div>
         <div class="info-container">
             <h2 class="info-title">Bu ne zaman gerçekleşti?</h2>

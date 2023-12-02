@@ -182,8 +182,7 @@ class WorkOrderSerializers(serializers.ModelSerializer):
                 proposal.count * proposal.parameter.barcode_count
             ) + 1
             for b in range(
-                proposal.parameter.current_barcode,
-                proposal.parameter.current_barcode + loop_count,
+                loop_count,
             ):
                 barcode_items.append(
                     {
@@ -191,6 +190,10 @@ class WorkOrderSerializers(serializers.ModelSerializer):
                         'parameter': proposal.parameter.name,
                     }
                 )
+            proposal.parameter.current_barcode = (
+                proposal.parameter.current_barcode + loop_count
+            ) - 1
+            proposal.parameter.save()
         start_date = validated_data['start_date']
         end_date = validated_data['end_date']
         proposal = validated_data['proposal']

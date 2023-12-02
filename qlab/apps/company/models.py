@@ -129,6 +129,7 @@ class Proposal(models.Model):
     note = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+
 class ProposalMethodParameters(models.Model):
     proposal = models.ForeignKey(Proposal, models.CASCADE, 'parameters')
     parameter = models.ForeignKey(MethodParameters, on_delete=models.CASCADE)

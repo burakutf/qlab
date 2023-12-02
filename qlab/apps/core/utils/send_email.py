@@ -10,7 +10,7 @@ logger = logging.getLogger('SEND SMS')
 
 
 class EmailThread(threading.Thread):
-    def __init__(self, subject, html_content, recipient_list, file_path):
+    def __init__(self, subject, html_content, recipient_list, file_path=None):
         self.subject = subject
         self.recipient_list = recipient_list
         self.html_content = html_content
@@ -30,7 +30,7 @@ class EmailThread(threading.Thread):
         msg.send()
 
 
-def send_html_mail(subject, html_content, recipient_list, file_path):
+def send_html_mail(subject, html_content, recipient_list, file_path=None):
     if not settings.SEND_EMAIL:
         return
     EmailThread(subject, html_content, recipient_list, file_path).start()
@@ -47,7 +47,7 @@ def general_html_content(name, title, text):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QLab Email Confirmation</title>
+    <title>OTBLab Email Confirmation</title>
     <style>
         body {{
             font-family: Arial, sans-serif;
@@ -170,7 +170,7 @@ def general_html_content(name, title, text):
     <div class="container">
         <div class="header">
             <a href="https://qyazilim.com.tr/">
-                <img src="https://i.hizliresim.com/f3cfgu6.png" alt="QLab Logo">
+                <img src="https://i.hizliresim.com/sch0cd4.png" alt="OTBLab Logo">
             </a>
         </div>
         <div class="code-container">
