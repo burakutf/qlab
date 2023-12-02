@@ -32,7 +32,9 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        return User.objects.filter(organization=user.organization,is_staff=False)
+        return User.objects.filter(
+            organization=user.organization, is_staff=False
+        )
 
 
 class UserDetailViewSet(viewsets.ModelViewSet):
@@ -74,8 +76,11 @@ class GroupViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        queryset = Role.objects.filter(organization=user.organization,is_primary=False)
+        queryset = Role.objects.filter(
+            organization=user.organization, is_primary=False
+        )
         return queryset
+
 
 class PermissionView(APIView):
     def get(self, request, *args, **kwargs):

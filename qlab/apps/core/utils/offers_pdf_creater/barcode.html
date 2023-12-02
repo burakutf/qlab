@@ -31,10 +31,21 @@
         .container .text {
             position: absolute;
             top: 68%;
-            left: 50%;
+            left: 44%;
             transform: translate(-45%, -50%);
             color: black;
             font-weight: bold;
+
+        }
+        .container .name {
+            position: absolute;
+            top: 80%;
+            left: 44%;
+            transform: translate(-45%, -50%);
+            color: black;
+            font-weight: bold;
+            font-size: small;
+            text-align: center;
         }
     </style>
 </head>
@@ -44,6 +55,7 @@
         <div class="container">
             <img src="https://i.hizliresim.com/crmhtpy.jpeg" alt="Your Image">
             <div class="text">{{item.name}}</div>
+            <h1  class="name">{{item.parameter}}</h1>
         </div>
     </div>
     {% endfor %}

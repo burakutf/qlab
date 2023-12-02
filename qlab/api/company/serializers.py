@@ -177,15 +177,19 @@ class WorkOrderSerializers(serializers.ModelSerializer):
                     'source_code': proposal.source_code,
                 }
             )
-    
-            loop_count = (proposal.count * proposal.parameter.barcode_count) + 1
+
+            loop_count = (
+                proposal.count * proposal.parameter.barcode_count
+            ) + 1
             for b in range(
-                    proposal.parameter.current_barcode,
-                    proposal.parameter.current_barcode + loop_count,
-                ):
+                proposal.parameter.current_barcode,
+                proposal.parameter.current_barcode + loop_count,
+            ):
                 barcode_items.append(
-                    {'name': f"P-23-{str(b).zfill(4)}"}
-                    
+                    {
+                        'name': f'P-23-{str(b).zfill(4)}',
+                        'parameter': proposal.parameter.name,
+                    }
                 )
         start_date = validated_data['start_date']
         end_date = validated_data['end_date']
@@ -212,17 +216,18 @@ class WorkOrderSerializers(serializers.ModelSerializer):
         timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
         filename = f'{str(uuid4())[:8]}_{timestamp}.pdf'
         work_order_object = super().create(validated_data)
+
         work_order_pdf.generate_pdf(filename)
 
         timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
         barcode_filename = f'{str(uuid4())[:8]}_{timestamp}.pdf'
-        barcode_generator= BarcodeGenerator(items=barcode_items)
+        barcode_generator = BarcodeGenerator(items=barcode_items)
         barcode_generator.generate_pdf(barcode_filename)
-        
+
         work_order_object.personal.set(personal)
         work_order_object.vehicles.set(vehicles)
         work_order_object.devices.set(devices)
-        
+
         work_order_object.barcode_file = f'/{barcode_filename}'
         work_order_object.file = f'/{filename}'
         work_order_object.save()
@@ -240,7 +245,6 @@ class WorkOrderSerializers(serializers.ModelSerializer):
             ),
             file_path=file_path,
         )
-        
         return work_order_object
 
 
@@ -351,7 +355,7 @@ class ProposalSerializers(serializers.ModelSerializer):
         timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
         filename = f'{str(uuid4())[:8]}_{timestamp}.pdf'
         invoice_generator.generate_pdf(filename)
-   
+
         proposal_object.user = user
         proposal_object.file = f'/{filename}'
         proposal_object.save()

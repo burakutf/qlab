@@ -1,6 +1,8 @@
 import os
 import locale
 from django.conf import settings
+import threading
+
 import jinja2
 import pdfkit
 from datetime import datetime
@@ -9,7 +11,7 @@ from environ import Env
 env = Env()
 
 
-class WorkOrderGenerator:
+class WorkOrderGenerator(threading.Thread):
     def __init__(
         self,
         items,

@@ -13,11 +13,15 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='methodparameters',
             name='barcode_count',
-            field=models.PositiveSmallIntegerField(blank=True, default=1, null=True),
+            field=models.PositiveSmallIntegerField(
+                blank=True, default=1, null=True
+            ),
         ),
         migrations.AlterField(
             model_name='methodparameters',
             name='current_barcode',
-            field=models.PositiveSmallIntegerField(blank=True, default=1, null=True),
+            field=models.PositiveSmallIntegerField(
+                blank=True, default=1, null=True
+            ),
         ),
     ]

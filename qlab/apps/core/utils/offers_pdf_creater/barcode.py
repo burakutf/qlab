@@ -1,5 +1,6 @@
 import os
 from django.conf import settings
+import threading
 import jinja2
 import pdfkit
 from environ import Env
@@ -7,7 +8,7 @@ from environ import Env
 env = Env()
 
 
-class BarcodeGenerator:
+class BarcodeGenerator(threading.Thread):
     def __init__(
         self,
         items,
