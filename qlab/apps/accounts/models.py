@@ -19,6 +19,7 @@ class Role(models.Model):
         null=True,
     )
     is_primary = models.BooleanField(default=False)
+    organization = models.ForeignKey(Organization, models.CASCADE, null=True)
 
     def __str__(self):
         return f'{self.name}'

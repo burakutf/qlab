@@ -176,6 +176,7 @@ class ProposalListCreateView(generics.ListCreateAPIView):
     queryset = Proposal.objects.all()
     serializer_class = ProposalSerializers
     filterset_fields = (
+        'id',
         'status',
         'user',
     )

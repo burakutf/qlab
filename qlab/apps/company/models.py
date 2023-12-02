@@ -108,7 +108,8 @@ class MethodParameters(models.Model):
     method = models.ManyToManyField(QualityMethod, related_name='parameters')
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     sample_type = models.CharField(max_length=128, null=True, blank=True)
-    barcode_count = models.PositiveSmallIntegerField(null=True, blank=True)
+    barcode_count = models.PositiveSmallIntegerField(default=1)
+    current_barcode = models.PositiveSmallIntegerField(default=1)
 
 
 class ProposalDraft(models.Model):
@@ -156,3 +157,4 @@ class WorkOrder(models.Model):
     end_date = models.DateField(null=True)
     goal = models.TextField(null=True, blank=True)
     file = models.FileField(null=True)
+    barcode_file = models.FileField(null=True)

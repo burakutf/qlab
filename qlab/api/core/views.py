@@ -39,7 +39,9 @@ def get_monthly_data(queryset, date_field, value_field=None):
             else:
                 result[item['month']] = item['total_count']
 
-        result = [{'name': k.strftime('%B'), 'value': v} for k, v in result.items()]
+        result = [
+            {'name': k.strftime('%B'), 'value': v} for k, v in result.items()
+        ]
         return result
     else:
         data = (
@@ -95,7 +97,7 @@ class StatisticsView(ListAPIView):
         vehicles_count = Vehicle.objects.count()
         company_count = Company.objects.count()
         device_count = LabDevice.objects.count()
-        proposal = Proposal.objects.all()
+        proposal = Proposal.objects.all().prefetch_related('parameters')
         monthly_proposals = get_monthly_data(proposal, 'created_at')
         monthly_approve_proposals = get_monthly_data(
             proposal.filter(status=ProposalChoices.APPROVAL),

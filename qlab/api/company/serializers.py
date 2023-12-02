@@ -25,6 +25,7 @@ from qlab.apps.company.models import (
     WorkOrder,
 )
 from qlab.apps.core.models import Notification
+from qlab.apps.core.utils.offers_pdf_creater.barcode import BarcodeGenerator
 from qlab.apps.core.utils.offers_pdf_creater.invoice import InvoiceGenerator
 from qlab.apps.core.utils.offers_pdf_creater.work_order import (
     WorkOrderGenerator,
@@ -157,25 +158,38 @@ class WorkOrderSerializers(serializers.ModelSerializer):
         personal_name_str = ', '.join(personal_name)
         lab_devices = [
             {
-                'id': i.id,
-                'name': i.name,
-                'serial_number': i.serial_number,
+                'id': d.id,
+                'name': d.name,
+                'serial_number': d.serial_number,
             }
-            for i in devices
+            for d in devices
         ]
-        items = [
-            {
-                'id': i.id,
-                'price': i.price,
-                'methods': i.methods,
-                'count': i.count,
-                'parameter': i.parameter.name,
-                'source_code': i.source_code,
-            }
-            for i in proposal.parameters.all()
-        ]
+        items = []
+        barcode_items = []
+        for proposal in proposal.parameters.all():
+            items.append(
+                {
+                    'id': proposal.id,
+                    'price': proposal.price,
+                    'methods': proposal.methods,
+                    'count': proposal.count,
+                    'parameter': proposal.parameter.name,
+                    'source_code': proposal.source_code,
+                }
+            )
+    
+            loop_count = (proposal.count * proposal.parameter.barcode_count) + 1
+            for b in range(
+                    proposal.parameter.current_barcode,
+                    proposal.parameter.current_barcode + loop_count,
+                ):
+                barcode_items.append(
+                    {'name': f"P-23-{str(b).zfill(4)}"}
+                    
+                )
         start_date = validated_data['start_date']
         end_date = validated_data['end_date']
+        proposal = validated_data['proposal']
         org_info = OrganizationInformation.objects.first()
         work_order_pdf = WorkOrderGenerator(
             proposal_id=proposal.id,
@@ -198,13 +212,18 @@ class WorkOrderSerializers(serializers.ModelSerializer):
         timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
         filename = f'{str(uuid4())[:8]}_{timestamp}.pdf'
         work_order_object = super().create(validated_data)
-
         work_order_pdf.generate_pdf(filename)
 
+        timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+        barcode_filename = f'{str(uuid4())[:8]}_{timestamp}.pdf'
+        barcode_generator= BarcodeGenerator(items=barcode_items)
+        barcode_generator.generate_pdf(barcode_filename)
+        
         work_order_object.personal.set(personal)
         work_order_object.vehicles.set(vehicles)
         work_order_object.devices.set(devices)
-
+        
+        work_order_object.barcode_file = f'/{barcode_filename}'
         work_order_object.file = f'/{filename}'
         work_order_object.save()
         file_url = work_order_object.file.url
@@ -221,6 +240,7 @@ class WorkOrderSerializers(serializers.ModelSerializer):
             ),
             file_path=file_path,
         )
+        
         return work_order_object
 
 
@@ -330,12 +350,8 @@ class ProposalSerializers(serializers.ModelSerializer):
 
         timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
         filename = f'{str(uuid4())[:8]}_{timestamp}.pdf'
-        try:
-            invoice_generator.generate_pdf(filename)
-        except:
-            raise serializers.ValidationError(
-                {'error': ['Pdf Oluşturulamadı!']}
-            )
+        invoice_generator.generate_pdf(filename)
+   
         proposal_object.user = user
         proposal_object.file = f'/{filename}'
         proposal_object.save()

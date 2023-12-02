@@ -55,6 +55,14 @@ class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Role
         fields = '__all__'
+        
+    def create(self, validated_data):
+        request = self.context.get('request')
+        organization = request.user.organization
+
+        if organization:
+            validated_data['organization'] = organization
+            return super().create(validated_data)
 
 
 class MinimalUserSerializers(serializers.ModelSerializer):

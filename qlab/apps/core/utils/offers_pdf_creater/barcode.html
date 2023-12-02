@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Tahoma;       
+        }
+        .page {
+            width: 100%;
+            justify-content: center;
+            page-break-after: always;
+        }
+        .container {
+            position: relative;
+            width: 600px;         
+            margin: auto;
+            margin-top: 40px;
+        
+        }
+        .container img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .container .text {
+            position: absolute;
+            top: 68%;
+            left: 50%;
+            transform: translate(-45%, -50%);
+            color: black;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    {% for item in items %}
+    <div class="page">
+        <div class="container">
+            <img src="https://i.hizliresim.com/crmhtpy.jpeg" alt="Your Image">
+            <div class="text">{{item.name}}</div>
+        </div>
+    </div>
+    {% endfor %}
+</body>
+
+</html>
