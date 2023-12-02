@@ -36,7 +36,7 @@ class BarcodeGenerator(threading.Thread):
 
         config = pdfkit.configuration(wkhtmltopdf=env.str('WKHTMLTOPDF_PATH'))
         if settings.DOMAIN == 'localhost':
-            output_path = '/Users/burak/Desktop/projeler/qlab/qlab/media/test.pdf'   # TODO ürün aşamasında bu kontrolü kaldır
+            output_path = '/Users/burak/Desktop/projeler/qlab/qlab/media/barcode_test.pdf'   # TODO ürün aşamasında bu kontrolü kaldır
         else:
             media_root = settings.MEDIA_ROOT.replace('/media/', '')
             output_path = media_root + settings.MEDIA_URL + name

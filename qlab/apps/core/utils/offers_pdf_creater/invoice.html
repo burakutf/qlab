@@ -86,199 +86,206 @@
             width: 100px;
             height: 100px;
         }
+
+        .page {
+            page-break-after: always;
+            padding-top: 20px;
+        }
     </style>
 </head>
 
 <body>
 
     <div class="container">
+
         <!-- Taslak 1 -->
-        <table class="header">
-            <thead>
+        <div class="page">
+            <table class="header">
+                <thead>
+                    <tr>
+                        <th><img src={{left_logo}} alt="Logo 1"></th>
+                        <th><img src={{right_logo}} alt="Logo 2"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="2">
+                            <div class="header-content">
+                                <h2>{{org_name}}</h2>
+                                <p>{{address}}
+                                    Tel: {{phone}}
+                                    e-mail: {{email}}</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 class="form-title">TEKLİF/SÖZLEŞME FORMU</h3>
+            <table>
                 <tr>
-                    <th><img src={{left_logo}} alt="Logo 1"></th>
-                    <th><img src={{right_logo}} alt="Logo 2"></th>
+                    <th>Firma</th>
+                    <td>{{company_name}}</td>
                 </tr>
-            </thead>
-            <tbody>
                 <tr>
-                    <td colspan="2">
-                        <div class="header-content">
-                            <h2>{{org_name}}</h2>
-                            <p>{{address}}
-                                Tel: {{phone}}
-                                e-mail: {{email}}</p>
-                        </div>
+                    <th>Adresi</th>
+                    <td>{{company_address}}</td>
+                </tr>
+                <tr>
+                    <th>İlgili</th>
+                    <td>{{company_person}}</td>
+                </tr>
+                <tr>
+                    <th>Telefon</th>
+                    <td>{{company_number}}
                     </td>
                 </tr>
-            </tbody>
-        </table>
+                <tr>
+                    <th>E-mail</th>
+                    <td>{{company_email}}</td>
+                </tr>
+            </table>
 
-        <h3 class="form-title">TEKLİF/SÖZLEŞME FORMU</h3>
-        <table>
-            <tr>
-                <th>Firma</th>
-                <td>{{company_name}}</td>
-            </tr>
-            <tr>
-                <th>Adresi</th>
-                <td>{{company_address}}</td>
-            </tr>
-            <tr>
-                <th>İlgili</th>
-                <td>{{company_person}}</td>
-            </tr>
-            <tr>
-                <th>Telefon</th>
-                <td>{{company_number}}
-                </td>
-            </tr>
-            <tr>
-                <th>E-mail</th>
-                <td>{{company_email}}</td>
-            </tr>
-        </table>
+            <table>
+                <tr>
+                    <th>Konu</th>
+                    <td>{{subject}}</td>
+                </tr>
 
-        <table>
-            <tr>
-                <th>Konu</th>
-                <td>{{subject}}</td>
-            </tr>
+                <tr>
+                    <th>Tarih</th>
+                    <td>{{today_date}}</td>
+                </tr>
+            </table>
 
-            <tr>
-                <th>Tarih</th>
-                <td>{{today_date}}</td>
-            </tr>
-        </table>
-
-        <p>{{preface}}</p>
-        <div class="right-align">
-            <p><b>{{org_owner}}</b></p>
-            <img src={{signature}}
-                alt="İmza">
+            <p>{{preface}}</p>
+            <div class="right-align">
+                <p><b>{{org_owner}}</b></p>
+                <img src={{signature}} alt="İmza">
+            </div>
         </div>
+
         <!-- Taslak 2 -->
-        <table class="header">
-            <thead>
-                <tr>
-                    <th><img src={{left_logo}} alt="Logo 1"></th>
-                    <th><img src={{right_logo}} alt="Logo 2"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td colspan="2">
-                        <div class="header-content">
-                            <h2>{{org_name}}</h2>
-                            <p>{{address}}
-                                Tel: {{phone}}
-                                e-mail: {{email}}</p>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="page">
+            <table class="header">
+                <thead>
+                    <tr>
+                        <th><img src={{left_logo}} alt="Logo 1"></th>
+                        <th><img src={{right_logo}} alt="Logo 2"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="2">
+                            <div class="header-content">
+                                <h2>{{org_name}}</h2>
+                                <p>{{address}}
+                                    Tel: {{phone}}
+                                    e-mail: {{email}}</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-        <h3 class="form-title">TEKLİF/SÖZLEŞME FORMU</h3>
+            <h3 class="form-title">TEKLİF/SÖZLEŞME FORMU</h3>
 
-        <table class="line-items-container">
-            <thead>
-                <tr>
-                    <th class="heading-name">Analiz / Ölçüm parametreleri</th>
-                    <th class="heading-description">Ölçüm Methodu / Açıklama</th>
-                    <th class="heading-quantity">Nokta / Kişi sayısı</th>
-                    <th class="heading-price">Birim Fiyat</th>
-                    <th class="heading-subtotal">Toplam Fiyat</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in items %}
-                <tr>
-                    <td>{{item.name}}</td>
-                    <td>{{item.description}}</td>
-                    <td>{{item.quantity}}</td>
-                    <td>₺{{item.unit_price}}</td>
-                    <td>₺{{item.quantity * item.unit_price}}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <table class="line-items-container has-bottom-border">
-            <thead>
-                <tr>
-                    <th>KDV HARİÇ TOPLAM</th>
-                    <th>TOPLAM</th>
-                </tr>
-            </thead>
-            <tbody>
+            <table class="line-items-container">
+                <thead>
+                    <tr>
+                        <th class="heading-name">Analiz / Ölçüm parametreleri</th>
+                        <th class="heading-description">Ölçüm Methodu / Açıklama</th>
+                        <th class="heading-quantity">Nokta / Kişi sayısı</th>
+                        <th class="heading-price">Birim Fiyat</th>
+                        <th class="heading-subtotal">Toplam Fiyat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td>{{item.name}}</td>
+                        <td>{{item.description}}</td>
+                        <td>{{item.quantity}}</td>
+                        <td>₺{{item.unit_price}}</td>
+                        <td>₺{{item.quantity * item.unit_price}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <table class="line-items-container has-bottom-border">
+                <thead>
+                    <tr>
+                        <th>KDV HARİÇ TOPLAM</th>
+                        <th>TOPLAM</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-                <tr>
-                    <td class="payment-info">KDV Hariç Toplam: <strong>{{total}}</strong></td>
-                    <td class="large total"> Kdv: <strong class="total-text">%{{vat_rate}}</strong>
-                        Toplam: <strong class="total-text">{{kdv_total}}</strong></td>
-                </tr>
-            </tbody>
-        </table>
+                    <tr>
+                        <td class="payment-info">KDV Hariç Toplam: <strong>{{total}}</strong></td>
+                        <td class="large total"> Kdv: <strong class="total-text">%{{vat_rate}}</strong>
+                            Toplam: <strong class="total-text">{{kdv_total}}</strong></td>
+                    </tr>
+                </tbody>
+            </table>
 
-        {{terms}}
+            {{terms}}
+        </div>
         <!-- Taslak 3 -->
+        <div class="page">
+            <table class="header">
+                <thead>
+                    <tr>
+                        <th><img src={{left_logo}} alt="Logo 1"></th>
+                        <th><img src={{right_logo}} alt="Logo 2"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="2">
+                            <div class="header-content">
+                                <h2>{{org_name}}</h2>
+                                <p>{{address}}
+                                    Tel: {{phone}}
+                                    e-mail: {{email}}</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-       <table class="header">
-            <thead>
+            <h3>Banka Hesap Bilgileri</h3>
+            <table>
                 <tr>
-                    <th><img src={{left_logo}} alt="Logo 1"></th>
-                    <th><img src={{right_logo}} alt="Logo 2"></th>
+                    <th>Banka</th>
+                    <th>Şube</th>
+                    <th>Hesap No</th>
+                    <th>IBAN</th>
                 </tr>
-            </thead>
-            <tbody>
+
                 <tr>
-                    <td colspan="2">
-                        <div class="header-content">
-                            <h2>{{org_name}}</h2>
-                            <p>{{address}}
-                                Tel: {{phone}}
-                                e-mail: {{email}}</p>
-                        </div>
-                    </td>
+                    <td>{{bank_name}}</td>
+                    <td>{{bank_branch}}</td>
+                    <td>{{bank_no}}</td>
+                    <td>{{bank_iban}}</td>
                 </tr>
-            </tbody>
-        </table>
+            </table>
 
-        <h3>Banka Hesap Bilgileri</h3>
-        <table>
-            <tr>
-                <th>Banka</th>
-                <th>Şube</th>
-                <th>Hesap No</th>
-                <th>IBAN</th>
-            </tr>
+            <h3>Teklif Onayı</h3>
+            <table>
 
-            <tr>
-                <td>{{bank_name}}</td>
-                <td>{{bank_branch}}</td>
-                <td>{{bank_no}}</td>
-                <td>{{bank_iban}}</td>
-            </tr>
-        </table>
+                <tr>
+                    <th colspan="2">Firma Onayı</th>
+                    <th>{{org_name}}</th>
+                </tr>
 
-
-        <h3>Teklif Onayı</h3>
-        <table>
-
-            <tr>
-                <th colspan="2">Firma Onayı</th>
-                <th>{{org_name}}</th>
-            </tr>
-
-
-            <tr>
-                <td>Kaşe / İmza</td>
-                <td style="min-width: 100px;"></td>
-                <td style="min-width: 100px;"> <img
-                        src={{signature}}
-                        alt="İmza"></td>
-            </tr>
-        </table>
+                <tr>
+                    <td>Kaşe / İmza</td>
+                    <td style="min-width: 100px;"></td>
+                    <td style="min-width: 100px;"> <img src={{signature}} alt="İmza"></td>
+                </tr>
+            </table>
+        </div>
 
     </div>
 </body>

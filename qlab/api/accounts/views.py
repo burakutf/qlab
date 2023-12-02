@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.db.models.deletion import ProtectedError
 
 from django.shortcuts import get_object_or_404
 
@@ -53,6 +54,7 @@ class UserDetailViewSet(viewsets.ModelViewSet):
         return UserDetail.objects.filter(user__organization=user.organization)
 
 
+
 class MinimalUserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.none()
     serializer_class = MinimalUserSerializers
@@ -80,6 +82,13 @@ class GroupViewSet(viewsets.ModelViewSet):
             organization=user.organization, is_primary=False
         )
         return queryset
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        try:
+            instance.delete()
+        except ProtectedError:
+            return Response({"message": "Bu rol silinemez çünkü başka bir kullanıcı tarafından kullanılıyor."}, status=400)
+        return Response(status=204)
 
 
 class PermissionView(APIView):

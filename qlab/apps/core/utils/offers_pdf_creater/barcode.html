@@ -1,64 +1,68 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <style>
-        body {
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-            font-family: Tahoma;       
-        }
         .page {
-            width: 100%;
-            justify-content: center;
             page-break-after: always;
+            padding-top: 30px;
         }
+
         .container {
+            border-radius: 15px;
+            overflow: hidden;
             position: relative;
-            width: 600px;         
+            width: 80%;
+            max-width: 600px;
             margin: auto;
-            margin-top: 40px;
-        
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
         }
+
         .container img {
             width: 100%;
-            height: auto;
-            border-radius: 10px;
+            display: block;
+            margin-bottom: 30px;
         }
+
         .container .text {
             position: absolute;
-            top: 68%;
-            left: 44%;
-            transform: translate(-45%, -50%);
-            color: black;
-            font-weight: bold;
-
+            bottom: 9px;
+            color: #000000;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            font-family: 'Tahoma';
+            font-size: 18px;
+            border-top: 1px solid black;
         }
+
         .container .name {
             position: absolute;
-            top: 80%;
-            left: 44%;
-            transform: translate(-45%, -50%);
-            color: black;
-            font-weight: bold;
-            font-size: small;
+            bottom: 0;
+            color: #000000;
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
             text-align: center;
+            font-family: 'Tahoma';
+            font-size: 12px;
         }
     </style>
 </head>
+
 <body>
     {% for item in items %}
+
     <div class="page">
         <div class="container">
-            <img src="https://i.hizliresim.com/crmhtpy.jpeg" alt="Your Image">
+            <img src="https://i.hizliresim.com/crmhtpy.jpeg" alt="Etiket">
             <div class="text">{{item.name}}</div>
-            <h1  class="name">{{item.parameter}}</h1>
+            <div class="name">{{item.parameter}}</div>
         </div>
     </div>
     {% endfor %}
+
 </body>
 
 </html>
