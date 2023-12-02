@@ -57,8 +57,8 @@ def user_notification(instance, created, *args, **kwargs):
         }}
 
         .header img {{
-            width: 45px;
-            height: 65px;
+            width: 80px;
+            height: 80px;
         }}
 
         .profile {{

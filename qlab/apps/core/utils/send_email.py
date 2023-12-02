@@ -70,6 +70,7 @@ def general_html_content(name, title, text):
             background-color: #357C8E;
             text-align: center;
             padding: 12px;
+            width: 50px;
         }}
 
         .header a {{
