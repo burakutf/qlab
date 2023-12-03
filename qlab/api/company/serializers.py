@@ -182,7 +182,8 @@ class WorkOrderSerializers(serializers.ModelSerializer):
                 proposal.count * proposal.parameter.barcode_count
             ) + 1
             for b in range(
-                loop_count,
+                proposal.parameter.current_barcode,
+                proposal.parameter.current_barcode + loop_count,
             ):
                 barcode_items.append(
                     {

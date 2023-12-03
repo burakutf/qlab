@@ -222,7 +222,7 @@ class ProposalRetrieveUpdateView(generics.RetrieveUpdateAPIView):
             )
 
             send_html_mail(
-                subject='Qlab Teklif Durumu',
+                subject='OTBLab Teklif Durumu',
                 recipient_list=(user.email,),
                 html_content=general_html_content(
                     name=user.full_name,

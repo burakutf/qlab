@@ -58,15 +58,15 @@ class OrganizationInformation(
 class Company(models.Model):
     name = models.CharField(max_length=100)
     address = models.CharField(max_length=200)
-    tax_number = models.CharField(max_length=10, null=True, blank=True)
+    tax_number = models.CharField(max_length=100, null=True, blank=True)
     authorized_person = models.CharField(max_length=50)
     advisor = models.CharField(max_length=100, null=True, blank=True)
-    contact_info = models.CharField(
+    contact_info = PhoneNumberField(
         max_length=16, null=True, blank=True, db_index=True
-    )   # TODO burayıda PhoneField
-    contact_info_mail = models.CharField(
+    )   
+    contact_info_mail = models.EmailField(
         max_length=64, null=True, blank=True
-    )  # TODO burayı EmailField yap
+    )  
 
     def __str__(self):
         return self.name
